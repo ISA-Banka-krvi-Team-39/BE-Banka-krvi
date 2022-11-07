@@ -1,12 +1,30 @@
 package app.person.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import java.util.Objects;
 
+@Entity
 public class Address {
+    
+    @Id
+    int addressId;
+
+    @Column(name="country", unique=false, nullable=false)
     String country;
+
+    @Column(name="city", unique=false, nullable=false)
     String city;
+
+    @Column(name="streetName", unique=false, nullable=false)
     String streetName;
+
+    @Column(name="streetNumber", unique=false, nullable=false)
     String streetNumber;
+    @OneToOne(mappedBy = "address")
+    Person person;
 
     @Override
     public boolean equals(Object o) {

@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -15,14 +16,15 @@ public class PersonService implements IPersonService {
     @Autowired
     private IPersonRepository personRepository;
     @Override
+    @Transactional
     public Page<Person> findAll(Pageable page) {
         return personRepository.findAll(page);
     }
+    @Transactional
     public List<Person> findAll() {
         return personRepository.findAll();
     }
     @Override
-    public boolean create(Person person) {
-        return false;
-    }
+    @Transactional
+    public Person create(Person person) { return personRepository.save(person); }
 }

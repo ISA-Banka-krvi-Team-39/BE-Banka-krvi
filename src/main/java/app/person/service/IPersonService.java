@@ -9,5 +9,5 @@ import java.util.List;
 public interface IPersonService {
     Page<Person> findAll(Pageable page);
     List<Person> findAll();
-    boolean create(Person person);
+    Person create(Person person);
 }

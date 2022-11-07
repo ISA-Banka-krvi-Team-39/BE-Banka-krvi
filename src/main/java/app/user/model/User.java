@@ -1,15 +1,21 @@
 package app.user.model;
 
-import javax.persistence.*;
+import app.person.model.Person;
 
+import javax.persistence.*;
+import javax.validation.constraints.Min;
+
+import static javax.persistence.InheritanceType.JOINED;
+
+@Entity
+@Inheritance(strategy=JOINED)
 public class User {
     @Id
-    @SequenceGenerator(name = "personSeqGen", sequenceName = "personSeq", initialValue = 1, allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "personSeqGen")
-    @Column(name="id", unique=true, nullable=false)
-    String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    int userId;
     @Column(name="owner", unique=true, nullable=false)
     String email;
     @Column(name="owner", unique=false, nullable=false)
     String password;
+
 }
