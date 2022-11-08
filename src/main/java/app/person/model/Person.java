@@ -15,12 +15,14 @@ enum PersonGender {
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int personId;
+    private Integer personId;
     @Column(name="name", unique=false, nullable=false)
     private String name;
     @Column(name="surname", unique=false, nullable=false)
     private String surname;
-    @OneToOne(mappedBy = "person",cascade = CascadeType.ALL)
+    
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", referencedColumnName = "addressId")
     private Address address;
     @Column(name="uuid", unique=true, nullable=false)
     private int uuid;
@@ -28,7 +30,8 @@ public class Person {
     private int phoneNumber;
     @Column(name="school", unique=false, nullable=false)
     private String school;
-    @OneToOne(mappedBy = "person",cascade = CascadeType.ALL)
+
+    @OneToOne(mappedBy = "person")
     private User user;
     
     public Person() {
@@ -39,16 +42,12 @@ public class Person {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Person person = (Person) o;
-        return personId == person.personId && uuid == person.uuid && phoneNumber == person.phoneNumber && Objects.equals(name, person.name) && Objects.equals(surname, person.surname) && Objects.equals(address, person.address) && Objects.equals(school, person.school) && Objects.equals(user, person.user);
+        return uuid == person.uuid && phoneNumber == person.phoneNumber && Objects.equals(name, person.name) && Objects.equals(surname, person.surname) && Objects.equals(address, person.address) && Objects.equals(school, person.school) && Objects.equals(user, person.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(personId, name, surname, address, uuid, phoneNumber, school, user);
-    }
-
-    public void setPersonId(int personId) {
-        this.personId = personId;
+        return Objects.hash(name, surname, address, uuid, phoneNumber, school, user);
     }
 
     public void setName(String name) {
@@ -74,14 +73,7 @@ public class Person {
     public void setSchool(String school) {
         this.school = school;
     }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public int getPersonId() {
-        return personId;
-    }
+    
 
     public String getName() {
         return name;
@@ -107,7 +99,4 @@ public class Person {
         return school;
     }
 
-    public User getUser() {
-        return user;
-    }
 }

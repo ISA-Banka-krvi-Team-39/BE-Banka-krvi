@@ -1,30 +1,31 @@
 package app.person.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import app.user.model.User;
+
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 public class Address {
     
     @Id
-    int addressId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer addressId;
 
     @Column(name="country", unique=false, nullable=false)
-    String country;
+    private String country;
 
     @Column(name="city", unique=false, nullable=false)
-    String city;
+    private String city;
 
     @Column(name="streetName", unique=false, nullable=false)
-    String streetName;
+    private String streetName;
 
     @Column(name="streetNumber", unique=false, nullable=false)
-    String streetNumber;
+    private String streetNumber;
+
     @OneToOne(mappedBy = "address")
-    Person person;
+    private Person person;
 
     @Override
     public boolean equals(Object o) {
