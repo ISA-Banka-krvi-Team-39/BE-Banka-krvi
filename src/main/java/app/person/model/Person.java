@@ -1,6 +1,7 @@
 package app.person.model;
 
 import app.user.model.User;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -21,13 +22,13 @@ public class Person {
     @Column(name="surname", unique=false, nullable=false)
     private String surname;
     
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name = "address_id", referencedColumnName = "addressId")
     private Address address;
     @Column(name="uuid", unique=true, nullable=false)
-    private int uuid;
+    private String uuid;
     @Column(name="phoneNumber", unique=false, nullable=false)
-    private int phoneNumber;
+    private String phoneNumber;
     @Column(name="school", unique=false, nullable=false)
     private String school;
 
@@ -62,11 +63,11 @@ public class Person {
         this.address = address;
     }
 
-    public void setUuid(int uuid) {
+    public void setUuid(String uuid) {
         this.uuid = uuid;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -87,11 +88,11 @@ public class Person {
         return address;
     }
 
-    public int getUuid() {
+    public String getUuid() {
         return uuid;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
