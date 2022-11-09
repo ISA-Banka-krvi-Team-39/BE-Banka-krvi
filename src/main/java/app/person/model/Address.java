@@ -35,10 +35,6 @@ public class Address {
         return country.equals(address.country) && city.equals(address.city) && streetName.equals(address.streetName) && streetNumber.equals(address.streetNumber);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(country, city, streetName, streetNumber);
-    }
 
     public Address(String country, String city, String streetName, String streetNumber) {
         this.country = country;
