@@ -1,9 +1,14 @@
 package app.person.model;
 
+import app.center.model.Center;
+import app.center.model.Terms;
 import app.user.model.User;
+import org.hibernate.FetchMode;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 enum PersonGender {
     MALE,
@@ -20,7 +25,13 @@ public class Person {
     private String name;
     @Column(name="surname", unique=false, nullable=false)
     private String surname;
-    
+
+    @ManyToMany(mappedBy = "persons",fetch = FetchType.LAZY)
+    private Set<Terms> terms = new HashSet<Terms>();
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "centerId")
+    private Center center;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "addressId")
     private Address address;
@@ -43,11 +54,6 @@ public class Person {
         if (o == null || getClass() != o.getClass()) return false;
         Person person = (Person) o;
         return uuid == person.uuid && phoneNumber == person.phoneNumber && Objects.equals(name, person.name) && Objects.equals(surname, person.surname) && Objects.equals(address, person.address) && Objects.equals(school, person.school) && Objects.equals(user, person.user);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, surname, address, uuid, phoneNumber, school, user);
     }
 
     public void setName(String name) {
