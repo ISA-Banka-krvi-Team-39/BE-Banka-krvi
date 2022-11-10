@@ -1,10 +1,8 @@
-package app.person.model;
+package app.shared.model;
 
-import app.user.model.User;
-import org.springframework.transaction.annotation.Transactional;
+import app.person.model.Person;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 public class Address {
