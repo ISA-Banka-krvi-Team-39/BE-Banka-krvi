@@ -15,7 +15,7 @@ public class MedicalStaff {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "centerId")
     private Center workingCenter;
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "personId")
     private Person person;
 

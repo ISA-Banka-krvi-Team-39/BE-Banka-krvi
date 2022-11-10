@@ -42,6 +42,7 @@ public class PersonController {
             @ApiResponse(responseCode = "200", description = "successful operation",
                     content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Person.class))))
     })
+
     @GetMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Person> getOne(@Parameter(name="id", description = "ID of a person to return", required = true) @PathVariable("id") int id) {
         Optional<Person> person = personService.getOne(id);
