@@ -3,6 +3,7 @@ package app.person.model;
 import app.center.model.Center;
 import app.center.model.Terms;
 import app.user.model.User;
+import org.springframework.transaction.annotation.Transactional;
 import org.hibernate.FetchMode;
 
 import javax.persistence.*;
@@ -25,6 +26,8 @@ public class Person {
     private String name;
     @Column(name="surname", unique=false, nullable=false)
     private String surname;
+    
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 
     @ManyToMany(mappedBy = "persons",fetch = FetchType.LAZY)
     private Set<Terms> terms = new HashSet<Terms>();
@@ -32,13 +35,13 @@ public class Person {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "centerId")
     private Center center;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name = "address_id", referencedColumnName = "addressId")
     private Address address;
     @Column(name="uuid", unique=true, nullable=false)
-    private int uuid;
+    private String uuid;
     @Column(name="phoneNumber", unique=false, nullable=false)
-    private int phoneNumber;
+    private String phoneNumber;
     @Column(name="school", unique=false, nullable=false)
     private String school;
 
@@ -68,11 +71,11 @@ public class Person {
         this.address = address;
     }
 
-    public void setUuid(int uuid) {
+    public void setUuid(String uuid) {
         this.uuid = uuid;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -93,11 +96,11 @@ public class Person {
         return address;
     }
 
-    public int getUuid() {
+    public String getUuid() {
         return uuid;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 

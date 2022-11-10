@@ -1,6 +1,7 @@
 package app.person.model;
 
 import app.user.model.User;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -24,7 +25,7 @@ public class Address {
     @Column(name="streetNumber", unique=false, nullable=false)
     private String streetNumber;
 
-    @OneToOne(mappedBy = "address")
+    @OneToOne(mappedBy = "address",fetch = FetchType.LAZY)
     private Person person;
 
     @Override
