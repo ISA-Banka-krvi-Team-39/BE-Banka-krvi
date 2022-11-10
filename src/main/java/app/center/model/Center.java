@@ -1,5 +1,7 @@
 package app.center.model;
 
+import app.medical_staff.model.MedicalStaff;
+import app.person.dto.PersonDTO;
 import app.shared.model.Address;
 import app.person.model.Person;
 
@@ -31,14 +33,14 @@ public class Center {
     @OneToMany(mappedBy = "termId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Term> terms = new HashSet<Term>();
 
-    @OneToMany(mappedBy = "personId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Person> workingMedicalStaff = new HashSet<Person>();
+    @OneToMany(mappedBy = "medicalStaffId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<MedicalStaff> workingMedicalStaff = new HashSet<MedicalStaff>();
 
     public Center()
     {
     }
 
-    public Center(Integer centerId, String name, Address address, String description, Float avg_grade, Set<Term> terms, Set<Person> workingMedicalStaff) {
+    public Center(Integer centerId, String name, Address address, String description, Float avg_grade, Set<Term> terms, Set<MedicalStaff> workingMedicalStaff) {
         this.centerId = centerId;
         this.name = name;
         this.address = address;
@@ -64,6 +66,8 @@ public class Center {
         this.name = name;
     }
 
+
+
     public void setAddress(Address address) {
         this.address = address;
     }
@@ -80,7 +84,7 @@ public class Center {
         this.terms = terms;
     }
 
-    public void setWorkingMedicalStaff(Set<Person> workingMedicalStaff) {
+    public void setWorkingMedicalStaff(Set<MedicalStaff> workingMedicalStaff) {
         this.workingMedicalStaff = workingMedicalStaff;
     }
 
@@ -108,7 +112,7 @@ public class Center {
         return terms;
     }
 
-    public Set<Person> getWorkingMedicalStaff() {
+    public Set<MedicalStaff> getWorkingMedicalStaff() {
         return workingMedicalStaff;
     }
 }

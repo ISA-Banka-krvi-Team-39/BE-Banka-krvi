@@ -24,7 +24,7 @@ public class Term {
     private Integer maximumSpace;
     @ManyToMany( cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.ALL})
     @JoinTable(name = "oversees", joinColumns = @JoinColumn(name = "person_id"), inverseJoinColumns = @JoinColumn(name = "term_id"))
-    private Set<Person> medicalStaff = new HashSet<Person>();
+    private Set<Person> medicalStaffs = new HashSet<Person>();
 
     @ManyToMany( cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.ALL})
     @JoinTable(name = "donating", joinColumns = @JoinColumn(name = "person_id"), inverseJoinColumns = @JoinColumn(name = "term_id"))
@@ -41,11 +41,11 @@ public class Term {
     {
     }
 
-    public Term(Integer termId, LocalDateTime dateTime, Integer maximumSpace, Set<Person> medicalStaff, Set<Person> bloodDonors, Center center, Integer durationInMinutes) {
+    public Term(Integer termId, LocalDateTime dateTime, Integer maximumSpace, Set<Person> medicalStaffs, Set<Person> bloodDonors, Center center, Integer durationInMinutes) {
         this.termId = termId;
         this.dateTime = dateTime;
         this.maximumSpace = maximumSpace;
-        this.medicalStaff = medicalStaff;
+        this.medicalStaffs = medicalStaffs;
         this.bloodDonors = bloodDonors;
         this.center = center;
         this.durationInMinutes = durationInMinutes;
@@ -56,7 +56,7 @@ public class Term {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Term term = (Term) o;
-        return Objects.equals(termId, term.termId) && Objects.equals(dateTime, term.dateTime) && Objects.equals(maximumSpace, term.maximumSpace) && Objects.equals(medicalStaff, term.medicalStaff) && Objects.equals(bloodDonors, term.bloodDonors) && Objects.equals(center, term.center) && Objects.equals(durationInMinutes, term.durationInMinutes);
+        return Objects.equals(termId, term.termId) && Objects.equals(dateTime, term.dateTime) && Objects.equals(maximumSpace, term.maximumSpace) && Objects.equals(medicalStaffs, term.medicalStaffs) && Objects.equals(bloodDonors, term.bloodDonors) && Objects.equals(center, term.center) && Objects.equals(durationInMinutes, term.durationInMinutes);
     }
 
     public void setTermId(Integer termId) {
@@ -71,8 +71,8 @@ public class Term {
         this.maximumSpace = maximumSpace;
     }
 
-    public void setMedicalStaff(Set<Person> medicalStaff) {
-        this.medicalStaff = medicalStaff;
+    public void setMedicalStaffs(Set<Person> medicalStaffs) {
+        this.medicalStaffs = medicalStaffs;
     }
 
     public void setBloodDonors(Set<Person> bloodDonors) {
@@ -99,8 +99,8 @@ public class Term {
         return maximumSpace;
     }
 
-    public Set<Person> getMedicalStaff() {
-        return medicalStaff;
+    public Set<Person> getMedicalStaffs() {
+        return medicalStaffs;
     }
 
     public Set<Person> getBloodDonors() {
