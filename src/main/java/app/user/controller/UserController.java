@@ -15,10 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "User controller", description = "The User API")
 @RestController
@@ -36,10 +33,12 @@ public class UserController {
             @ApiResponse(responseCode = "409", description = "Not possible to create new user when given id is not null",
                     content = @Content)
     })
+    @CrossOrigin(origins = "http://localhost:3000/register", maxAge = 3600)
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> createUser(@RequestBody CreateUserDTO userDTO) {
         User createdUser = null;
         Person createdPerson = null;
+        System.out.println(userDTO.getName());
         try {
             Person person = new Person(userDTO);
             createdPerson = personService.create(person);
