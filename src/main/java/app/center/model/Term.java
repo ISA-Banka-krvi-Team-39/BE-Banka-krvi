@@ -1,12 +1,13 @@
 package app.center.model;
 
-import app.person.model.Address;
 import app.person.model.Person;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Term {
@@ -15,59 +16,102 @@ public class Term {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer termId;
 
-    @Column(name = "date", nullable = false)
-    private LocalDate date;
+    @Column(name = "dateTime", nullable = false)
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
+    private LocalDateTime dateTime;
+    
+    @Column(name = "maximumSpace", nullable = false)
+    private Integer maximumSpace;
+    @ManyToMany( cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.ALL})
+    @JoinTable(name = "oversees", joinColumns = @JoinColumn(name = "person_id"), inverseJoinColumns = @JoinColumn(name = "term_id"))
+    private Set<Person> medicalStaff = new HashSet<Person>();
 
-    @Column(name = "time", nullable = false)
-    private LocalTime time;
+    @ManyToMany( cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.ALL})
+    @JoinTable(name = "donating", joinColumns = @JoinColumn(name = "person_id"), inverseJoinColumns = @JoinColumn(name = "term_id"))
+    private Set<Person> bloodDonors = new HashSet<Person>();
 
-    @Column(name = "duration", nullable = false)
-    private Integer duration;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "center_id")
+    private Center center;
 
-    @OneToOne(mappedBy = "term", fetch = FetchType.EAGER)
-    private Terms terms;
+    @Column(name = "duration_in_minutes", nullable = false)
+    private Integer durationInMinutes;
 
     public Term()
     {
-
     }
+
+    public Term(Integer termId, LocalDateTime dateTime, Integer maximumSpace, Set<Person> medicalStaff, Set<Person> bloodDonors, Center center, Integer durationInMinutes) {
+        this.termId = termId;
+        this.dateTime = dateTime;
+        this.maximumSpace = maximumSpace;
+        this.medicalStaff = medicalStaff;
+        this.bloodDonors = bloodDonors;
+        this.center = center;
+        this.durationInMinutes = durationInMinutes;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Term term = (Term) o;
-        return date.equals(term.date) && time.equals(term.time) && duration == term.duration;
+        return Objects.equals(termId, term.termId) && Objects.equals(dateTime, term.dateTime) && Objects.equals(maximumSpace, term.maximumSpace) && Objects.equals(medicalStaff, term.medicalStaff) && Objects.equals(bloodDonors, term.bloodDonors) && Objects.equals(center, term.center) && Objects.equals(durationInMinutes, term.durationInMinutes);
     }
 
-
-    public Term(Integer termId, LocalDate date, LocalTime time, Integer duration)
-    {
+    public void setTermId(Integer termId) {
         this.termId = termId;
-        this.date = date;
-        this.time = time;
-        this.duration = duration;
     }
 
-    public Integer getTermId(){
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    public void setMaximumSpace(Integer maximumSpace) {
+        this.maximumSpace = maximumSpace;
+    }
+
+    public void setMedicalStaff(Set<Person> medicalStaff) {
+        this.medicalStaff = medicalStaff;
+    }
+
+    public void setBloodDonors(Set<Person> bloodDonors) {
+        this.bloodDonors = bloodDonors;
+    }
+
+    public void setCenter(Center center) {
+        this.center = center;
+    }
+
+    public void setDurationInMinutes(Integer durationInMinutes) {
+        this.durationInMinutes = durationInMinutes;
+    }
+
+    public Integer getTermId() {
         return termId;
     }
 
-    public LocalDate getDate(){
-        return date;
+    public LocalDateTime getDateTime() {
+        return dateTime;
     }
 
-    public LocalTime getTime(){
-        return time;
+    public Integer getMaximumSpace() {
+        return maximumSpace;
     }
 
-    public Integer getDuration(){
-        return duration;
+    public Set<Person> getMedicalStaff() {
+        return medicalStaff;
     }
 
+    public Set<Person> getBloodDonors() {
+        return bloodDonors;
+    }
 
+    public Center getCenter() {
+        return center;
+    }
 
-
-
-
-
+    public Integer getDurationInMinutes() {
+        return durationInMinutes;
+    }
 }

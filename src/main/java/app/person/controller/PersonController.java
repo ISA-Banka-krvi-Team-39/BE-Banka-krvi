@@ -26,25 +26,6 @@ public class PersonController {
     @Autowired
     private IPersonService personService;
     
-    @Operation(summary = "Create new person", description = "Create new person", method = "POST")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Created",
-                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Person.class)) }),
-            @ApiResponse(responseCode = "409", description = "Not possible to create new person when given id is not null",
-                    content = @Content)
-    })
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Person> createBloodDonor(@RequestBody Person person) {
-        Person createdPerson = null;
-        try {
-            createdPerson = personService.create(person);
-        } catch (Exception e) {
-                e.printStackTrace();
-                return new ResponseEntity<Person>(HttpStatus.NOT_FOUND);
-            }
-        return new ResponseEntity<Person>(createdPerson,HttpStatus.OK);
-    }
-    
     @Operation(summary = "Get all Persons", description = "Get all Persons", method="GET")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation",

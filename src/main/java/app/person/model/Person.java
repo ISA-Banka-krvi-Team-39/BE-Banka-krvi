@@ -1,40 +1,38 @@
 package app.person.model;
 
 import app.center.model.Center;
-import app.center.model.Terms;
+import app.center.model.Term;
+import app.shared.model.Address;
+import app.user.dtos.CreateUserDTO;
 import app.user.model.User;
-import org.springframework.transaction.annotation.Transactional;
-import org.hibernate.FetchMode;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-enum PersonGender {
-    MALE,
-    FEMALE,
-    ALIEN,
-}
-
 @Entity
 public class Person {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "mySeqGenV1", sequenceName = "mySeqV1", initialValue = 4, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenV1")
     private Integer personId;
     @Column(name="name", unique=false, nullable=false)
     private String name;
+
+    @Column(name="personType", unique=false, nullable=false)
+    private PersonType personType;
+    
+    @Column(name="personGender", unique=false, nullable=false)
+    private PersonGender personGender;
     @Column(name="surname", unique=false, nullable=false)
     private String surname;
     
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "bloodDonors",fetch = FetchType.LAZY)
+    private Set<Term> donatingTerms = new HashSet<Term>();
 
-    @ManyToMany(mappedBy = "persons",fetch = FetchType.LAZY)
-    private Set<Terms> terms = new HashSet<Terms>();
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "centerId")
-    private Center center;
+    @ManyToMany(mappedBy = "medicalStaff",fetch = FetchType.LAZY)
+    private Set<Term> workingTerms = new HashSet<Term>();
     @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name = "address_id", referencedColumnName = "addressId")
     private Address address;
@@ -44,27 +42,60 @@ public class Person {
     private String phoneNumber;
     @Column(name="school", unique=false, nullable=false)
     private String school;
-
-    @OneToOne(mappedBy = "person")
-    private User user;
     
     public Person() {
     }
+    public Person(CreateUserDTO userDTO) {
+        this.name = userDTO.getName();
+        this.personType = userDTO.getPersonType();
+        this.personGender = userDTO.getPersonGender();
+        this.surname = userDTO.getSurname();
+        this.address = userDTO.getAddress();
+        this.uuid = userDTO.getUuid();
+        this.phoneNumber = userDTO.getPhoneNumber();
+        this.school = userDTO.getSchool();
+    }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Person person = (Person) o;
-        return uuid == person.uuid && phoneNumber == person.phoneNumber && Objects.equals(name, person.name) && Objects.equals(surname, person.surname) && Objects.equals(address, person.address) && Objects.equals(school, person.school) && Objects.equals(user, person.user);
+    public Person(Integer personId, String name, PersonType personType, PersonGender personGender, String surname, Set<Term> donatingTerms, Set<Term> workingTerms, Address address, String uuid, String phoneNumber, String school) {
+        this.personId = personId;
+        this.name = name;
+        this.personType = personType;
+        this.personGender = personGender;
+        this.surname = surname;
+        this.donatingTerms = donatingTerms;
+        this.workingTerms = workingTerms;
+        this.address = address;
+        this.uuid = uuid;
+        this.phoneNumber = phoneNumber;
+        this.school = school;
+    }
+
+    public void setPersonId(Integer personId) {
+        this.personId = personId;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
+    public void setPersonType(PersonType personType) {
+        this.personType = personType;
+    }
+
+    public void setPersonGender(PersonGender personGender) {
+        this.personGender = personGender;
+    }
+
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public void setDonatingTerms(Set<Term> donatingTerms) {
+        this.donatingTerms = donatingTerms;
+    }
+
+    public void setWorkingTerms(Set<Term> workingTerms) {
+        this.workingTerms = workingTerms;
     }
 
     public void setAddress(Address address) {
@@ -84,12 +115,32 @@ public class Person {
     }
     
 
+    public Integer getPersonId() {
+        return personId;
+    }
+
     public String getName() {
         return name;
     }
 
+    public PersonType getPersonType() {
+        return personType;
+    }
+
+    public PersonGender getPersonGender() {
+        return personGender;
+    }
+
     public String getSurname() {
         return surname;
+    }
+
+    public Set<Term> getDonatingTerms() {
+        return donatingTerms;
+    }
+
+    public Set<Term> getWorkingTerms() {
+        return workingTerms;
     }
 
     public Address getAddress() {
@@ -107,5 +158,5 @@ public class Person {
     public String getSchool() {
         return school;
     }
-
+    
 }
