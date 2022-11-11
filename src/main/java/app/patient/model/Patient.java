@@ -21,6 +21,11 @@ public class Patient {
 
     }
 
+    public Patient(Person person, Integer points) {
+        this.person = person;
+        this.points = points;
+    }
+
     public Integer getPatientId() {
         return patientId;
     }
