@@ -12,5 +12,6 @@ public interface IPersonService {
     List<Person> findAll();
     Person create(Person person);
 
-    Optional<Person> getOne(int id);
+    Person update(Person person);
+    Person findOne(int id);
 }

@@ -1,7 +1,13 @@
 package app.person.controller;
 
+import app.patient.model.Patient;
+import app.patient.service.IPatientService;
+import app.person.dtos.GetPersonForProfileDTO;
 import app.person.model.Person;
 import app.person.service.IPersonService;
+import app.user.dtos.UpdateUserDTO;
+import app.user.model.User;
+import app.user.service.IUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -17,14 +23,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Tag(name = "Persons controller", description = "The Person API")
 @RestController
 @RequestMapping(value = "/api/person")
 public class PersonController {
     @Autowired
+    private IPatientService patientService;
+    @Autowired
     private IPersonService personService;
+    @Autowired
+    private IUserService userService;
     
     @Operation(summary = "Get all Persons", description = "Get all Persons", method="GET")
     @ApiResponses(value = {
@@ -42,9 +51,27 @@ public class PersonController {
             @ApiResponse(responseCode = "200", description = "successful operation",
                     content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Person.class))))
     })
+    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
     @GetMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Person> getOne(@Parameter(name="id", description = "ID of a person to return", required = true) @PathVariable("id") int id) {
-        Optional<Person> person = personService.getOne(id);
-        return new ResponseEntity<Person>(person.get(), HttpStatus.OK);
+    public ResponseEntity<GetPersonForProfileDTO> getOne(@Parameter(name="id", description = "ID of a person to return", required = true) @PathVariable("id") int id) {
+        User user = userService.findOne(id);
+        Patient patient = patientService.findOne(user.getPerson().getPersonId());
+        GetPersonForProfileDTO getPersonForProfileDTO = new GetPersonForProfileDTO(user,patient);
+        return new ResponseEntity<GetPersonForProfileDTO>(getPersonForProfileDTO, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Put User Person", description = "Put User Person", method="PUT")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation",
+                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Person.class))))
+    })
+    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+    @PutMapping(value="/{id}",consumes = "application/json")
+    public HttpStatus updateUserAndPerson(@Parameter(name="id", description = "ID of a person to return", required = true) @PathVariable("id") int id, @RequestBody UpdateUserDTO updateUserDTO ) {
+        User user = userService.findOne(id);
+        user.updateUser(updateUserDTO);
+        userService.update(user);
+        personService.update(user.getPerson());
+        return HttpStatus.OK;
     }
 }
