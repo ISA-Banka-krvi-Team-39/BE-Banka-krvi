@@ -4,6 +4,7 @@ import app.center.model.Center;
 import app.center.model.Term;
 import app.shared.model.Address;
 import app.user.dtos.CreateUserDTO;
+import app.user.dtos.UpdateUserDTO;
 import app.user.model.User;
 
 import javax.persistence.*;
@@ -14,8 +15,7 @@ import java.util.Set;
 @Entity
 public class Person {
     @Id
-    @SequenceGenerator(name = "mySeqGenV1", sequenceName = "mySeqV1", initialValue = 4, allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenV1")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer personId;
     @Column(name="name", unique=false, nullable=false)
     private String name;
@@ -36,6 +36,7 @@ public class Person {
     @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name = "address_id", referencedColumnName = "addressId")
     private Address address;
+
     @Column(name="uuid", unique=true, nullable=false)
     private String uuid;
     @Column(name="phoneNumber", unique=false, nullable=false)
@@ -68,6 +69,16 @@ public class Person {
         this.uuid = uuid;
         this.phoneNumber = phoneNumber;
         this.school = school;
+    }
+
+    public void updatePerson(UpdateUserDTO updateUserDTO){
+        this.name = updateUserDTO.getName();
+        this.surname = updateUserDTO.getSurname();
+        this.personGender = updateUserDTO.getPersonGender();
+        this.address = updateUserDTO.getAddress();
+        this.uuid = updateUserDTO.getUuid();
+        this.phoneNumber = updateUserDTO.getPhoneNumber();
+        this.school = updateUserDTO.getSchool();
     }
 
     public void setPersonId(Integer personId) {
@@ -158,5 +169,5 @@ public class Person {
     public String getSchool() {
         return school;
     }
-    
+
 }

@@ -8,4 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface IPersonRepository extends JpaRepository<Person, Integer> {
     
     public Page<Person> findAll(Pageable pageable);
+
+    public Person findOneByPersonId(int id);
 }

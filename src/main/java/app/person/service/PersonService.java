@@ -31,7 +31,11 @@ public class PersonService implements IPersonService {
 
     @Override
     @Transactional
-    public Optional<Person> getOne(int id){
-        return personRepository.findById(id);
+    public Person findOne(int id){
+        return personRepository.findOneByPersonId(id);
     }
+
+    @Override
+    @Transactional
+    public Person update(Person person) { return personRepository.save(person); }
 }

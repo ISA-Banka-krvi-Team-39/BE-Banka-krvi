@@ -2,6 +2,7 @@ package app.user.model;
 
 import app.person.model.Person;
 import app.user.dtos.CreateUserDTO;
+import app.user.dtos.UpdateUserDTO;
 
 import javax.persistence.*;
 
@@ -36,6 +37,11 @@ public class User {
         this.email = email;
         this.password = password;
         this.person = person;
+    }
+
+    public void updateUser(UpdateUserDTO updateUserDTO){
+        this.password = updateUserDTO.getPassword();
+        this.getPerson().updatePerson(updateUserDTO);
     }
 
     @Override
