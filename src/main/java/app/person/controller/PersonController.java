@@ -74,4 +74,19 @@ public class PersonController {
         personService.update(user.getPerson());
         return HttpStatus.OK;
     }
+
+    @Operation(summary = "Update password", description = "Update password", method="PUT")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation",
+                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Person.class))))
+    })
+    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+    @PutMapping(value="/landing/{id}",consumes = "application/json")
+    public HttpStatus updateAdminPassword(@Parameter(name="id", description = "ID of a person to return", required = true) @PathVariable("id") int id, @RequestBody UpdateUserDTO updateUserDTO ) {
+        User user = userService.findOne(id);
+        user.setPassword(updateUserDTO.getPassword());
+        userService.update(user);
+        personService.update(user.getPerson());
+        return HttpStatus.OK;
+    }
 }

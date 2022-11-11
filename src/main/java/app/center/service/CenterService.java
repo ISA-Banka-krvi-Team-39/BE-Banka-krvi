@@ -16,4 +16,9 @@ public class CenterService implements ICenterService {
     public Center findOne(Integer id) {
         return centerRepository.findOneByCenterId(id);
     }
+
+    public Center save(Center center) {
+        return centerRepository.save(center);
+    }
+
 }
