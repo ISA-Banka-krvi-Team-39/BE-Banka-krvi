@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Set;
 
 public class CenterDTO {
+
+    private Integer centerId;
     private String name;
     private String description;
     private Float avg_grade;
@@ -27,8 +29,19 @@ public class CenterDTO {
 
     }
 
+    public CenterDTO(Center center)
+    {
+        this.centerId = center.getCenterId();
+        this.name = center.getName();
+        this.description = center.getDescription();
+        this.avg_grade = center.getAvg_grade();
+        this.address = center.getAddress();
+
+    }
+
     public CenterDTO(Center center,List<MedicalStaff> medicalStaffList)
     {
+        this.centerId = center.getCenterId();
         this.name = center.getName();
         this.description = center.getDescription();
         this.avg_grade = center.getAvg_grade();
@@ -37,8 +50,9 @@ public class CenterDTO {
 
     }
 
-    public CenterDTO(String name, String description, Float avg_grade,Set<PersonDTO> workingMedicalStaff,Address address)
+    public CenterDTO(String name, String description, Float avg_grade,Set<PersonDTO> workingMedicalStaff,Address address,Integer centerId)
     {
+        this.centerId = centerId;
         this.name = name;
         this.description = description;
         this.avg_grade = avg_grade;
@@ -49,6 +63,8 @@ public class CenterDTO {
     {
         return name;
     }
+
+    public Integer getCenterId(){return centerId;}
     public Address getAddress()
     {
         return address;

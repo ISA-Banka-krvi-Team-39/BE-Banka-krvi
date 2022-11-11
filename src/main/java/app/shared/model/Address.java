@@ -45,6 +45,7 @@ public class Address {
     public Address() {
     }
 
+    public Integer getAddressId(){return addressId; }
     public String getCountry() {
         return country;
     }
