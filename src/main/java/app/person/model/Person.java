@@ -8,6 +8,8 @@ import app.user.dtos.UpdateUserDTO;
 import app.user.model.User;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -19,10 +21,8 @@ public class Person {
     private Integer personId;
     @Column(name="name", unique=false, nullable=false)
     private String name;
-
     @Column(name="personType", unique=false, nullable=false)
     private PersonType personType;
-    
     @Column(name="personGender", unique=false, nullable=false)
     private PersonGender personGender;
     @Column(name="surname", unique=false, nullable=false)

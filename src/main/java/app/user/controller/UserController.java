@@ -1,5 +1,7 @@
 package app.user.controller;
 
+import app.patient.model.Patient;
+import app.patient.service.IPatientService;
 import app.person.model.Person;
 import app.person.service.IPersonService;
 import app.user.dtos.CreateUserDTO;
@@ -17,6 +19,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
+
 @Tag(name = "User controller", description = "The User API")
 @RestController
 @RequestMapping(value = "/api/user")
@@ -25,29 +30,33 @@ public class UserController {
     private IUserService userService;
     @Autowired
     private IPersonService personService;
+    @Autowired
+    private IPatientService patientService;
     
     @Operation(summary = "Create new user", description = "Create new user", method = "POST")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created",
-                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = User.class)) }),
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = CreateUserDTO.class)) }),
             @ApiResponse(responseCode = "409", description = "Not possible to create new user when given id is not null",
-                    content = @Content)
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = CreateUserDTO.class)) }),
+            @ApiResponse(responseCode = "400", description = "Not possible to create new user data bad request",
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = CreateUserDTO.class)) })
     })
-    @CrossOrigin(origins = "http://localhost:3000/register", maxAge = 3600)
+    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> createUser(@RequestBody CreateUserDTO userDTO) {
-        User createdUser = null;
-        Person createdPerson = null;
-        System.out.println(userDTO.getName());
+    public ResponseEntity<String> createUser(@Valid @RequestBody CreateUserDTO userDTO) throws ConstraintViolationException {
         try {
             Person person = new Person(userDTO);
-            createdPerson = personService.create(person);
-            User user = new User(userDTO,createdPerson);
-            createdUser = userService.create(user);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+            Person createdPerson = personService.create(person);
+            
+            User user = new User(userDTO, createdPerson);
+            Patient patient = new Patient(createdPerson, 0);
+            
+            userService.create(user);
+            patientService.create(patient);
+        }catch (Exception e){
+            return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<User>(createdUser,HttpStatus.OK);
+        return new ResponseEntity<String>(HttpStatus.OK);
     }
 }

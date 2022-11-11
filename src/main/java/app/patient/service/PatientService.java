@@ -18,4 +18,9 @@ public class PatientService implements IPatientService{
     public Patient findOne(int id) {
         return patientRepository.findOneByPatientId(id);
     }
+
+    @Override
+    public Patient create(Patient patient) {
+        return patientRepository.save(patient);
+    }
 }
