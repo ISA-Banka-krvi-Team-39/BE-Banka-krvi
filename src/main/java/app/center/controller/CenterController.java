@@ -6,7 +6,9 @@ import app.center.model.Center;
 import app.center.service.CenterService;
 import app.medical_staff.model.MedicalStaff;
 import app.medical_staff.model.service.IMedicalStaffService;
+
 import app.shared.service.AddressService;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -98,6 +100,27 @@ public class CenterController {
 
         center = centerService.save(center);
         return new ResponseEntity<>(new CenterDTO(center), HttpStatus.OK);
+    }
+
+    @Operation(summary = "Register center", description = "Register center", method="POST")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Created",
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Center.class)) }),
+            @ApiResponse(responseCode = "409", description = "Not possible to create new center when given id is not null",
+                    content = @Content)
+    })
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Center> registerCenter(@RequestBody Center centerForRegistration) {
+        Center center = null;
+        try{
+            center = centerService.create(centerForRegistration);
+            return new ResponseEntity<Center>(center, HttpStatus.CREATED);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<Center>(center, HttpStatus.CONFLICT);
+        }
+
     }
 
 }
