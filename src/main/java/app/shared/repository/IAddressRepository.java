@@ -1,4 +1,4 @@
-package app.shared.model.repository;
+package app.shared.repository;
 
 import app.center.model.Center;
 import app.shared.model.Address;

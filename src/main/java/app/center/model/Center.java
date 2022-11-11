@@ -1,9 +1,7 @@
 package app.center.model;
 
 import app.medical_staff.model.MedicalStaff;
-import app.person.dto.PersonDTO;
 import app.shared.model.Address;
-import app.person.model.Person;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -28,7 +26,7 @@ public class Center {
     private String description;
 
     @Column(name="avg_grade", unique=false, nullable=false)
-    private Float avg_grade;
+    private Float avgGrade;
 
     @OneToMany(mappedBy = "termId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Term> terms = new HashSet<Term>();
@@ -45,7 +43,7 @@ public class Center {
         this.name = name;
         this.address = address;
         this.description = description;
-        this.avg_grade = avg_grade;
+        this.avgGrade = avg_grade;
         this.terms = terms;
         this.workingMedicalStaff = workingMedicalStaff;
     }
@@ -55,7 +53,7 @@ public class Center {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Center center = (Center) o;
-        return Objects.equals(centerId, center.centerId) && Objects.equals(name, center.name) && Objects.equals(address, center.address) && Objects.equals(description, center.description) && Objects.equals(avg_grade, center.avg_grade) && Objects.equals(terms, center.terms) && Objects.equals(workingMedicalStaff, center.workingMedicalStaff);
+        return Objects.equals(centerId, center.centerId) && Objects.equals(name, center.name) && Objects.equals(address, center.address) && Objects.equals(description, center.description) && Objects.equals(avgGrade, center.avgGrade) && Objects.equals(terms, center.terms) && Objects.equals(workingMedicalStaff, center.workingMedicalStaff);
     }
 
     public void setCenterId(Integer centerId) {
@@ -76,8 +74,8 @@ public class Center {
         this.description = description;
     }
 
-    public void setAvg_grade(Float avg_grade) {
-        this.avg_grade = avg_grade;
+    public void setAvgGrade(Float avg_grade) {
+        this.avgGrade = avg_grade;
     }
 
     public void setTerms(Set<Term> terms) {
@@ -104,8 +102,8 @@ public class Center {
         return description;
     }
 
-    public Float getAvg_grade() {
-        return avg_grade;
+    public Float getAvgGrade() {
+        return avgGrade;
     }
 
     public Set<Term> getTerms() {

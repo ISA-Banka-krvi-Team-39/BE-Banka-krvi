@@ -2,6 +2,7 @@ package app.person.controller;
 
 import app.patient.model.Patient;
 import app.patient.service.IPatientService;
+import app.person.dto.PersonDTO;
 import app.person.dtos.GetPersonForProfileDTO;
 import app.person.model.Person;
 import app.person.service.IPersonService;
@@ -22,6 +23,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Tag(name = "Persons controller", description = "The Person API")
@@ -41,9 +43,13 @@ public class PersonController {
                     content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Person.class))))
     })
     @GetMapping(value = "/all",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Person>> findAll() {
+    public ResponseEntity<List<PersonDTO>> findAll() {
         List<Person> persons = personService.findAll();
-        return new ResponseEntity<List<Person>>(persons, HttpStatus.OK);
+        List<PersonDTO> personsDTO = new ArrayList<>();
+        for(Person person : persons){
+            personsDTO.add(new PersonDTO(person));
+        }
+        return new ResponseEntity<List<PersonDTO>>(personsDTO, HttpStatus.OK);
     }
 
     @Operation(summary = "Get one Person", description = "Get one Person", method="GET")

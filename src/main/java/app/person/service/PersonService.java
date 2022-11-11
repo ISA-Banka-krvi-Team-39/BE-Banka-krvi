@@ -16,26 +16,18 @@ public class PersonService implements IPersonService {
 
     @Autowired
     private IPersonRepository personRepository;
-    @Override
-    @Transactional
-    public Page<Person> findAll(Pageable page) {
-        return personRepository.findAll(page);
-    }
-    @Transactional
+    
     public List<Person> findAll() {
         return personRepository.findAll();
     }
     @Override
-    @Transactional
     public Person create(Person person) { return personRepository.save(person); }
 
     @Override
-    @Transactional
     public Person findOne(int id){
         return personRepository.findOneByPersonId(id);
     }
 
     @Override
-    @Transactional
     public Person update(Person person) { return personRepository.save(person); }
 }

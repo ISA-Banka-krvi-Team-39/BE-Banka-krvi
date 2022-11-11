@@ -1,4 +1,4 @@
-package app.shared.model.service;
+package app.shared.service;
 
 import app.shared.model.Address;
 
