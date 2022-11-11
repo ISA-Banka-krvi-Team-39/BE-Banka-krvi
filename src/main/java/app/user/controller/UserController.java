@@ -48,8 +48,10 @@ public class UserController {
         try {
             Person person = new Person(userDTO);
             Person createdPerson = personService.create(person);
+            
             User user = new User(userDTO, createdPerson);
             Patient patient = new Patient(createdPerson, 0);
+            
             userService.create(user);
             patientService.create(patient);
         }catch (Exception e){
