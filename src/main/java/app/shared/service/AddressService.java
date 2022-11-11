@@ -1,9 +1,7 @@
-package app.shared.model.service;
+package app.shared.service;
 
-import app.person.model.Person;
-import app.person.repository.IPersonRepository;
 import app.shared.model.Address;
-import app.shared.model.repository.IAddressRepository;
+import app.shared.repository.IAddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

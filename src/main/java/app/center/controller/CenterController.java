@@ -1,12 +1,12 @@
 package app.center.controller;
 
 import app.center.dto.CenterDTO;
+import app.center.dto.CenterWithoutPersonsDTO;
 import app.center.model.Center;
 import app.center.service.CenterService;
 import app.medical_staff.model.MedicalStaff;
 import app.medical_staff.model.service.IMedicalStaffService;
-import app.shared.model.Address;
-import app.shared.model.service.AddressService;
+import app.shared.service.AddressService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -15,13 +15,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Tag(name = "Center controller", description = "The Center API")
 @RestController
@@ -35,6 +36,22 @@ public class CenterController {
     private AddressService addressService;
 
 
+    @Operation(summary = "Get all centers", description = "Get all centers", method="GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation",
+                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Pageable.class))))
+    })
+    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+    @GetMapping(value = "/center/list/", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Page<CenterWithoutPersonsDTO>> getAll(Pageable pageable) {
+        Page<Center> centers = centerService.getAll(pageable);
+        Page<CenterWithoutPersonsDTO> pages = centers.map(this::mapCenterToDTO);
+        return new ResponseEntity<>(pages, HttpStatus.OK);
+    }
+    private CenterWithoutPersonsDTO mapCenterToDTO(final Center center) {
+        return new CenterWithoutPersonsDTO(center);
+    }
+    
     @Operation(summary = "Get center by id", description = "Get center by id", method="GET")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation",
@@ -65,7 +82,7 @@ public class CenterController {
         }
         center.setName(centerDTO.getName());
         center.setDescription(centerDTO.getDescription());
-        center.setAvg_grade(centerDTO.getAvg_grade());
+        center.setAvgGrade(centerDTO.getAvgGrade());
         if(!center.getAddress().equals(centerDTO.getAddress()))
         {
             center.setAddress(centerDTO.getAddress());

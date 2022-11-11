@@ -2,11 +2,7 @@ package app.center.dto;
 
 import app.center.model.Center;
 import app.medical_staff.model.MedicalStaff;
-import app.medical_staff.model.service.IMedicalStaffService;
 import app.person.dto.PersonDTO;
-import app.person.model.Person;
-import app.person.repository.IPersonRepository;
-import app.person.service.IPersonService;
 import app.shared.model.Address;
 
 import java.util.HashSet;
@@ -18,7 +14,7 @@ public class CenterDTO {
     private Integer centerId;
     private String name;
     private String description;
-    private Float avg_grade;
+    private Float avgGrade;
 
     private Address address;
 
@@ -34,7 +30,7 @@ public class CenterDTO {
         this.centerId = center.getCenterId();
         this.name = center.getName();
         this.description = center.getDescription();
-        this.avg_grade = center.getAvg_grade();
+        this.avgGrade = center.getAvgGrade();
         this.address = center.getAddress();
 
     }
@@ -44,7 +40,7 @@ public class CenterDTO {
         this.centerId = center.getCenterId();
         this.name = center.getName();
         this.description = center.getDescription();
-        this.avg_grade = center.getAvg_grade();
+        this.avgGrade = center.getAvgGrade();
         this.workingMedicalStaff = mapPatientsToDto(center,medicalStaffList);
         this.address = center.getAddress();
 
@@ -55,7 +51,7 @@ public class CenterDTO {
         this.centerId = centerId;
         this.name = name;
         this.description = description;
-        this.avg_grade = avg_grade;
+        this.avgGrade = avg_grade;
         this.workingMedicalStaff = workingMedicalStaff;
         this.address = address;
     }
@@ -77,9 +73,9 @@ public class CenterDTO {
     {
         return description;
     }
-    public Float getAvg_grade()
+    public Float getAvgGrade()
     {
-        return avg_grade;
+        return avgGrade;
     }
     public Set<PersonDTO> mapPatientsToDto(Center center,List<MedicalStaff> medicalStaffList)
     {
