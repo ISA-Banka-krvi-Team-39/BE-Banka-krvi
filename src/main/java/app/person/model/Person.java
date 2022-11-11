@@ -28,10 +28,10 @@ public class Person {
     @Column(name="surname", unique=false, nullable=false)
     private String surname;
     
-    @ManyToMany(mappedBy = "bloodDonors",fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "bloodDonors")
     private Set<Term> donatingTerms = new HashSet<Term>();
 
-    @ManyToMany(mappedBy = "medicalStaff",fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "medicalStaffs")
     private Set<Term> workingTerms = new HashSet<Term>();
     @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name = "address_id", referencedColumnName = "addressId")
@@ -124,7 +124,7 @@ public class Person {
     public void setSchool(String school) {
         this.school = school;
     }
-    
+
 
     public Integer getPersonId() {
         return personId;
