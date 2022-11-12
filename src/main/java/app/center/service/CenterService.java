@@ -19,6 +19,7 @@ public class CenterService implements ICenterService {
         return centerRepository.findOneByCenterId(id);
     }
 
+
     public Center save(Center center) {
         return centerRepository.save(center);
     }
@@ -31,5 +32,9 @@ public class CenterService implements ICenterService {
     public Page<Center> getAll(Pageable pageable) {
         return centerRepository.findAll(pageable);
     }
+
+    @Override
+    public Center create(Center center) { return centerRepository.save(center);}
+
 
 }

@@ -95,4 +95,20 @@ public class PersonController {
         personService.update(user.getPerson());
         return HttpStatus.OK;
     }
+
+    @Operation(summary = "Get admins", description = "Get admins", method="GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation",
+                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Person.class))))
+    })
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping(value="/admins", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<PersonDTO>> findAdmins() {
+        List<Person> admins = personService.findAdmins();
+        List<PersonDTO> personsDTO = new ArrayList<>();
+        for(Person person : admins){
+            personsDTO.add(new PersonDTO(person));
+        }
+        return new ResponseEntity<List<PersonDTO>>(personsDTO, HttpStatus.OK);
+    }
 }

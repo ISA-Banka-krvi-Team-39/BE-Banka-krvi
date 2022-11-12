@@ -1,7 +1,9 @@
 package app.center.model;
 
+import app.center.dto.CreateCenterDTO;
 import app.medical_staff.model.MedicalStaff;
 import app.shared.model.Address;
+import app.user.dtos.CreateUserDTO;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -48,6 +50,16 @@ public class Center {
         this.workingMedicalStaff = workingMedicalStaff;
     }
 
+    public Center(CreateCenterDTO centerDTO) {
+        this.name = centerDTO.getName();
+        this.description= centerDTO.getDescription();
+        this.address = centerDTO.getAddress();
+        this.avgGrade = centerDTO.getAvgGrade();
+        this.workingMedicalStaff = centerDTO.getWorkingMedicalStaff();
+
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -63,7 +75,6 @@ public class Center {
     public void setName(String name) {
         this.name = name;
     }
-
 
 
     public void setAddress(Address address) {

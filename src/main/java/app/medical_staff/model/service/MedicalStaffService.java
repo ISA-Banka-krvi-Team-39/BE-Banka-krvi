@@ -22,5 +22,7 @@ public class MedicalStaffService implements IMedicalStaffService {
     public List<MedicalStaff> findAllByWorkingCenter(Center workingCenter) {
         return medicalStaffRepository.findAllByWorkingCenter(workingCenter);
     }
+    @Override
+    public MedicalStaff save(MedicalStaff medicalStaff){return medicalStaffRepository.save(medicalStaff);}
 
 }
