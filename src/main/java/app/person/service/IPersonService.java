@@ -11,6 +11,11 @@ public interface IPersonService {
     List<Person> findAll();
     Person create(Person person);
 
+
     Person update(Person person);
     Person findOne(int id);
+
+
+    List<Person> findAdmins();
+
 }

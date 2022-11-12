@@ -1,6 +1,7 @@
 package app.person.service;
 
 import app.person.model.Person;
+import app.person.model.PersonType;
 import app.person.repository.IPersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,5 +30,10 @@ public class PersonService implements IPersonService {
     }
 
     @Override
+
     public Person update(Person person) { return personRepository.save(person); }
+
+    @Override
+    public List<Person> findAdmins(){return personRepository.findAllByPersonType(PersonType.ADMIN);}
+
 }
