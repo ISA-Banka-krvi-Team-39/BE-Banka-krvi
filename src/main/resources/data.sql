@@ -46,12 +46,12 @@ insert into user_table (email,password,person_id) values ('milana@gmail.com','si
 insert into user_table (email,password,person_id) values ('zorka@gmail.com','sifra123543',6);
 insert into user_table (email,password,person_id) values ('lenka@gmail.com','sifra123543',7);
 
-insert into Patient (points,person_id)
-values (200,2);
-insert into Patient (points,person_id)
-values (300,6);
-insert into Patient (points,person_id)
-values (400,7);
+insert into Patient (points,person_id,blood_type)
+values (200,2,0);
+insert into Patient (points,person_id,blood_type)
+values (300,6,1);
+insert into Patient (points,person_id,blood_type)
+values (400,7,2);
 
 insert into Center (avg_grade, description, name, address_id)
 values (2.53,'Osrednji centar','Centar1',1);

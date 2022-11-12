@@ -14,6 +14,9 @@ public class Patient {
     @JoinColumn(name = "personId")
     private Person person;
 
+    @Column(name="bloodType", unique=false, nullable=false)
+    private BloodType bloodType;
+    
     @Column(name="points", unique=false, nullable=false)
     private Integer points;
 

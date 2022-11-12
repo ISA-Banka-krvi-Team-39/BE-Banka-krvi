@@ -6,7 +6,7 @@ import app.shared.model.Address;
 public class CenterWithoutPersonsDTO {
     private String name;
     private String description;
-    private Float avg_grade;
+    private Float avgGrade;
     private Address address;
 
     public CenterWithoutPersonsDTO() {
@@ -15,12 +15,12 @@ public class CenterWithoutPersonsDTO {
         this.name = center.getName();
         this.description = center.getDescription();
         this.address = center.getAddress();
-        this.avg_grade = center.getAvgGrade();
+        this.avgGrade = center.getAvgGrade();
     }
-    public CenterWithoutPersonsDTO(String name, String description, Float avg_grade, Address address) {
+    public CenterWithoutPersonsDTO(String name, String description, Float avgGrade, Address address) {
         this.name = name;
         this.description = description;
-        this.avg_grade = avg_grade;
+        this.avgGrade = avgGrade;
         this.address = address;
     }
 
@@ -32,8 +32,8 @@ public class CenterWithoutPersonsDTO {
         this.description = description;
     }
 
-    public void setAvg_grade(Float avg_grade) {
-        this.avg_grade = avg_grade;
+    public void setAvgGrade(Float avgGrade) {
+        this.avgGrade = avgGrade;
     }
 
     public void setAddress(Address address) {
@@ -48,8 +48,8 @@ public class CenterWithoutPersonsDTO {
         return description;
     }
 
-    public Float getAvg_grade() {
-        return avg_grade;
+    public Float getAvgGrade() {
+        return avgGrade;
     }
 
     public Address getAddress() {

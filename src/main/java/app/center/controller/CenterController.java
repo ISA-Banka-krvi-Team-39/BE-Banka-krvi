@@ -42,7 +42,7 @@ public class CenterController {
                     content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Pageable.class))))
     })
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
-    @GetMapping(value = "/center/list/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/list/", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<CenterWithoutPersonsDTO>> getAll(Pageable pageable) {
         Page<Center> centers = centerService.getAll(pageable);
         Page<CenterWithoutPersonsDTO> pages = centers.map(this::mapCenterToDTO);
