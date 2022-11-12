@@ -53,8 +53,6 @@ values (300,6,1);
 insert into Patient (points,person_id,blood_type)
 values (400,7,2);
 
-insert into Person (name, surname, person_type, uuid, phone_number,person_gender,school,person_id)
-values ('Marko', 'Ivanović',2,253329867,0394325867,2,'adsgdgaf',6);
 
 insert into Center (avg_grade, description, name, address_id)
 values (2.53,'Osrednji centar','Centar1',1);

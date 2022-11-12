@@ -11,4 +11,6 @@ import java.util.Set;
 public interface IMedicalStaffService {
     List<MedicalStaff> findAll();
     public List<MedicalStaff> findAllByWorkingCenter(Center workingCenter);
+
+    public MedicalStaff save(MedicalStaff medicalStaff);
 }

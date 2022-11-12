@@ -2,6 +2,7 @@ package app.center.controller;
 
 import app.center.dto.CenterDTO;
 import app.center.dto.CenterWithoutPersonsDTO;
+import app.center.dto.CreateCenterDTO;
 import app.center.model.Center;
 import app.center.service.CenterService;
 import app.medical_staff.model.MedicalStaff;
@@ -25,6 +26,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
 
 @Tag(name = "Center controller", description = "The Center API")
 @RestController
@@ -105,20 +108,31 @@ public class CenterController {
     @Operation(summary = "Register center", description = "Register center", method="POST")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created",
-                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Center.class)) }),
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = CreateCenterDTO.class)) }),
             @ApiResponse(responseCode = "409", description = "Not possible to create new center when given id is not null",
                     content = @Content)
     })
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Center> registerCenter(@RequestBody Center centerForRegistration) {
+    public ResponseEntity<String> registerCenter(@RequestBody CreateCenterDTO centerForRegistration) {
         Center center = null;
+        Center createdCenter = null;
+
         try{
-            center = centerService.create(centerForRegistration);
-            return new ResponseEntity<Center>(center, HttpStatus.CREATED);
+            center = new Center(centerForRegistration);
+            createdCenter = centerService.create(center);
+
+            Set<MedicalStaff> medicalStaffs = createdCenter.getWorkingMedicalStaff();
+            for (MedicalStaff ms:medicalStaffs){
+                ms.setWorkingCenter(createdCenter);
+                medicalStaffService.save(ms);
+            }
+
+
+            return new ResponseEntity<String>(HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<Center>(center, HttpStatus.CONFLICT);
+                return new ResponseEntity<String>(HttpStatus.CONFLICT);
         }
 
     }
