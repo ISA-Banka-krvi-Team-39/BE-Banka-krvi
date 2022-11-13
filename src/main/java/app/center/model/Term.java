@@ -1,10 +1,12 @@
 package app.center.model;
 
+import app.center.dto.TermDTO;
 import app.person.model.Person;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -16,11 +18,11 @@ public class Term {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer termId;
 
-    @Column(name = "dateTime", nullable = false)
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
+    @Column(name = "dateTime")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss[.SSS][.SS][.S]")
     private LocalDateTime dateTime;
     
-    @Column(name = "maximumSpace", nullable = false)
+    @Column(name = "maximumSpace" )
     private Integer maximumSpace;
     @ManyToMany( cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.ALL})
     @JoinTable(name = "oversees", joinColumns = @JoinColumn(name = "person_id"), inverseJoinColumns = @JoinColumn(name = "term_id"))
@@ -34,11 +36,21 @@ public class Term {
     @JoinColumn(name = "center_id")
     private Center center;
 
-    @Column(name = "duration_in_minutes", nullable = false)
+    @Column(name = "duration_in_minutes")
     private Integer durationInMinutes;
 
     public Term()
     {
+    }
+
+    public Term(TermDTO termDTO)
+    {
+        this.dateTime = termDTO.getDateTime();
+        this.maximumSpace = 20;
+        this.medicalStaffs = termDTO.getMedicalStaffs();
+        this.bloodDonors = bloodDonors;
+        this.center = center;
+        this.durationInMinutes = termDTO.getDurationInMinutes();
     }
 
     public Term(Integer termId, LocalDateTime dateTime, Integer maximumSpace, Set<Person> medicalStaffs, Set<Person> bloodDonors, Center center, Integer durationInMinutes) {
