@@ -105,7 +105,7 @@ public class PersonController {
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping(value="/admins", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<PersonDTO>> findAdmins() {
-        List<Person> admins = personService.findAdmins();
+        List<Person> admins = personService.findAvailableAdmins();
         List<PersonDTO> personsDTO = new ArrayList<>();
         for(Person person : admins){
             personsDTO.add(new PersonDTO(person));

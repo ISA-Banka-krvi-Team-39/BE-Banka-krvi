@@ -3,6 +3,7 @@ package app.person.model;
 import app.center.model.Center;
 import app.center.model.Term;
 import app.shared.model.Address;
+import app.user.dtos.CreateAdminUserDTO;
 import app.user.dtos.CreateUserDTO;
 import app.user.dtos.UpdateUserDTO;
 import app.user.model.User;
@@ -47,6 +48,17 @@ public class Person {
     public Person() {
     }
     public Person(CreateUserDTO userDTO) {
+        this.name = userDTO.getName();
+        this.personType = userDTO.getPersonType();
+        this.personGender = userDTO.getPersonGender();
+        this.surname = userDTO.getSurname();
+        this.address = userDTO.getAddress();
+        this.uuid = userDTO.getUuid();
+        this.phoneNumber = userDTO.getPhoneNumber();
+        this.school = userDTO.getSchool();
+    }
+
+    public Person(CreateAdminUserDTO userDTO) {
         this.name = userDTO.getName();
         this.personType = userDTO.getPersonType();
         this.personGender = userDTO.getPersonGender();

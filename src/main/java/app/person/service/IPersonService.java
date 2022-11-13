@@ -16,6 +16,6 @@ public interface IPersonService {
     Person findOne(int id);
 
 
-    List<Person> findAdmins();
+    List<Person> findAvailableAdmins();
 
 }

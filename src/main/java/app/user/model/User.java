@@ -1,6 +1,7 @@
 package app.user.model;
 
 import app.person.model.Person;
+import app.user.dtos.CreateAdminUserDTO;
 import app.user.dtos.CreateUserDTO;
 import app.user.dtos.UpdateUserDTO;
 
@@ -31,6 +32,15 @@ public class User {
         this.password = userDTO.getPassword();
         this.person = person;
     }
+
+    public User(CreateAdminUserDTO userDTO, Person person) {
+        this.person = new Person();
+        this.userId = 0;
+        this.email = userDTO.getEmail();
+        this.password = userDTO.getPassword();
+        this.person = person;
+    }
+
 
     public User(int userId, String email, String password, Person person) {
         this.userId = userId;
