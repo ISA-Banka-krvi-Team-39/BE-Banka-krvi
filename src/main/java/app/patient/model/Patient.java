@@ -24,9 +24,10 @@ public class Patient {
 
     }
 
-    public Patient(Person person, Integer points) {
+    public Patient(Person person, Integer points,BloodType bloodType) {
         this.person = person;
         this.points = points;
+        this.bloodType = bloodType;
     }
 
     public Integer getPatientId() {
