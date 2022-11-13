@@ -33,6 +33,9 @@ public class Center {
     @OneToMany(mappedBy = "termId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Term> terms = new HashSet<Term>();
 
+    @OneToMany(mappedBy = "bloodId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<BloodBag> bloodBags = new HashSet<BloodBag>();
+
     @OneToMany(mappedBy = "medicalStaffId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<MedicalStaff> workingMedicalStaff = new HashSet<MedicalStaff>();
 

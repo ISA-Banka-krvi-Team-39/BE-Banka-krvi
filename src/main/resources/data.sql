@@ -129,3 +129,8 @@ insert into Question (question)
 values ('Do you have any changes in your skin or suffer from allergies?');
 insert into Question (question)
 values ('Do you bleed for a long time after an injury?');
+
+insert into blood_bag (amount,blood_type,center_id)
+values(5,0,1);
+insert into blood_bag (amount,blood_type,center_id)
+values(5,1,1);
