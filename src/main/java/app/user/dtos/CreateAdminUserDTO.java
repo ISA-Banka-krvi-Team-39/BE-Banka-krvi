@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 
-public class CreateUserDTO {
+public class CreateAdminUserDTO {
     @Email(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
     private String email;
     @NotEmpty(message = "Name is mandatory")
@@ -32,15 +32,13 @@ public class CreateUserDTO {
     private String phoneNumber;
     @NotEmpty(message = "school is mandatory")
     private String school;
-    @NotNull(message = "You must choose your blood type")
-    private BloodType bloodType;
 
-    public CreateUserDTO() {
+
+    public CreateAdminUserDTO() {
     }
 
-    public CreateUserDTO(String email, String name, String surname, String password, PersonType personType, 
-                         PersonGender personGender, Address address, String uuid, String phoneNumber, String school,
-                         BloodType bloodType) {
+    public CreateAdminUserDTO(String email, String name, String surname, String password, PersonType personType,
+                         PersonGender personGender, Address address, String uuid, String phoneNumber, String school) {
         this.email = email;
         this.name = name;
         this.surname = surname;
@@ -51,17 +49,9 @@ public class CreateUserDTO {
         this.uuid = uuid;
         this.phoneNumber = phoneNumber;
         this.school = school;
-        this.bloodType = bloodType;
+
     }
 
-
-    public BloodType getBloodType() {
-        return bloodType;
-    }
-
-    public void setBloodType(BloodType bloodType) {
-        this.bloodType = bloodType;
-    }
 
     public void setEmail(String email) {
         this.email = email;

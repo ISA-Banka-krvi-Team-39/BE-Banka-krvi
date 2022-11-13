@@ -34,6 +34,6 @@ public class PersonService implements IPersonService {
     public Person update(Person person) { return personRepository.save(person); }
 
     @Override
-    public List<Person> findAdmins(){return personRepository.findAdmins(PersonType.ADMIN);}
+    public List<Person> findAvailableAdmins(){return personRepository.findAvailableAdmins(PersonType.MEDICALSTAFF);}
 
 }

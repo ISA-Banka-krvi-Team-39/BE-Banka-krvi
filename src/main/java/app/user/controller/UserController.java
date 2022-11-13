@@ -4,6 +4,7 @@ import app.patient.model.Patient;
 import app.patient.service.IPatientService;
 import app.person.model.Person;
 import app.person.service.IPersonService;
+import app.user.dtos.CreateAdminUserDTO;
 import app.user.dtos.CreateUserDTO;
 import app.user.model.User;
 import app.user.service.IUserService;
@@ -59,4 +60,31 @@ public class UserController {
         }
         return new ResponseEntity<String>(HttpStatus.OK);
     }
+
+    @Operation(summary = "Create new admin", description = "Create new admin", method = "POST")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Created",
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = CreateAdminUserDTO.class)) }),
+            @ApiResponse(responseCode = "409", description = "Not possible to create new user when given id is not null",
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = CreateAdminUserDTO.class)) }),
+            @ApiResponse(responseCode = "400", description = "Not possible to create new user data bad request",
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = CreateAdminUserDTO.class)) })
+    })
+    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+    @PostMapping(value = "/createAdmin",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<User> createAdmin(@Valid @RequestBody CreateAdminUserDTO userDTO) throws ConstraintViolationException {
+        try {
+            Person person = new Person(userDTO);
+            Person createdPerson = personService.create(person);
+
+            User user = new User(userDTO, createdPerson);
+
+            userService.create(user);
+
+        }catch (Exception e){
+            return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<User>(HttpStatus.OK);
+    }
+
 }
