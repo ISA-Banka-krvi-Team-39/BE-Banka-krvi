@@ -1,5 +1,6 @@
 package app.center.service;
 
+import app.center.model.Center;
 import app.center.model.Term;
 import app.center.repository.ITermRepository;
 import app.person.model.Person;
@@ -13,4 +14,8 @@ public class TermService implements ITermService {
 
     @Override
     public Term create(Term term) {return termRepository.save(term); }
+
+    public Term findOne(Integer id) {
+        return termRepository.findOneByTermId(id);
+    }
 }

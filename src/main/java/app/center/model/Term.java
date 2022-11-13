@@ -43,7 +43,7 @@ public class Term {
     {
     }
 
-    public Term(TermDTO termDTO)
+    public Term(TermDTO termDTO,Center center)
     {
         this.dateTime = termDTO.getDateTime();
         this.maximumSpace = 20;

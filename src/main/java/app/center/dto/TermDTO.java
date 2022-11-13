@@ -14,23 +14,27 @@ public class TermDTO {
     private Set<Person> medicalStaffs = new HashSet<Person>();
     private Integer durationInMinutes;
 
+    private Center center;
+
     public TermDTO()
     {
 
     }
 
-    public TermDTO(Term term)
+    public TermDTO(Term term,Center center)
     {
         this.dateTime = term.getDateTime();
         this.medicalStaffs = term.getMedicalStaffs();
         this.durationInMinutes = term.getDurationInMinutes();
+        this.center = center;
     }
 
-    public TermDTO(LocalDateTime dateTime, Set<Person> medicalStaffs, Integer durationInMinutes)
+    public TermDTO(LocalDateTime dateTime, Set<Person> medicalStaffs, Integer durationInMinutes, Center center)
     {
         this.dateTime = dateTime;
         this.medicalStaffs = medicalStaffs;
         this.durationInMinutes = durationInMinutes;
+        this.center = center;
     }
 
     public LocalDateTime getDateTime(){return dateTime;}
@@ -39,7 +43,10 @@ public class TermDTO {
 
     public Integer getDurationInMinutes(){return durationInMinutes;}
 
+
+
     public void setDateTime(LocalDateTime dateTime){this.dateTime = dateTime; }
     public void setMedicalStaffs(Set<Person> medicalStaffs){this.medicalStaffs = medicalStaffs;}
     public void setDurationInMinutes(Integer durationInMinutes){this.durationInMinutes = durationInMinutes;}
+    public void setCenter(Center center){this.center = center;}
 }
