@@ -44,7 +44,7 @@ public class UserController {
     })
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> createUser(@Valid @RequestBody CreateUserDTO userDTO) throws ConstraintViolationException {
+    public ResponseEntity<String> createPatient(@Valid @RequestBody CreateUserDTO userDTO) throws ConstraintViolationException {
         try {
             Person person = new Person(userDTO);
             Person createdPerson = personService.create(person);
