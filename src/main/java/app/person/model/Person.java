@@ -75,7 +75,7 @@ public class Person {
         this.name = updateUserDTO.getName();
         this.surname = updateUserDTO.getSurname();
         this.personGender = updateUserDTO.getPersonGender();
-        this.address = updateUserDTO.getAddress();
+        //this.address = updateUserDTO.getAddress();
         this.uuid = updateUserDTO.getUuid();
         this.phoneNumber = updateUserDTO.getPhoneNumber();
         this.school = updateUserDTO.getSchool();
