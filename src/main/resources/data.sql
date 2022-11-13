@@ -104,3 +104,28 @@ values (2,2);
 
 insert into Oversees (person_id,term_id)
 values (4,1);
+
+insert into Question (question) 
+values ('Have you ever donated blood or blood components voluntarily?');
+insert into Question (question)
+values ('Have you ever been rejected as a blood  donor?');
+insert into Question (question)
+values ('Do you currently feel healthy?');
+insert into Question (question)
+values ('Did you eat anything before coming to donate blood?');
+insert into Question (question)
+values ('Have you taken any medicines in the last 2-3 days');
+insert into Question (question)
+values ('Have you suddenly lost weight in the last 6 months?');
+insert into Question (question)
+values ('Have you drunk alcohol in the last 6 hours?');
+insert into Question (question)
+values ('Have you had a tooth extracted in the past 7 days?');
+insert into Question (question)
+values ('Do you have a dangerous occupation or hobby?');
+insert into Question (question)
+values ('Do you take any medications regularly (daily)?');
+insert into Question (question)
+values ('Do you have any changes in your skin or suffer from allergies?');
+insert into Question (question)
+values ('Do you bleed for a long time after an injury?');
