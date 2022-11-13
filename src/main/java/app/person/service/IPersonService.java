@@ -18,4 +18,6 @@ public interface IPersonService {
 
     List<Person> findAvailableAdmins();
 
+    public List<Person> findScheduledAdmins();
+
 }

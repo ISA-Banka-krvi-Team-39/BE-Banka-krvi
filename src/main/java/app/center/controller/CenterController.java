@@ -76,7 +76,7 @@ public class CenterController {
     })
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
     @PutMapping(value="/{id}",consumes = "application/json")
-    public ResponseEntity<CenterDTO> updateCenter(@RequestBody CenterDTO centerDTO) {
+    public ResponseEntity<CenterDTO> updateCenter(@RequestBody CreateCenterDTO centerDTO) {
 
         // a student must exist
         Center center = centerService.findOne(centerDTO.getCenterId());
@@ -85,6 +85,10 @@ public class CenterController {
         if (center == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+//        for (MedicalStaff ms:centerDTO.getWorkingMedicalStaff()) {
+//
+//            System.out.println(ms.getPerson().getPersonId() + " ae dto");
+//        }
         center.setName(centerDTO.getName());
         center.setDescription(centerDTO.getDescription());
         center.setAvgGrade(centerDTO.getAvgGrade());
@@ -100,8 +104,56 @@ public class CenterController {
         {
             addressService.update(centerDTO.getAddress());
         }*/
+        List<MedicalStaff> letsSee = medicalStaffService.findAllMedicalStaff();
+        Center createdCenter = centerService.save(center);
+        System.out.println(letsSee.size() + " size");
+        Set<MedicalStaff> medicalStaffs = createdCenter.getWorkingMedicalStaff();
+        for (MedicalStaff ms:centerDTO.getWorkingMedicalStaff()){
+            for (MedicalStaff mss:letsSee)
+            {
+//                System.out.println(ms.equals(mss) + " objekti");
+//                System.out.println(ms.getMedicalStaffId() + " == " + mss.getMedicalStaffId());
+//                System.out.println(ms.getPerson().getPersonId() + " == " + mss.getPerson().getPersonId());
+                if(ms.getPerson().getPersonId() == mss.getPerson().getPersonId())
+                {
+                    System.out.println(" usao");
+                    medicalStaffService.delete(mss);
+                }
 
-        center = centerService.save(center);
+            }
+
+//            ms.setWorkingCenter(center);
+//            System.out.println(ms.getPerson().getPersonId());
+//            medicalStaffService.save(ms);
+
+        }
+        int i = 0;
+        for (MedicalStaff ms:centerDTO.getWorkingMedicalStaff()){
+            for (MedicalStaff mss:letsSee)
+            {
+//                System.out.println(ms.equals(mss) + " objekti");
+//                System.out.println(ms.getMedicalStaffId() + " == " + mss.getMedicalStaffId());
+//                System.out.println(ms.getPerson().getPersonId() + " == " + mss.getPerson().getPersonId());
+                if(ms.getPerson().getPersonId() == mss.getPerson().getPersonId())
+                {
+                    i = 1;
+                }
+
+            }
+            if(i == 0) {
+
+            ms.setWorkingCenter(center);
+            System.out.println(ms.getPerson().getPersonId());
+            medicalStaffService.save(ms);
+            }
+
+        }
+//        for (MedicalStaff ms:centerDTO.getWorkingMedicalStaff()){
+//
+//            ms.setWorkingCenter(center);
+//            System.out.println(ms.getPerson().getPersonId());
+//            medicalStaffService.save(ms);
+//        }
         return new ResponseEntity<>(new CenterDTO(center), HttpStatus.OK);
     }
 
