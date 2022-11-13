@@ -33,7 +33,7 @@ insert into Person (name, surname, person_type, uuid, phone_number,person_gender
 values ('Milana', 'Milanović',1,1032985674,34091857,1,'adsgdgaf',5);
 
 insert into Person (name, surname, person_type, uuid, phone_number,person_gender,school,address_id)
-values ('Zorka', 'Marković',0,9302548676,019348657,0,'adsgdgaf',6);
+values ('Zorka', 'Marković',1,9302548676,019348657,0,'adsgdgaf',6);
 
 insert into Person (name, surname, person_type, uuid, phone_number,person_gender,school,address_id)
 values ('Lenka', 'Milanović',0,1034985677,34091857,1,'adsgdgaf',7);

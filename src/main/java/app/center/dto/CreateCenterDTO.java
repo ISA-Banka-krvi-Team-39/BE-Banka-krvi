@@ -11,11 +11,13 @@ import java.util.Set;
 
 public class CreateCenterDTO {
 
+    private Integer centerId;
     private String name;
     private String description;
     private Float avgGrade;
     private Address address;
     private Set<MedicalStaff> workingMedicalStaff = new HashSet<MedicalStaff>();
+
 
     public CreateCenterDTO()
     {
@@ -28,12 +30,21 @@ public class CreateCenterDTO {
         this.address = address;
         this.workingMedicalStaff = workingMedicalStaff;
     }
+    public CreateCenterDTO(Integer id,String name, String description, Float avgGrade, Address address, Set<MedicalStaff> workingMedicalStaff) {
+        this.name = name;
+        this.description = description;
+        this.avgGrade = avgGrade;
+        this.address = address;
+        this.workingMedicalStaff = workingMedicalStaff;
+        this.centerId = id;
+    }
 
 
     public String getName()
     {
         return name;
     }
+    public Integer getCenterId(){return centerId;}
 
     public Address getAddress()
     {

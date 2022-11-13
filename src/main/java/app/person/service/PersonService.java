@@ -35,5 +35,9 @@ public class PersonService implements IPersonService {
 
     @Override
     public List<Person> findAvailableAdmins(){return personRepository.findAvailableAdmins(PersonType.MEDICALSTAFF);}
+    public List<Person> findAdmins(){return personRepository.findAdmins();}
+
+    @Override
+    public List<Person> findScheduledAdmins(){return personRepository.findScheduledAdmins();}
 
 }

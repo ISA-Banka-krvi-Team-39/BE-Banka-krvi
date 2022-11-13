@@ -13,4 +13,7 @@ public interface IMedicalStaffService {
     public List<MedicalStaff> findAllByWorkingCenter(Center workingCenter);
 
     public MedicalStaff save(MedicalStaff medicalStaff);
+
+    public void delete(MedicalStaff medicalStaff);
+    public List<MedicalStaff> findAllMedicalStaff();
 }

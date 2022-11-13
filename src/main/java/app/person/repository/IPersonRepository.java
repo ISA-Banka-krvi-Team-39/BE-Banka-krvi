@@ -16,8 +16,15 @@ public interface IPersonRepository extends JpaRepository<Person, Integer> {
 
     public Person findOneByPersonId(int id);
 
+
     @Query("select p from Person p where p.personType=?1 and p.personId not in (select person from MedicalStaff)")
     public List<Person> findAvailableAdmins(PersonType type);
+
+    @Query("select p from Person p where p.personType=1 and p.personId not in (select person from MedicalStaff)")
+    public List<Person> findAdmins();
+
+    @Query("select p from Person p where p.personType=1 and p.personId in (select person from MedicalStaff)")
+    public List<Person> findScheduledAdmins();
 
 
 
