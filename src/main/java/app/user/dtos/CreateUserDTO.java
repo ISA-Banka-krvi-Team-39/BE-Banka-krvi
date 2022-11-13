@@ -1,5 +1,6 @@
 package app.user.dtos;
 
+import app.patient.model.BloodType;
 import app.person.model.PersonGender;
 import app.person.model.PersonType;
 import app.shared.model.Address;
@@ -31,11 +32,15 @@ public class CreateUserDTO {
     private String phoneNumber;
     @NotEmpty(message = "school is mandatory")
     private String school;
+    @NotNull(message = "You must choose your blood type")
+    private BloodType bloodType;
 
     public CreateUserDTO() {
     }
 
-    public CreateUserDTO(String email, String name, String surname, String password, PersonType personType, PersonGender personGender, Address address, String uuid, String phoneNumber, String school) {
+    public CreateUserDTO(String email, String name, String surname, String password, PersonType personType, 
+                         PersonGender personGender, Address address, String uuid, String phoneNumber, String school,
+                         BloodType bloodType) {
         this.email = email;
         this.name = name;
         this.surname = surname;
@@ -46,6 +51,15 @@ public class CreateUserDTO {
         this.uuid = uuid;
         this.phoneNumber = phoneNumber;
         this.school = school;
+        this.bloodType = bloodType;
+    }
+
+    public BloodType getBloodType() {
+        return bloodType;
+    }
+
+    public void setBloodType(BloodType bloodType) {
+        this.bloodType = bloodType;
     }
 
     public void setEmail(String email) {

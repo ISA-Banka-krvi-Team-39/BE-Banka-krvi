@@ -50,7 +50,7 @@ public class UserController {
             Person createdPerson = personService.create(person);
             
             User user = new User(userDTO, createdPerson);
-            Patient patient = new Patient(createdPerson, 0);
+            Patient patient = new Patient(createdPerson, 0,userDTO.getBloodType());
             
             userService.create(user);
             patientService.create(patient);
