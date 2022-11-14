@@ -5,12 +5,14 @@ import app.center.dto.CenterWithoutPersonsDTO;
 import app.center.dto.CreateCenterDTO;
 import app.center.model.Center;
 import app.center.service.CenterService;
+import app.center.service.ICenterService;
 import app.medical_staff.model.MedicalStaff;
 import app.medical_staff.model.service.IMedicalStaffService;
 
 import app.shared.service.AddressService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -19,11 +21,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.sound.midi.SysexMessage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -34,25 +38,41 @@ import java.util.Set;
 @RequestMapping(value = "/api/center")
 public class CenterController {
     @Autowired
-    private CenterService centerService;
+    private ICenterService centerService;
     @Autowired
     private IMedicalStaffService medicalStaffService;
 
     private AddressService addressService;
 
 
-    @Operation(summary = "Get all centers", description = "Get all centers", method="GET")
+    @Operation(summary = "Get all centers", description = "Get all centers or search", method="GET")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation",
                     content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Pageable.class))))
     })
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
     @GetMapping(value = "/list/", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Page<CenterWithoutPersonsDTO>> getAll(Pageable pageable) {
-        Page<Center> centers = centerService.getAll(pageable);
+    public ResponseEntity<Page<CenterWithoutPersonsDTO>> getAll(Pageable pageable,@Param("name") String name,@Param("city") String city,@Param("gradeFilterFrom") String gradeFilterFrom,@Param("gradeFilterTo") String gradeFilterTo) {
+        System.out.println(gradeFilterFrom);
+        System.out.println(gradeFilterTo);
+        System.out.println("____________________________________________________________________________________________________________________________________");
+        Page<Center> centers = centerService.getAll(pageable, name.toLowerCase(),city.toLowerCase(),Integer.parseInt(gradeFilterFrom),Integer.parseInt(gradeFilterTo));
         Page<CenterWithoutPersonsDTO> pages = centers.map(this::mapCenterToDTO);
         return new ResponseEntity<>(pages, HttpStatus.OK);
     }
+
+//    @Operation(summary = "Get searched centers", description = "Get searched centers", method="GET")
+//    @ApiResponses(value = {
+//            @ApiResponse(responseCode = "200", description = "successful operation",
+//                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Pageable.class))))
+//    })
+//    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+//    @GetMapping(value = "/list/search/", produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<Page<CenterWithoutPersonsDTO>> getSearched(Pageable pageable, @Param("name") String name,@Param("city") String city) {
+//        Page<Center> centers = centerService.getSearchByNameAndCity(pageable, name.toLowerCase(),city.toLowerCase());
+//        Page<CenterWithoutPersonsDTO> pages = centers.map(this::mapCenterToDTO);
+//        return new ResponseEntity<>(pages, HttpStatus.OK);
+//    }
     private CenterWithoutPersonsDTO mapCenterToDTO(final Center center) {
         return new CenterWithoutPersonsDTO(center);
     }

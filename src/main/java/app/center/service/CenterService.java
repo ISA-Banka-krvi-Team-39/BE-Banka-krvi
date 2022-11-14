@@ -14,6 +14,8 @@ public class CenterService implements ICenterService {
     @Autowired
     private ICenterRepository centerRepository;
 
+    @Override
+    public Page<Center> getAll(Pageable pageable,String name,String city,int gradeFilterFrom,int gradeFilterTo) {return centerRepository.getAll(pageable,name,city,gradeFilterFrom,gradeFilterTo);}
 
     public Center findOne(Integer id) {
         return centerRepository.findOneByCenterId(id);
@@ -26,11 +28,6 @@ public class CenterService implements ICenterService {
     
     public List<Center> getAll() {
         return centerRepository.findAll();
-    }
-
-    @Override
-    public Page<Center> getAll(Pageable pageable) {
-        return centerRepository.findAll(pageable);
     }
 
     @Override
