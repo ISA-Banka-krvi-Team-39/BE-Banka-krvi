@@ -4,11 +4,13 @@ import app.patient.model.Patient;
 import app.patient.service.IPatientService;
 import app.person.model.Person;
 import app.person.service.IPersonService;
-import app.user.dtos.CreateAdminUserDTO;
-import app.user.dtos.CreateUserDTO;
+import app.user.dto.CreateAdminUserDTO;
+import app.user.dto.CreateUserDTO;
 import app.user.model.User;
 import app.user.service.IUserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -59,6 +61,17 @@ public class UserController {
             return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<String>(HttpStatus.OK);
+    }
+    
+    @Operation(summary = "Check is Email unique", description = "Check is Email unique", method="GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation",
+                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Person.class))))
+    })
+    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+    @GetMapping(value="/check-email/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> checkUid(@Parameter(name="email", description = "email to check", required = true) @PathVariable("email") String email) {
+        return new ResponseEntity<Boolean>(userService.checkEmailUniqueness(email), HttpStatus.OK);
     }
 
     @Operation(summary = "Create new admin", description = "Create new admin", method = "POST")

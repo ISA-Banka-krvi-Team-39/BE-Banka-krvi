@@ -1,4 +1,4 @@
-package app.person.dtos;
+package app.person.dto;
 
 import app.patient.model.Patient;
 import app.person.model.PersonGender;
@@ -22,7 +22,7 @@ public class GetPersonForProfileDTO {
 
     private Address address;
 
-    private String uuid;
+    private String uid;
 
     private String phoneNumber;
 
@@ -42,7 +42,7 @@ public class GetPersonForProfileDTO {
         this.personType = user.getPerson().getPersonType();
         this.personGender = user.getPerson().getPersonGender();
         this.address = user.getPerson().getAddress();
-        this.uuid = user.getPerson().getUuid();
+        this.uid = user.getPerson().getUid();
         this.phoneNumber = user.getPerson().getPhoneNumber();
         this.school = user.getPerson().getSchool();
         this.points = patient.getPoints();
@@ -104,12 +104,12 @@ public class GetPersonForProfileDTO {
         this.address = address;
     }
 
-    public String getUuid() {
-        return uuid;
+    public String getUid() {
+        return uid;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getPhoneNumber() {

@@ -14,7 +14,6 @@ import java.util.Optional;
 
 @Service
 public class PersonService implements IPersonService {
-
     @Autowired
     private IPersonRepository personRepository;
     
@@ -23,20 +22,21 @@ public class PersonService implements IPersonService {
     }
     @Override
     public Person create(Person person) { return personRepository.save(person); }
-
     @Override
     public Person findOne(int id){
         return personRepository.findOneByPersonId(id);
     }
 
     @Override
+    public boolean checkUidUniqueness(String uid) {
+        return personRepository.findOneByUid(uid)==null;
+    }
 
+    @Override
     public Person update(Person person) { return personRepository.save(person); }
-
     @Override
     public List<Person> findAvailableAdmins(){return personRepository.findAvailableAdmins(PersonType.MEDICALSTAFF);}
     public List<Person> findAdmins(){return personRepository.findAdmins();}
-
     @Override
     public List<Person> findScheduledAdmins(){return personRepository.findScheduledAdmins();}
 
