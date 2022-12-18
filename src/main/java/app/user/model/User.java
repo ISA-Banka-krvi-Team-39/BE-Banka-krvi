@@ -10,10 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.sql.Timestamp;
+import java.util.*;
 
 @Entity
 @Table(name = "userTable")
@@ -30,10 +28,13 @@ public class User implements UserDetails {
     private Person person;
     @Column(name = "enabled")
     private boolean enabled;
-    
-    @OneToOne
-    @JoinColumn(name = "roleId")
-    private Role role;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "userId", referencedColumnName = "userId"),
+            inverseJoinColumns = @JoinColumn(name = "roleId", referencedColumnName = "id"))
+    private List<Role> roles;
+    @Column(name = "last_password_reset_date")
+    private Timestamp lastPasswordResetDate;
 
     public User() {
     }
@@ -44,6 +45,7 @@ public class User implements UserDetails {
         this.password = userDTO.getPassword();
         this.person = person;
         this.enabled = false;
+        this.lastPasswordResetDate = new Timestamp(new Date().getTime());
     }
 
     public User(CreateAdminUserDTO userDTO, Person person) {
@@ -53,8 +55,8 @@ public class User implements UserDetails {
         this.password = userDTO.getPassword();
         this.person = person;
         this.enabled = false;
+        this.lastPasswordResetDate = new Timestamp(new Date().getTime());
     }
-
 
     public User(int userId, String email, String password, Person person) {
         this.userId = userId;
@@ -110,7 +112,6 @@ public class User implements UserDetails {
     public String getPassword() {
         return password;
     }
-
     @Override
     public String getUsername() {
         return this.email;
@@ -127,14 +128,19 @@ public class User implements UserDetails {
     public boolean isCredentialsNonExpired() {
         return true;
     }
+    public Timestamp getLastPasswordResetDate() {
+        return lastPasswordResetDate;
+    }
+
+    public void setLastPasswordResetDate(Timestamp lastPasswordResetDate) {
+        this.lastPasswordResetDate = lastPasswordResetDate;
+    }
     public Person getPerson() {
         return person;
     }
     @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<Role> roles = new ArrayList<Role>();
-        roles.add(this.role);
         return roles;
     }
 }

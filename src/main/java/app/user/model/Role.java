@@ -5,41 +5,36 @@ import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 
-// POJO koji implementira Spring Security GrantedAuthority kojim se mogu definisati role u aplikaciji
 @Entity
-@Table(name="ROLE")
+@Table(name="Role")
 public class Role implements GrantedAuthority {
 
     private static final long serialVersionUID = 1L;
-
+    
     @Id
+    @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long roleId;
-
+    Long Id;
     @Column(name="name")
     String name;
-
     @JsonIgnore
     @Override
     public String getAuthority() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
     public String getName() {
         return name;
     }
-
     @JsonIgnore
-    public Long getRoleId() {
-        return roleId;
+    public Long getId() {
+        return Id;
     }
 
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
+    public void setId(Long Id) {
+        this.Id = Id;
     }
 
 }

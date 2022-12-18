@@ -60,23 +60,9 @@ public class CenterController {
         Page<CenterWithoutPersonsDTO> pages = centers.map(this::mapCenterToDTO);
         return new ResponseEntity<>(pages, HttpStatus.OK);
     }
-
-//    @Operation(summary = "Get searched centers", description = "Get searched centers", method="GET")
-//    @ApiResponses(value = {
-//            @ApiResponse(responseCode = "200", description = "successful operation",
-//                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Pageable.class))))
-//    })
-//    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
-//    @GetMapping(value = "/list/search/", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<Page<CenterWithoutPersonsDTO>> getSearched(Pageable pageable, @Param("name") String name,@Param("city") String city) {
-//        Page<Center> centers = centerService.getSearchByNameAndCity(pageable, name.toLowerCase(),city.toLowerCase());
-//        Page<CenterWithoutPersonsDTO> pages = centers.map(this::mapCenterToDTO);
-//        return new ResponseEntity<>(pages, HttpStatus.OK);
-//    }
     private CenterWithoutPersonsDTO mapCenterToDTO(final Center center) {
         return new CenterWithoutPersonsDTO(center);
     }
-    
     @Operation(summary = "Get center by id", description = "Get center by id", method="GET")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation",
@@ -98,17 +84,10 @@ public class CenterController {
     @PutMapping(value="/{id}",consumes = "application/json")
     public ResponseEntity<CenterDTO> updateCenter(@RequestBody CreateCenterDTO centerDTO) {
 
-        // a student must exist
         Center center = centerService.findOne(centerDTO.getCenterId());
-        //Address address = addressService.findOne(centerDTO.getAddress());
-
         if (center == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-//        for (MedicalStaff ms:centerDTO.getWorkingMedicalStaff()) {
-//
-//            System.out.println(ms.getPerson().getPersonId() + " ae dto");
-//        }
         center.setName(centerDTO.getName());
         center.setDescription(centerDTO.getDescription());
         center.setAvgGrade(centerDTO.getAvgGrade());
@@ -116,14 +95,6 @@ public class CenterController {
         {
             center.setAddress(centerDTO.getAddress());
         }
-        else
-        {
-            //center.setAddress(address);
-        }
-        /*if(center.getAddress().getCity().equals(centerDTO.getAddress().getCity()) && center.getAddress().getCountry().equals(centerDTO.getAddress().getCountry()) && center.getAddress().getStreetName().equals(centerDTO.getAddress().getStreetName()) )
-        {
-            addressService.update(centerDTO.getAddress());
-        }*/
         List<MedicalStaff> letsSee = medicalStaffService.findAllMedicalStaff();
         Center createdCenter = centerService.save(center);
         System.out.println(letsSee.size() + " size");
@@ -131,34 +102,21 @@ public class CenterController {
         for (MedicalStaff ms:centerDTO.getWorkingMedicalStaff()){
             for (MedicalStaff mss:letsSee)
             {
-//                System.out.println(ms.equals(mss) + " objekti");
-//                System.out.println(ms.getMedicalStaffId() + " == " + mss.getMedicalStaffId());
-//                System.out.println(ms.getPerson().getPersonId() + " == " + mss.getPerson().getPersonId());
                 if(ms.getPerson().getPersonId() == mss.getPerson().getPersonId())
                 {
                     System.out.println(" usao");
                     medicalStaffService.delete(mss);
                 }
-
             }
-
-//            ms.setWorkingCenter(center);
-//            System.out.println(ms.getPerson().getPersonId());
-//            medicalStaffService.save(ms);
-
         }
         int i = 0;
         for (MedicalStaff ms:centerDTO.getWorkingMedicalStaff()){
             for (MedicalStaff mss:letsSee)
             {
-//                System.out.println(ms.equals(mss) + " objekti");
-//                System.out.println(ms.getMedicalStaffId() + " == " + mss.getMedicalStaffId());
-//                System.out.println(ms.getPerson().getPersonId() + " == " + mss.getPerson().getPersonId());
                 if(ms.getPerson().getPersonId() == mss.getPerson().getPersonId())
                 {
                     i = 1;
                 }
-
             }
             if(i == 0) {
 
@@ -166,14 +124,7 @@ public class CenterController {
             System.out.println(ms.getPerson().getPersonId());
             medicalStaffService.save(ms);
             }
-
         }
-//        for (MedicalStaff ms:centerDTO.getWorkingMedicalStaff()){
-//
-//            ms.setWorkingCenter(center);
-//            System.out.println(ms.getPerson().getPersonId());
-//            medicalStaffService.save(ms);
-//        }
         return new ResponseEntity<>(new CenterDTO(center), HttpStatus.OK);
     }
 
@@ -199,14 +150,10 @@ public class CenterController {
                 ms.setWorkingCenter(createdCenter);
                 medicalStaffService.save(ms);
             }
-
-
             return new ResponseEntity<String>(HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
                 return new ResponseEntity<String>(HttpStatus.CONFLICT);
         }
-
     }
-
 }
