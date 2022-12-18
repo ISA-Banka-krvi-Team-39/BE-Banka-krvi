@@ -1,5 +1,6 @@
 package app.person.controller;
 
+import app.email.service.IEmailService;
 import app.patient.model.Patient;
 import app.patient.service.IPatientService;
 import app.person.dto.PersonDTO;

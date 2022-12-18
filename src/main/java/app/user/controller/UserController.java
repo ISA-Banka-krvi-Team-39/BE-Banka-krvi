@@ -1,5 +1,7 @@
 package app.user.controller;
 
+import app.email.model.EmailDetails;
+import app.email.service.IEmailService;
 import app.patient.model.Patient;
 import app.patient.service.IPatientService;
 import app.person.model.Person;
@@ -35,6 +37,8 @@ public class UserController {
     private IPersonService personService;
     @Autowired
     private IPatientService patientService;
+    @Autowired
+    private IEmailService emailService;
     
     @Operation(summary = "Create new user", description = "Create new user", method = "POST")
     @ApiResponses(value = {
@@ -57,6 +61,11 @@ public class UserController {
             
             userService.create(user);
             patientService.create(patient);
+            EmailDetails emailDetails = new EmailDetails();
+            emailDetails.setRecipient(userDTO.getEmail());
+            emailDetails.setMsgBody("Welcome to our blood bank! You can now login and schedule blood donations!");
+            emailDetails.setSubject("Welcome email from blood bank team 39");
+            emailService.sendWelcomeMail(emailDetails);
         }catch (Exception e){
             return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
         }
