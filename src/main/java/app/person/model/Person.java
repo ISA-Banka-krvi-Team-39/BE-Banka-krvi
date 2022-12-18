@@ -1,18 +1,13 @@
 package app.person.model;
 
-import app.center.model.Center;
 import app.center.model.Term;
 import app.shared.model.Address;
-import app.user.dtos.CreateAdminUserDTO;
-import app.user.dtos.CreateUserDTO;
-import app.user.dtos.UpdateUserDTO;
-import app.user.model.User;
+import app.user.dto.CreateAdminUserDTO;
+import app.user.dto.CreateUserDTO;
+import app.user.dto.UpdateUserDTO;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -38,8 +33,8 @@ public class Person {
     @JoinColumn(name = "address_id", referencedColumnName = "addressId")
     private Address address;
 
-    @Column(name="uuid", unique=true, nullable=false)
-    private String uuid;
+    @Column(name="uid", unique=true, nullable=false)
+    private String uid;
     @Column(name="phoneNumber", unique=false, nullable=false)
     private String phoneNumber;
     @Column(name="school", unique=false, nullable=false)
@@ -53,7 +48,7 @@ public class Person {
         this.personGender = userDTO.getPersonGender();
         this.surname = userDTO.getSurname();
         this.address = userDTO.getAddress();
-        this.uuid = userDTO.getUuid();
+        this.uid = userDTO.getUid();
         this.phoneNumber = userDTO.getPhoneNumber();
         this.school = userDTO.getSchool();
     }
@@ -64,12 +59,12 @@ public class Person {
         this.personGender = userDTO.getPersonGender();
         this.surname = userDTO.getSurname();
         this.address = userDTO.getAddress();
-        this.uuid = userDTO.getUuid();
+        this.uid = userDTO.getUid();
         this.phoneNumber = userDTO.getPhoneNumber();
         this.school = userDTO.getSchool();
     }
 
-    public Person(Integer personId, String name, PersonType personType, PersonGender personGender, String surname, Set<Term> donatingTerms, Set<Term> workingTerms, Address address, String uuid, String phoneNumber, String school) {
+    public Person(Integer personId, String name, PersonType personType, PersonGender personGender, String surname, Set<Term> donatingTerms, Set<Term> workingTerms, Address address, String uid, String phoneNumber, String school) {
         this.personId = personId;
         this.name = name;
         this.personType = personType;
@@ -78,7 +73,7 @@ public class Person {
         this.donatingTerms = donatingTerms;
         this.workingTerms = workingTerms;
         this.address = address;
-        this.uuid = uuid;
+        this.uid = uid;
         this.phoneNumber = phoneNumber;
         this.school = school;
     }
@@ -88,7 +83,7 @@ public class Person {
         this.surname = updateUserDTO.getSurname();
         this.personGender = updateUserDTO.getPersonGender();
         //this.address = updateUserDTO.getAddress();
-        this.uuid = updateUserDTO.getUuid();
+        this.uid = updateUserDTO.getUid();
         this.phoneNumber = updateUserDTO.getPhoneNumber();
         this.school = updateUserDTO.getSchool();
     }
@@ -125,8 +120,8 @@ public class Person {
         this.address = address;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public void setPhoneNumber(String phoneNumber) {
@@ -170,8 +165,8 @@ public class Person {
         return address;
     }
 
-    public String getUuid() {
-        return uuid;
+    public String getUid() {
+        return uid;
     }
 
     public String getPhoneNumber() {

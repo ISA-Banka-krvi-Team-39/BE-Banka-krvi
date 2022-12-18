@@ -3,13 +3,12 @@ package app.person.controller;
 import app.patient.model.Patient;
 import app.patient.service.IPatientService;
 import app.person.dto.PersonDTO;
-import app.person.dtos.GetPersonForProfileDTO;
+import app.person.dto.GetPersonForProfileDTO;
 import app.person.model.Person;
 import app.person.service.IPersonService;
-import app.user.dtos.UpdateUserDTO;
+import app.user.dto.UpdateUserDTO;
 import app.user.model.User;
 import app.user.service.IUserService;
-import ch.qos.logback.core.net.SyslogOutputStream;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -65,6 +64,16 @@ public class PersonController {
         Patient patient = patientService.findOne(user.getPerson().getPersonId());
         GetPersonForProfileDTO getPersonForProfileDTO = new GetPersonForProfileDTO(user,patient);
         return new ResponseEntity<GetPersonForProfileDTO>(getPersonForProfileDTO, HttpStatus.OK);
+    }
+    @Operation(summary = "Check is Uid unique", description = "Check is Uid unique", method="GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation",
+                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Person.class))))
+    })
+    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+    @GetMapping(value="/check-uid/{uid}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> checkUid(@Parameter(name="uid", description = "uid to check", required = true) @PathVariable("uid") String uid) {
+        return new ResponseEntity<Boolean>(personService.checkUidUniqueness(uid), HttpStatus.OK);
     }
 
     @Operation(summary = "Put User Person", description = "Put User Person", method="PUT")

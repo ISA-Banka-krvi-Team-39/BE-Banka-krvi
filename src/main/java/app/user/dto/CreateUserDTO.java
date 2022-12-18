@@ -1,4 +1,4 @@
-package app.user.dtos;
+package app.user.dto;
 
 import app.patient.model.BloodType;
 import app.person.model.PersonGender;
@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 
-public class CreateAdminUserDTO {
+public class CreateUserDTO {
     @Email(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
     private String email;
     @NotEmpty(message = "Name is mandatory")
@@ -27,18 +27,20 @@ public class CreateAdminUserDTO {
     @NotNull(message = "You must set address")
     private Address address;
     @Pattern(regexp="^[0-9]{5}",message="length must be 5")
-    private String uuid;
+    private String uid;
     @NotEmpty(message = "Phone number is mandatory")
     private String phoneNumber;
     @NotEmpty(message = "school is mandatory")
     private String school;
+    @NotNull(message = "You must choose your blood type")
+    private BloodType bloodType;
 
-
-    public CreateAdminUserDTO() {
+    public CreateUserDTO() {
     }
 
-    public CreateAdminUserDTO(String email, String name, String surname, String password, PersonType personType,
-                         PersonGender personGender, Address address, String uuid, String phoneNumber, String school) {
+    public CreateUserDTO(String email, String name, String surname, String password, PersonType personType, 
+                         PersonGender personGender, Address address, String uid, String phoneNumber, String school,
+                         BloodType bloodType) {
         this.email = email;
         this.name = name;
         this.surname = surname;
@@ -46,12 +48,20 @@ public class CreateAdminUserDTO {
         this.personType = personType;
         this.personGender = personGender;
         this.address = address;
-        this.uuid = uuid;
+        this.uid = uid;
         this.phoneNumber = phoneNumber;
         this.school = school;
-
+        this.bloodType = bloodType;
     }
 
+
+    public BloodType getBloodType() {
+        return bloodType;
+    }
+
+    public void setBloodType(BloodType bloodType) {
+        this.bloodType = bloodType;
+    }
 
     public void setEmail(String email) {
         this.email = email;
@@ -81,8 +91,8 @@ public class CreateAdminUserDTO {
         this.address = address;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setUid(String uuid) {
+        this.uid = uuid;
     }
 
     public void setPhoneNumber(String phoneNumber) {
@@ -121,8 +131,8 @@ public class CreateAdminUserDTO {
         return address;
     }
 
-    public String getUuid() {
-        return uuid;
+    public String getUid() {
+        return uid;
     }
 
     public String getPhoneNumber() {

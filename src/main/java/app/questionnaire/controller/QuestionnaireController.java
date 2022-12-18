@@ -2,18 +2,13 @@ package app.questionnaire.controller;
 
 import app.patient.model.Patient;
 import app.patient.service.IPatientService;
-import app.person.dto.PersonDTO;
-import app.person.model.Person;
 import app.questionnaire.dto.AnswerDTO;
 import app.questionnaire.dto.QuestionnaireDTO;
 import app.questionnaire.model.Answer;
 import app.questionnaire.model.Question;
 import app.questionnaire.model.Questionnaire;
 import app.questionnaire.service.IQuestionnaireService;
-import app.user.dtos.CreateUserDTO;
-import app.user.model.User;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -26,8 +21,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.ConstraintViolationException;
-import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 @Tag(name = "Questionnaire controller", description = "The Questionnaire API")

@@ -9,7 +9,6 @@ public interface IUserService {
 
 
     User findOne(int id);
-
+    boolean checkEmailUniqueness(String email);
     User update(User user);
-
 }

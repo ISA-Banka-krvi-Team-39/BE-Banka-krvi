@@ -3,7 +3,6 @@ package app.center.model;
 import app.center.dto.CreateCenterDTO;
 import app.medical_staff.model.MedicalStaff;
 import app.shared.model.Address;
-import app.user.dtos.CreateUserDTO;
 
 import javax.persistence.*;
 import java.util.HashSet;

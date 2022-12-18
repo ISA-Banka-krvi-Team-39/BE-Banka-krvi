@@ -12,11 +12,8 @@ import java.util.List;
 public interface IPersonRepository extends JpaRepository<Person, Integer> {
     
     public Page<Person> findAll(Pageable pageable);
-
-
     public Person findOneByPersonId(int id);
-
-
+    public Person findOneByUid(String uid);
     @Query("select p from Person p where p.personType=?1 and p.personId not in (select person from MedicalStaff)")
     public List<Person> findAvailableAdmins(PersonType type);
 

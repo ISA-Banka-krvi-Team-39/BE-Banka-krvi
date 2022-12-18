@@ -10,12 +10,9 @@ import java.util.Optional;
 public interface IPersonService {
     List<Person> findAll();
     Person create(Person person);
-
-
     Person update(Person person);
     Person findOne(int id);
-
-
+    boolean checkUidUniqueness(String uid);
     List<Person> findAvailableAdmins();
 
     public List<Person> findScheduledAdmins();

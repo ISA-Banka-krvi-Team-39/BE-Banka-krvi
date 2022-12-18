@@ -1,19 +1,10 @@
 package app.center.controller;
 
-import app.center.dto.CenterDTO;
 import app.center.dto.TermDTO;
-import app.center.model.Center;
 import app.center.model.Term;
 import app.center.service.CenterService;
 import app.center.service.TermService;
-import app.medical_staff.model.MedicalStaff;
-import app.patient.model.Patient;
-import app.person.model.Person;
-import app.user.dtos.CreateUserDTO;
-import app.user.dtos.UpdateUserDTO;
-import app.user.model.User;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -28,8 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.ConstraintViolationException;
-import javax.validation.Valid;
-import java.util.List;
 
 @Tag(name = "Term controller", description = "The Term API")
 @RestController

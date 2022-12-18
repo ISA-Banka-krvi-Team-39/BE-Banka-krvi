@@ -1,9 +1,9 @@
 package app.user.model;
 
 import app.person.model.Person;
-import app.user.dtos.CreateAdminUserDTO;
-import app.user.dtos.CreateUserDTO;
-import app.user.dtos.UpdateUserDTO;
+import app.user.dto.CreateAdminUserDTO;
+import app.user.dto.CreateUserDTO;
+import app.user.dto.UpdateUserDTO;
 
 import javax.persistence.*;
 
