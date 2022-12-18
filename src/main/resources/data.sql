@@ -38,13 +38,13 @@ values ('Zorka', 'Marković',1,66666,019348657,0,'adsgdgaf',6);
 insert into Person (name, surname, person_type, uid, phone_number,person_gender,school,address_id)
 values ('Lenka', 'Milanović',0,77777,34091857,1,'adsgdgaf',7);
 
-insert into user_table (email,password,person_id) values ('markovicmarko@gmail.com','sifra123123',1);
-insert into user_table (email,password,person_id) values ('milan@gmail.com','sifra123233',2);
-insert into user_table (email,password,person_id) values ('ivana@gmail.com','sifra123543',3);
-insert into user_table (email,password,person_id) values ('ivan@gmail.com','sifra123123',4);
-insert into user_table (email,password,person_id) values ('milana@gmail.com','sifra123233',5);
-insert into user_table (email,password,person_id) values ('zorka@gmail.com','sifra123543',6);
-insert into user_table (email,password,person_id) values ('lenka@gmail.com','sifra123543',7);
+insert into user_table (email,password,person_id,enabled,last_password_reset_date) values ('markovicmarko@gmail.com','$2a$10$weZMibSttAmFfa1aYJ9F.OxWNTH2hwNP8D/E5q4jSLnRcjZ3pg/QW',1,true,'2017-10-01 21:58:58.508-07');
+insert into user_table (email,password,person_id,enabled,last_password_reset_date) values ('milan@gmail.com','$2a$10$weZMibSttAmFfa1aYJ9F.OxWNTH2hwNP8D/E5q4jSLnRcjZ3pg/QW',2,true,'2017-10-01 21:58:58.508-07');
+insert into user_table (email,password,person_id,enabled,last_password_reset_date) values ('ivana@gmail.com','$2a$10$weZMibSttAmFfa1aYJ9F.OxWNTH2hwNP8D/E5q4jSLnRcjZ3pg/QW',3,true,'2017-10-01 21:58:58.508-07');
+insert into user_table (email,password,person_id,enabled,last_password_reset_date) values ('ivan@gmail.com','$2a$10$weZMibSttAmFfa1aYJ9F.OxWNTH2hwNP8D/E5q4jSLnRcjZ3pg/QW',4,true,'2017-10-01 21:58:58.508-07');
+insert into user_table (email,password,person_id,enabled,last_password_reset_date) values ('milana@gmail.com','$2a$10$weZMibSttAmFfa1aYJ9F.OxWNTH2hwNP8D/E5q4jSLnRcjZ3pg/QW',5,true,'2017-10-01 21:58:58.508-07');
+insert into user_table (email,password,person_id,enabled,last_password_reset_date) values ('zorka@gmail.com','$2a$10$weZMibSttAmFfa1aYJ9F.OxWNTH2hwNP8D/E5q4jSLnRcjZ3pg/QW',6,true,'2017-10-01 21:58:58.508-07');
+insert into user_table (email,password,person_id,enabled,last_password_reset_date) values ('lenka@gmail.com','$2a$10$weZMibSttAmFfa1aYJ9F.OxWNTH2hwNP8D/E5q4jSLnRcjZ3pg/QW',7,true,'2017-10-01 21:58:58.508-07');
 
 insert into Patient (points,person_id,blood_type)
 values (200,2,0);

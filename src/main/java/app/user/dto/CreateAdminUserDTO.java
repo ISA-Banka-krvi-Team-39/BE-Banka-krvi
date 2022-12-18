@@ -37,7 +37,7 @@ public class CreateAdminUserDTO {
     }
 
     public CreateAdminUserDTO(String email, String name, String surname, String password, PersonType personType,
-                         PersonGender personGender, Address address, String uuid, String phoneNumber, String school) {
+                         PersonGender personGender, Address address, String uid, String phoneNumber, String school) {
         this.email = email;
         this.name = name;
         this.surname = surname;
