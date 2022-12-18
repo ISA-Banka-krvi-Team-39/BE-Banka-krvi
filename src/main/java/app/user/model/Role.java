@@ -1,4 +1,4 @@
-﻿package app.user.model;
+package app.user.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
