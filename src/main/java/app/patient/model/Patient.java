@@ -37,7 +37,10 @@ public class Patient {
     public void setPatientId(Integer patientId) {
         this.patientId = patientId;
     }
-
+    public BloodType getBloodType()
+    {
+        return bloodType;
+    }
     public Person getPerson() {
         return person;
     }

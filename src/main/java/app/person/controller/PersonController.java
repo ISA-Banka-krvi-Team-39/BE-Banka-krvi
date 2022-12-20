@@ -1,5 +1,9 @@
 package app.person.controller;
 
+import app.appointment.model.Appointment;
+import app.appointment.service.IAppointmentService;
+import app.center.model.Term;
+import app.center.service.ITermService;
 import app.email.service.IEmailService;
 import app.patient.model.Patient;
 import app.patient.service.IPatientService;
@@ -37,6 +41,11 @@ public class PersonController {
     private IPersonService personService;
     @Autowired
     private IUserService userService;
+    @Autowired
+    private ITermService termService;
+
+    @Autowired
+    private IAppointmentService appointmentService;
     
     @Operation(summary = "Get all Persons", description = "Get all Persons", method="GET")
     @ApiResponses(value = {
@@ -62,7 +71,9 @@ public class PersonController {
     @GetMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GetPersonForProfileDTO> getOne(@Parameter(name="id", description = "ID of a person to return", required = true) @PathVariable("id") int id) {
         User user = userService.findOne(id);
+        Person person = personService.findOne(id);
         Patient patient = patientService.findOne(user.getPerson().getPersonId());
+        List<Appointment> appointments = appointmentService.findAll();
         GetPersonForProfileDTO getPersonForProfileDTO = new GetPersonForProfileDTO(user,patient);
         return new ResponseEntity<GetPersonForProfileDTO>(getPersonForProfileDTO, HttpStatus.OK);
     }

@@ -56,24 +56,26 @@ public class WebSecurityConfig {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         
         http.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint);
-        http.authorizeRequests().antMatchers("/auth/**").permitAll()		// /auth/**
+        http.authorizeRequests()
+                .antMatchers("/**").permitAll()		// /auth/**
                 .antMatchers("/h2-console/**").permitAll()	// /h2-console/** ako se koristi H2 baza)
                 .antMatchers("/api/foo").permitAll()		// /api/foo
-                .anyRequest().authenticated().and()
+                .anyRequest()
+                .authenticated().and()
                 .cors().and()
                 .addFilterBefore(new TokenAuthenticationFilter(tokenUtils,  userDetailsService()), BasicAuthenticationFilter.class);
         http.csrf().disable();
         http.authenticationProvider(authenticationProvider());
         return http.build();
     }
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().antMatchers(HttpMethod.POST, "/api/auth/login")
-                .antMatchers(HttpMethod.GET, "/", "/webjars/**", "/*.html", "favicon.ico",
-                        "/**/*.html", "/**/*.css", "/**/*.js")
-                .antMatchers(HttpMethod.GET, "/api/person/check-uid/*")
-                .antMatchers(HttpMethod.GET, "/api/user/check-email/*")
-                .antMatchers(HttpMethod.POST, "/api/auth")
-                .antMatchers(HttpMethod.GET, "/api/center/list/*");
-    }
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer() {
+//        return (web) -> web.ignoring().antMatchers(HttpMethod.POST, "/api/auth/login")
+//                .antMatchers(HttpMethod.GET, "/", "/webjars/**", "/*.html", "favicon.ico",
+//                        "/**/*.html", "/**/*.css", "/**/*.js")
+//                .antMatchers(HttpMethod.GET, "/api/person/check-uid/*")
+//                .antMatchers(HttpMethod.GET, "/api/user/check-email/*")
+//                .antMatchers(HttpMethod.POST, "/api/auth")
+//                .antMatchers(HttpMethod.GET, "/api/center/list/*");
+//    }
 }
