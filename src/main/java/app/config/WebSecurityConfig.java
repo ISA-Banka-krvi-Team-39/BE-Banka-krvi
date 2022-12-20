@@ -73,6 +73,7 @@ public class WebSecurityConfig {
                         "/**/*.html", "/**/*.css", "/**/*.js")
                 .antMatchers(HttpMethod.GET, "/api/person/check-uid/*")
                 .antMatchers(HttpMethod.GET, "/api/user/check-email/*")
+                .antMatchers(HttpMethod.PUT, "/api/user/activate/*")
                 .antMatchers(HttpMethod.POST, "/api/auth")
                 .antMatchers(HttpMethod.GET, "/api/center/list/*");
     }
