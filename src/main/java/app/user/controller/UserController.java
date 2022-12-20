@@ -8,6 +8,7 @@ import app.person.model.Person;
 import app.person.service.IPersonService;
 import app.user.dto.CreateAdminUserDTO;
 import app.user.dto.CreateUserDTO;
+import app.user.dto.UpdateUserDTO;
 import app.user.model.User;
 import app.user.service.IUserService;
 import app.util.TokenUtils;
@@ -78,5 +79,21 @@ public class UserController {
         }
         return new ResponseEntity<User>(HttpStatus.OK);
     }
-
+    @Operation(summary = "Put User Person", description = "Put User Person", method="PUT")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation",
+                    content = @Content(mediaType = "application/json", array = 
+                    @ArraySchema(schema = @Schema(implementation = Person.class))))
+    })
+    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+    @PutMapping(value="/activate/{code}",consumes = "application/json")
+    public HttpStatus activateAccount(@Parameter(name="code", description = "Activation code of user", required = true)
+                                              @PathVariable("code") String code) throws Exception {
+        User user = userService.findOneByActivationCode(code);
+        if(user == null)
+            throw new Exception("activation failed!");
+        user.Enable();
+        userService.update(user);
+        return HttpStatus.OK;
+    }
 }

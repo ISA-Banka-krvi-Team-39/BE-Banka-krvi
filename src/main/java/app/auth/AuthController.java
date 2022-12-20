@@ -65,11 +65,13 @@ public class AuthController {
     @PostMapping("/login")
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
     public ResponseEntity<TokenDTO> createAuthenticationToken(
-            @RequestBody LoginUserDTO loginUserDTO, HttpServletResponse response) throws UnsupportedEncodingException {
+            @RequestBody LoginUserDTO loginUserDTO, HttpServletResponse response) throws Exception {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginUserDTO.getUsername(), loginUserDTO.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         User user = (User) authentication.getPrincipal();
+        if(!user.isEnabled())
+            throw new Exception("Account not activated!");
         String jwt = tokenUtils.generateToken(user.getUsername(),user.getUserId(),user.getRoles());
         int expiresIn = tokenUtils.getExpiredIn();
         return ResponseEntity.ok(new TokenDTO(jwt, expiresIn));
@@ -98,7 +100,8 @@ public class AuthController {
             patientService.create(patient);
             EmailDetails emailDetails = new EmailDetails();
             emailDetails.setRecipient(userDTO.getEmail());
-            emailDetails.setMsgBody("Welcome to our blood bank! You can now login and schedule blood donations!");
+            emailDetails.setMsgBody("Welcome to our blood bank!<br/>" +
+                    "You can <a href=\"http://localhost:3000/auth/activation/"+ user.getActivationCode() +"\">Activate your account here!<a/></h2> <br/>");
             emailDetails.setSubject("Welcome email from blood bank team 39");
             emailService.sendWelcomeMail(emailDetails);
         }catch (Exception e){

@@ -21,6 +21,12 @@ public class UserService implements IUserService, UserDetailsService {
         return userRepository.save(user);
     }
     public User findOne(int id) { return userRepository.findOneByUserId(id);}
+
+    @Override
+    public User findOneByActivationCode(String code) {
+        return userRepository.findOneByActivationCode(code);
+    }
+
     @Override
     public boolean checkEmailUniqueness(String email) {
         return  userRepository.findOneByEmail(email)==null;
