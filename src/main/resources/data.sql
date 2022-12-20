@@ -134,3 +134,19 @@ insert into blood_bag (amount,blood_type,center_id)
 values(5,0,1);
 insert into blood_bag (amount,blood_type,center_id)
 values(5,1,1);
+
+insert into role (name)
+values('ROLE_ADMIN');
+insert into role (name)
+values('ROLE_USER');
+insert into role (name)
+values('ROLE_MANAGER');
+
+insert into user_role(user_id,role_id)
+values(1,1);
+insert into user_role(user_id,role_id)
+values(2,2);
+insert into user_role(user_id,role_id)
+values(3,3);
+
+
