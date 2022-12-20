@@ -97,6 +97,9 @@ public class User implements UserDetails {
     public int getUserId() {
         return userId;
     }
+    public List<Role> getRoles() {
+        return roles;
+    }
     public boolean isEnabled() {
         return enabled;
     }

@@ -32,6 +32,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
+import java.io.Console;
+import java.io.UnsupportedEncodingException;
 
 @Tag(name = "Auth controller", description = "The Auth API")
 @RestController
@@ -63,12 +65,12 @@ public class AuthController {
     @PostMapping("/login")
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
     public ResponseEntity<TokenDTO> createAuthenticationToken(
-            @RequestBody LoginUserDTO loginUserDTO, HttpServletResponse response) {
+            @RequestBody LoginUserDTO loginUserDTO, HttpServletResponse response) throws UnsupportedEncodingException {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginUserDTO.getUsername(), loginUserDTO.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         User user = (User) authentication.getPrincipal();
-        String jwt = tokenUtils.generateToken(user.getUsername());
+        String jwt = tokenUtils.generateToken(user.getUsername(),user.getUserId(),user.getRoles());
         int expiresIn = tokenUtils.getExpiredIn();
         return ResponseEntity.ok(new TokenDTO(jwt, expiresIn));
     }
