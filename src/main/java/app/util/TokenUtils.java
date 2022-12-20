@@ -1,6 +1,9 @@
 package app.util;
 
+import app.user.model.Role;
 import app.user.model.User;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -10,13 +13,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class TokenUtils {
     @Value("spring-security-example")
     private String APP_NAME;
-    @Value("somesecret")
+    @Value("isanajjacipredmet")
     public String SECRET;
     @Value("3600000")
     private int EXPIRES_IN;
@@ -25,14 +31,24 @@ public class TokenUtils {
     private static final String AUDIENCE_WEB = "web";
     private SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS512;
     
-    public String generateToken(String username) {
+    public String generateToken(String username, int id, List<Role> roles) throws UnsupportedEncodingException {
+        List<String> roleNames = roles.stream().map(Role::getName).collect(Collectors.toList());
+        ObjectMapper mapper = new ObjectMapper();
+        String roleNamesJson = "";
+        try {
+            roleNamesJson = mapper.writeValueAsString(roleNames);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
         return Jwts.builder()
                 .setIssuer(APP_NAME)
                 .setSubject(username)
                 .setAudience(generateAudience())
                 .setIssuedAt(new Date())
+                .claim("id", id)
+                .claim("roles", roleNamesJson)
                 .setExpiration(generateExpirationDate())
-                .signWith(SIGNATURE_ALGORITHM, SECRET).compact();
+                .signWith(SIGNATURE_ALGORITHM, SECRET.getBytes("UTF-8")).compact();
     }
     private String generateAudience() {
         return AUDIENCE_WEB;
