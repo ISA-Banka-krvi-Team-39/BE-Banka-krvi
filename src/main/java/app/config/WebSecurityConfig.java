@@ -68,14 +68,15 @@ public class WebSecurityConfig {
         http.authenticationProvider(authenticationProvider());
         return http.build();
     }
-//    @Bean
-//    public WebSecurityCustomizer webSecurityCustomizer() {
-//        return (web) -> web.ignoring().antMatchers(HttpMethod.POST, "/api/auth/login")
-//                .antMatchers(HttpMethod.GET, "/", "/webjars/**", "/*.html", "favicon.ico",
-//                        "/**/*.html", "/**/*.css", "/**/*.js")
-//                .antMatchers(HttpMethod.GET, "/api/person/check-uid/*")
-//                .antMatchers(HttpMethod.GET, "/api/user/check-email/*")
-//                .antMatchers(HttpMethod.POST, "/api/auth")
-//                .antMatchers(HttpMethod.GET, "/api/center/list/*");
-//    }
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring().antMatchers(HttpMethod.POST, "/api/auth/login")
+                .antMatchers(HttpMethod.GET, "/", "/webjars/**", "/*.html", "favicon.ico",
+                        "/**/*.html", "/**/*.css", "/**/*.js")
+                .antMatchers(HttpMethod.GET, "/api/person/check-uid/*")
+                .antMatchers(HttpMethod.GET, "/api/user/check-email/*")
+                .antMatchers(HttpMethod.PUT, "/api/user/activate/*")
+                .antMatchers(HttpMethod.POST, "/api/auth")
+                .antMatchers(HttpMethod.GET, "/api/center/list/*");
+    }
 }

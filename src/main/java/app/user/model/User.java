@@ -5,6 +5,7 @@ import app.user.dto.CreateAdminUserDTO;
 import app.user.dto.CreateUserDTO;
 import app.user.dto.UpdateUserDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -23,6 +24,9 @@ public class User implements UserDetails {
     private String email;
     @Column(name="password", unique=false, nullable=false)
     private String password;
+
+    @Column(name="activation_code", unique=false, nullable=false)
+    private String activationCode;
     @OneToOne
     @JoinColumn(name = "personId")
     private Person person;
@@ -39,6 +43,7 @@ public class User implements UserDetails {
     public User() {
     }
     public User(CreateUserDTO userDTO,Person person) {
+        this.activationCode = RandomStringUtils.randomAlphanumeric(32);
         this.person = new Person();
         this.userId = 0;
         this.email = userDTO.getEmail();
@@ -49,6 +54,7 @@ public class User implements UserDetails {
     }
 
     public User(CreateAdminUserDTO userDTO, Person person) {
+        this.activationCode = RandomStringUtils.randomAlphanumeric(32);
         this.person = new Person();
         this.userId = 0;
         this.email = userDTO.getEmail();
@@ -64,7 +70,6 @@ public class User implements UserDetails {
         this.password = password;
         this.person = person;
     }
-
     public void updateUser(UpdateUserDTO updateUserDTO){
         this.password = updateUserDTO.getPassword();
         this.getPerson().updatePerson(updateUserDTO);
@@ -81,6 +86,9 @@ public class User implements UserDetails {
     public void setUserId(int userId) {
         this.userId = userId;
     }
+    public String getActivationCode() { return activationCode; }
+
+    public void setActivationCode(String activationCode) { this.activationCode = activationCode; }
 
     public void setEmail(String email) {
         this.email = email;
