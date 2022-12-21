@@ -97,10 +97,32 @@ public class AppointmentController {
             if(appointment.getAppointmentId().toString().equals(informationsDto.getAppointmentId()))
             {
                 appointment.setInformations(informations);
-                appointmentService.create(appointment);
+                appointmentService.save(appointment);
             }
         }
         return new ResponseEntity<InformationsDto>(informationsDto, HttpStatus.OK);
+    }
+    @Operation(summary = "Give penal", description = "Give penal", method="POST")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation",
+                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Patient.class))))
+    })
+    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+    @PostMapping(value="/penal", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Patient> givePenal(@RequestBody AppointmentDTO appointmentDTO) {
+        Patient patient = null;
+        for(Patient pat : patientService.findAll())
+        {
+            if(pat.getPerson().getPersonId() == appointmentDTO.getPersonId())
+            {
+                patient = patientService.findOne(pat.getPatientId());
+                patient.setPenal(patient.getPenal() + 1);
+                patientService.save(patient);
+            }
+
+        }
+
+        return new ResponseEntity<Patient>(patient, HttpStatus.OK);
     }
 
     @Operation(summary = "Cancel appointment", description = "Cancel appointment", method="POST")

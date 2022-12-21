@@ -28,6 +28,9 @@ public class Patient {
     @Column(name="points", unique=false, nullable=false)
     private Integer points;
 
+    @Column(name="penal", unique=false, nullable=false)
+    private Integer penal;
+
     public Patient() {
 
     }
@@ -36,6 +39,12 @@ public class Patient {
         this.person = person;
         this.points = points;
         this.bloodType = bloodType;
+    }
+    public Patient(Person person, Integer points,BloodType bloodType,Integer penal) {
+        this.person = person;
+        this.points = points;
+        this.bloodType = bloodType;
+        this.penal = penal;
     }
 
     public Integer getPatientId() {
@@ -56,6 +65,14 @@ public class Patient {
         return appointments;
     }
 
+    public Integer getPenal()
+    {
+        return penal;
+    }
+    public void setPenal(Integer penal)
+    {
+        this.penal = penal;
+    }
     public void setPerson(Person person) {
         this.person = person;
     }
