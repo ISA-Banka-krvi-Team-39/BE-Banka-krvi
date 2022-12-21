@@ -104,10 +104,19 @@ values (now(),20,20,1);
 insert into Term (date_time, duration_in_minutes,maximum_space, center_id)
 values (now(),20,20,1);
 
-insert into Donating(person_id,term_id)
-values (2,2);
+insert into Donating(term_id,person_id)
+values (2,1);
 
-insert into Oversees (person_id,term_id)
+insert into Donating(term_id,person_id)
+values (5,2);
+
+insert into Donating(term_id,person_id)
+values (4,3);
+
+insert into Donating(term_id,person_id)
+values (6,4);
+
+insert into Oversees (term_id,person_id)
 values (4,1);
 
 insert into Question (question) 

@@ -27,10 +27,10 @@ public class Center {
     @Column(name="description", unique=false, nullable=false)
     private String description;
 
-    @Column(name="startWorkingHours", unique=false, nullable=false)
+    @Column(name="startWorkingHours", unique=false,nullable = false)
     private LocalTime startWorkingHours;
 
-    @Column(name="endWorkingHours", unique=false, nullable=false)
+    @Column(name="endWorkingHours", unique=false,nullable = false)
     private LocalTime endWorkingHours;
 
     @Column(name="avg_grade", unique=false, nullable=false)

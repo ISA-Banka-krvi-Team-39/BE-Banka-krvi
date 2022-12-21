@@ -57,6 +57,7 @@ public class Person {
         this.school = userDTO.getSchool();
     }
 
+
     public Person(CreateAdminUserDTO userDTO) {
         this.name = userDTO.getName();
         this.personType = userDTO.getPersonType();
