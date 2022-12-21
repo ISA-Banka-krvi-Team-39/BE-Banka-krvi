@@ -78,13 +78,15 @@ public class TermController {
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
     @GetMapping(value = "/all",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<TermDTO>> getAll() {
+
         List<Term> terms = termService.getAll();
         List<TermDTO> termsDTO = new ArrayList<>();
         for(Term term : terms){
-            termsDTO.add(new TermDTO(term, term.getCenter()));
 
+            termsDTO.add(new TermDTO(term));
         }
-        System.out.println(termsDTO);
-        return new ResponseEntity<List<TermDTO>>(termsDTO, HttpStatus.OK);
+
+        return new ResponseEntity<>(termsDTO, HttpStatus.OK);
     }
+
 }
