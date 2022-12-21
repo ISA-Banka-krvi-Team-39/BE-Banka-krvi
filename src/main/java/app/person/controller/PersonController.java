@@ -72,7 +72,7 @@ public class PersonController {
     public ResponseEntity<GetPersonForProfileDTO> getOne(@Parameter(name="id", description = "ID of a person to return", required = true) @PathVariable("id") int id) {
         User user = userService.findOne(id);
         Person person = personService.findOne(id);
-        Patient patient = patientService.findOne(user.getPerson().getPersonId());
+        Patient patient = patientService.findOneByPersonId(id);
         List<Appointment> appointments = appointmentService.findAll();
         GetPersonForProfileDTO getPersonForProfileDTO = new GetPersonForProfileDTO(user,patient);
         return new ResponseEntity<GetPersonForProfileDTO>(getPersonForProfileDTO, HttpStatus.OK);

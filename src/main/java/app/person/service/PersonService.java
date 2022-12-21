@@ -26,12 +26,10 @@ public class PersonService implements IPersonService {
     public Person findOne(int id){
         return personRepository.findOneByPersonId(id);
     }
-
     @Override
     public boolean checkUidUniqueness(String uid) {
         return personRepository.findOneByUid(uid)==null;
     }
-
     @Override
     public Person update(Person person) { return personRepository.save(person); }
     @Override

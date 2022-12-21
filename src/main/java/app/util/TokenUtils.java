@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -48,7 +49,7 @@ public class TokenUtils {
                 .claim("id", id)
                 .claim("roles", roleNamesJson)
                 .setExpiration(generateExpirationDate())
-                .signWith(SIGNATURE_ALGORITHM, SECRET.getBytes("UTF-8")).compact();
+                .signWith(SIGNATURE_ALGORITHM, SECRET.getBytes(StandardCharsets.UTF_8)).compact();
     }
     private String generateAudience() {
         return AUDIENCE_WEB;
@@ -118,7 +119,7 @@ public class TokenUtils {
         Claims claims;
         try {
             claims = Jwts.parser()
-                    .setSigningKey(SECRET)
+                    .setSigningKey(SECRET.getBytes(StandardCharsets.UTF_8))
                     .parseClaimsJws(token)
                     .getBody();
         } catch (ExpiredJwtException ex) {

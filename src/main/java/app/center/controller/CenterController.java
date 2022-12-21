@@ -9,6 +9,7 @@ import app.center.service.ICenterService;
 import app.medical_staff.model.MedicalStaff;
 import app.medical_staff.model.service.IMedicalStaffService;
 
+import app.patient.model.Patient;
 import app.shared.service.AddressService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -71,7 +72,8 @@ public class CenterController {
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
     @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CenterDTO> findById(@PathVariable Integer id) {
-        Center center = centerService.findOne(id);
+        MedicalStaff medicalStaff = medicalStaffService.findOneByPersonId(id);
+        Center center = centerService.findOne(medicalStaff.getWorkingCenter().getCenterId());
         List<MedicalStaff> medicalStaffList = medicalStaffService.findAllByWorkingCenter(center);
         return new ResponseEntity<>(new CenterDTO(center,medicalStaffList), HttpStatus.OK);
     }
@@ -95,16 +97,14 @@ public class CenterController {
         {
             center.setAddress(centerDTO.getAddress());
         }
-        List<MedicalStaff> letsSee = medicalStaffService.findAllMedicalStaff();
+        List<MedicalStaff> letsSee = medicalStaffService.findAllMedicalStaff(centerDTO.getCenterId());
         Center createdCenter = centerService.save(center);
-        System.out.println(letsSee.size() + " size");
         Set<MedicalStaff> medicalStaffs = createdCenter.getWorkingMedicalStaff();
         for (MedicalStaff ms:centerDTO.getWorkingMedicalStaff()){
             for (MedicalStaff mss:letsSee)
             {
                 if(ms.getPerson().getPersonId() == mss.getPerson().getPersonId())
                 {
-                    System.out.println(" usao");
                     medicalStaffService.delete(mss);
                 }
             }
@@ -121,13 +121,11 @@ public class CenterController {
             if(i == 0) {
 
             ms.setWorkingCenter(center);
-            System.out.println(ms.getPerson().getPersonId());
             medicalStaffService.save(ms);
             }
         }
         return new ResponseEntity<>(new CenterDTO(center), HttpStatus.OK);
     }
-
     @Operation(summary = "Register center", description = "Register center", method="POST")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created",
