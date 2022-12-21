@@ -31,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -63,6 +64,7 @@ public class AppointmentController {
             @ApiResponse(responseCode = "200", description = "successful operation",
                     content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Person.class))))
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
     @GetMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AppointmentPatientInfoDTO> getOne(@Parameter(name="id", description = "ID of a appointment to return", required = true) @PathVariable("id") int id) {
@@ -86,6 +88,7 @@ public class AppointmentController {
             @ApiResponse(responseCode = "200", description = "successful operation",
                     content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Informations.class))))
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
     @PostMapping(value="/info", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<InformationsDto> createInformations(@RequestBody InformationsDto informationsDto) {
@@ -107,6 +110,7 @@ public class AppointmentController {
             @ApiResponse(responseCode = "200", description = "successful operation",
                     content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Patient.class))))
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
     @PostMapping(value="/penal", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Patient> givePenal(@RequestBody AppointmentDTO appointmentDTO) {
@@ -130,6 +134,7 @@ public class AppointmentController {
             @ApiResponse(responseCode = "200", description = "successful operation",
                     content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Appointment.class))))
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @CrossOrigin(origins = "*", maxAge = 3600)
     @PostMapping(value="/cancel", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Appointment> forbidAppointment(@RequestBody AppointmentDTO appointmentDTO) {
@@ -150,6 +155,7 @@ public class AppointmentController {
             @ApiResponse(responseCode = "200", description = "successful operation",
                     content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Appointment.class))))
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @CrossOrigin(origins = "*", maxAge = 3600)
     @PostMapping(value="/create", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AppointmentDTO> createAppointment(@RequestBody AppointmentDTO appointmentDTO) {
@@ -176,6 +182,7 @@ public class AppointmentController {
             @ApiResponse(responseCode = "200", description = "successful operation",
                     content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = PersonDescription.class))))
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
     @GetMapping(value="/description", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PersonDescription> getDescription() {

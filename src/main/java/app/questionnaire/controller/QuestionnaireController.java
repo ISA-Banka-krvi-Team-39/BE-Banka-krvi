@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.ConstraintViolationException;
@@ -33,6 +34,7 @@ public class QuestionnaireController {
     private IPatientService patientService;
 
     @Operation(summary = "Get all questions", description = "Get all questions", method="GET")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
     @GetMapping(value = "/questions",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Question>> findAll() {
@@ -47,6 +49,7 @@ public class QuestionnaireController {
             @ApiResponse(responseCode = "400", description = "Not possible to create new questionnaire data bad request",
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = QuestionnaireDTO.class)) })
     })
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
     @PostMapping(value = "/save",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createPatient( @RequestBody QuestionnaireDTO questionnaireDTO) throws ConstraintViolationException {
