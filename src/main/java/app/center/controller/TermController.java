@@ -23,6 +23,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.ConstraintViolationException;
@@ -46,6 +47,7 @@ public class TermController {
             @ApiResponse(responseCode = "200", description = "successful operation",
                     content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Term.class))))
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
     @PostMapping(value="",consumes = "application/json")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
@@ -63,6 +65,7 @@ public class TermController {
             @ApiResponse(responseCode = "200", description = "successful operation",
                     content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Term.class))))
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
     @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<TermDTO> findById(@PathVariable Integer id) {
@@ -75,6 +78,7 @@ public class TermController {
             @ApiResponse(responseCode = "200", description = "successful operation",
                     content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Term.class))))
     })
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
     @GetMapping(value = "/all",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<TermDTO>> getAll() {
