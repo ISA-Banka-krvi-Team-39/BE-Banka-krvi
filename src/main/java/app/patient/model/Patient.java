@@ -1,6 +1,7 @@
 package app.patient.model;
 
 import app.appointment.model.Appointment;
+import app.center.model.Term;
 import app.person.model.Person;
 
 import javax.persistence.*;
@@ -22,7 +23,8 @@ public class Patient {
     private Set<Appointment> appointments = new HashSet<>();
     @Column(name="bloodType", unique=false, nullable=false)
     private BloodType bloodType;
-    
+
+
     @Column(name="points", unique=false, nullable=false)
     private Integer points;
 
@@ -49,6 +51,9 @@ public class Patient {
     }
     public Person getPerson() {
         return person;
+    }
+    public Set<Appointment> getAppointments() {
+        return appointments;
     }
 
     public void setPerson(Person person) {

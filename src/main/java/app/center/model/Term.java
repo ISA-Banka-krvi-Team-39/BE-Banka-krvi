@@ -1,6 +1,7 @@
 package app.center.model;
 
 import app.center.dto.TermDTO;
+import app.patient.model.Patient;
 import app.person.model.Person;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -23,13 +24,11 @@ public class Term {
     
     @Column(name = "maximumSpace" )
     private Integer maximumSpace;
-    @ManyToMany( cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.ALL})
-    @JoinTable(name = "oversees", joinColumns = @JoinColumn(name = "person_id"), inverseJoinColumns = @JoinColumn(name = "term_id"))
-    private Set<Person> medicalStaffs = new HashSet<Person>();
 
-    @ManyToMany( cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.ALL})
-    @JoinTable(name = "donating", joinColumns = @JoinColumn(name = "person_id"), inverseJoinColumns = @JoinColumn(name = "term_id"))
-    private Set<Person> bloodDonors = new HashSet<Person>();
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "person_id")
+    private Person bloodDonor;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "center_id")
@@ -46,17 +45,17 @@ public class Term {
     {
         this.dateTime = termDTO.getDateTime();
         this.maximumSpace = 20;
-        this.medicalStaffs = termDTO.getMedicalStaffs();
-        this.bloodDonors = bloodDonors;
+
+        this.bloodDonor = bloodDonor;
         this.center = center;
         this.durationInMinutes = termDTO.getDurationInMinutes();
     }
 
-    public Term(LocalDateTime dateTime, Integer maximumSpace, Set<Person> medicalStaffs, Set<Person> bloodDonors, Center center, Integer durationInMinutes) {
+    public Term(LocalDateTime dateTime, Integer maximumSpace, Set<Person> medicalStaffs, Person bloodDonor, Center center, Integer durationInMinutes) {
         this.dateTime = dateTime;
         this.maximumSpace = maximumSpace;
-        this.medicalStaffs = medicalStaffs;
-        this.bloodDonors = bloodDonors;
+
+        this.bloodDonor = bloodDonor;
         this.center = center;
         this.durationInMinutes = durationInMinutes;
     }
@@ -66,7 +65,7 @@ public class Term {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Term term = (Term) o;
-        return Objects.equals(termId, term.termId) && Objects.equals(dateTime, term.dateTime) && Objects.equals(maximumSpace, term.maximumSpace) && Objects.equals(medicalStaffs, term.medicalStaffs) && Objects.equals(bloodDonors, term.bloodDonors) && Objects.equals(center, term.center) && Objects.equals(durationInMinutes, term.durationInMinutes);
+        return Objects.equals(termId, term.termId) && Objects.equals(dateTime, term.dateTime) && Objects.equals(maximumSpace, term.maximumSpace)  && Objects.equals(bloodDonor, term.bloodDonor) && Objects.equals(center, term.center) && Objects.equals(durationInMinutes, term.durationInMinutes);
     }
 
     public void setTermId(Integer termId) {
@@ -81,12 +80,10 @@ public class Term {
         this.maximumSpace = maximumSpace;
     }
 
-    public void setMedicalStaffs(Set<Person> medicalStaffs) {
-        this.medicalStaffs = medicalStaffs;
-    }
 
-    public void setBloodDonors(Set<Person> bloodDonors) {
-        this.bloodDonors = bloodDonors;
+
+    public void setBloodDonors(Person bloodDonor) {
+        this.bloodDonor = bloodDonor;
     }
 
     public void setCenter(Center center) {
@@ -109,12 +106,9 @@ public class Term {
         return maximumSpace;
     }
 
-    public Set<Person> getMedicalStaffs() {
-        return medicalStaffs;
-    }
 
-    public Set<Person> getBloodDonors() {
-        return bloodDonors;
+    public Person getBloodDonor() {
+        return bloodDonor;
     }
 
     public Center getCenter() {

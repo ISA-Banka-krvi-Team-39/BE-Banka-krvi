@@ -24,11 +24,8 @@ public class Person {
     @Column(name="surname", unique=false, nullable=false)
     private String surname;
     
-    @ManyToMany(mappedBy = "bloodDonors")
-    private Set<Term> donatingTerms = new HashSet<Term>();
 
-    @ManyToMany(mappedBy = "medicalStaffs")
-    private Set<Term> workingTerms = new HashSet<Term>();
+
     @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name = "address_id", referencedColumnName = "addressId")
     private Address address;
@@ -39,6 +36,9 @@ public class Person {
     private String phoneNumber;
     @Column(name="school", unique=false, nullable=false)
     private String school;
+
+    @OneToMany(mappedBy = "termId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Term> donatingTerms = new HashSet<Term>();
 
     @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name = "person_description_id", referencedColumnName = "personDescriptionId")
@@ -69,14 +69,14 @@ public class Person {
         this.school = userDTO.getSchool();
     }
 
-    public Person(Integer personId, String name, PersonType personType, PersonGender personGender, String surname, Set<Term> donatingTerms, Set<Term> workingTerms, Address address, String uid, String phoneNumber, String school) {
+    public Person(Integer personId, String name, PersonType personType, PersonGender personGender, String surname, Address address, String uid, String phoneNumber, String school) {
         this.personId = personId;
         this.name = name;
         this.personType = personType;
         this.personGender = personGender;
         this.surname = surname;
-        this.donatingTerms = donatingTerms;
-        this.workingTerms = workingTerms;
+
+
         this.address = address;
         this.uid = uid;
         this.phoneNumber = phoneNumber;
@@ -113,13 +113,7 @@ public class Person {
         this.surname = surname;
     }
 
-    public void setDonatingTerms(Set<Term> donatingTerms) {
-        this.donatingTerms = donatingTerms;
-    }
 
-    public void setWorkingTerms(Set<Term> workingTerms) {
-        this.workingTerms = workingTerms;
-    }
 
     public void setAddress(Address address) {
         this.address = address;
@@ -158,13 +152,6 @@ public class Person {
         return surname;
     }
 
-    public Set<Term> getDonatingTerms() {
-        return donatingTerms;
-    }
-
-    public Set<Term> getWorkingTerms() {
-        return workingTerms;
-    }
 
     public Address getAddress() {
         return address;

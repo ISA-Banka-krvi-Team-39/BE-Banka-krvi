@@ -2,6 +2,7 @@ package app.center.dto;
 
 import app.center.model.Center;
 import app.center.model.Term;
+import app.patient.dto.PatientDTO;
 import app.person.model.Person;
 import app.person.dto.PersonDTO;
 
@@ -15,7 +16,7 @@ public class TermDTO {
     private LocalDateTime dateTime;
     private Set<Person> medicalStaffs = new HashSet<>();
 
-    private Set<PersonDTO> bloodDonors = new HashSet<>();
+    private PersonDTO bloodDonor;
     private Integer durationInMinutes;
 
     private CenterDTO center;
@@ -28,7 +29,7 @@ public class TermDTO {
     public TermDTO(Term term,Center center)
     {
         this.dateTime = term.getDateTime();
-        this.medicalStaffs = term.getMedicalStaffs();
+
         this.durationInMinutes = term.getDurationInMinutes();
         this.center = new CenterDTO(center);
     }
@@ -37,9 +38,7 @@ public class TermDTO {
     {
         this.termId = term.getTermId();
         this.dateTime = term.getDateTime();
-        for (Person person: term.getBloodDonors()){
-            this.bloodDonors.add(new PersonDTO(person));
-        }
+        this.bloodDonor = new PersonDTO(term.getBloodDonor());
         this.durationInMinutes = term.getDurationInMinutes();
         this.center = new CenterDTO(term.getCenter());
     }
@@ -54,14 +53,13 @@ public class TermDTO {
 
     public LocalDateTime getDateTime(){return dateTime;}
 
-    public Set<Person> getMedicalStaffs(){return medicalStaffs;}
-    public Set<PersonDTO> getBloodDonors(){return bloodDonors;}
+    public PersonDTO getBloodDonor(){return bloodDonor;}
     public Integer getDurationInMinutes(){return durationInMinutes;}
 
     public Integer getTermId(){return termId;}
 
     public void setDateTime(LocalDateTime dateTime){this.dateTime = dateTime; }
-    public void setMedicalStaffs(Set<Person> medicalStaffs){this.medicalStaffs = medicalStaffs;}
+
     public void setDurationInMinutes(Integer durationInMinutes){this.durationInMinutes = durationInMinutes;}
     public CenterDTO getCenter(){return center;}
     public void setCenter(CenterDTO center){this.center = center;}
