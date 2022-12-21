@@ -11,4 +11,5 @@ public interface IAppointmentService {
     Appointment findOneByAppointmentId(Integer id);
 
     Appointment create(Appointment appointment);
+    Appointment save(Appointment appointment);
 }

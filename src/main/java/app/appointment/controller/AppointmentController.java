@@ -97,7 +97,7 @@ public class AppointmentController {
             if(appointment.getAppointmentId().toString().equals(informationsDto.getAppointmentId()))
             {
                 appointment.setInformations(informations);
-                appointmentService.create(appointment);
+                appointmentService.save(appointment);
             }
         }
         return new ResponseEntity<InformationsDto>(informationsDto, HttpStatus.OK);
