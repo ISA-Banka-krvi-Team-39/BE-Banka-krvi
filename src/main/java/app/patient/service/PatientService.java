@@ -29,4 +29,6 @@ public class PatientService implements IPatientService{
     public Patient create(Patient patient) {
         return patientRepository.save(patient);
     }
+    @Override
+    public Patient save(Patient patient){ return patientRepository.save(patient);}
 }

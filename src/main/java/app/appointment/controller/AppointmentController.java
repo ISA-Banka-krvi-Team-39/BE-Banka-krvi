@@ -102,6 +102,19 @@ public class AppointmentController {
         }
         return new ResponseEntity<InformationsDto>(informationsDto, HttpStatus.OK);
     }
+    @Operation(summary = "Give penal", description = "Give penal", method="POST")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation",
+                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Patient.class))))
+    })
+    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+    @PostMapping(value="/penal/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Patient> givePenal(@Parameter(name="id", description = "ID of a appointment to return", required = true) @PathVariable("id") int id) {
+        Patient patient = patientService.findOne(id);
+        patient.setPenal(patient.getPenal() + 1);
+        patientService.save(patient);
+        return new ResponseEntity<Patient>(patient, HttpStatus.OK);
+    }
 
     @Operation(summary = "Cancel appointment", description = "Cancel appointment", method="POST")
     @ApiResponses(value = {
