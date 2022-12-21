@@ -17,26 +17,31 @@ values ('Srbija', 'Novi Sad', ' Kristijana', 34);
 insert into address (country, city, street_name, street_number)
 values ('Srbija', 'Beograd', ' Marka',42);
 
-insert into Person (name, surname, person_type, uid, phone_number,person_gender,school,address_id)
-values ('Marko', 'Marković',1,11111,019348657,0,'adsgdgaf',1);
 
-insert into Person (name, surname, person_type, uid, phone_number,person_gender,school,address_id)
-values ('Milan', 'Milanović',0,22222,34091857,1,'adsgdgaf',2);
 
-insert into Person (name, surname, person_type, uid, phone_number,person_gender,school,address_id)
-values ('Ivana', 'Ivanović',2,33333,03945867,2,'adsgdgaf',3);
+insert into person_description(antibiotics,infections,kilograms,month_period,pressure,sick,tatoo,tooth)
+values(false,false,70,false,false,false,false,false);
 
-insert into Person (name, surname, person_type, uid, phone_number,person_gender,school,address_id)
-values ('Ivan', 'Ivanović',1,44444,03945867,1,'adsgdgaf',4);
+insert into Person (name, surname, person_type, uid, phone_number,person_gender,school,address_id,person_description_id)
+values ('Marko', 'Marković',1,11111,019348657,0,'adsgdgaf',1,1);
 
-insert into Person (name, surname, person_type, uid, phone_number,person_gender,school,address_id)
-values ('Milana', 'Milanović',1,55555,34091857,1,'adsgdgaf',5);
+insert into Person (name, surname, person_type, uid, phone_number,person_gender,school,address_id,person_description_id)
+values ('Milan', 'Milanović',0,22222,34091857,1,'adsgdgaf',2,1);
 
-insert into Person (name, surname, person_type, uid, phone_number,person_gender,school,address_id)
-values ('Zorka', 'Marković',1,66666,019348657,0,'adsgdgaf',6);
+insert into Person (name, surname, person_type, uid, phone_number,person_gender,school,address_id,person_description_id)
+values ('Ivana', 'Ivanović',2,33333,03945867,2,'adsgdgaf',3,1);
 
-insert into Person (name, surname, person_type, uid, phone_number,person_gender,school,address_id)
-values ('Lenka', 'Milanović',0,77777,34091857,1,'adsgdgaf',7);
+insert into Person (name, surname, person_type, uid, phone_number,person_gender,school,address_id,person_description_id)
+values ('Ivan', 'Ivanović',1,44444,03945867,1,'adsgdgaf',4,1);
+
+insert into Person (name, surname, person_type, uid, phone_number,person_gender,school,address_id,person_description_id)
+values ('Milana', 'Milanović',1,55555,34091857,1,'adsgdgaf',5,1);
+
+insert into Person (name, surname, person_type, uid, phone_number,person_gender,school,address_id,person_description_id)
+values ('Zorka', 'Marković',1,66666,019348657,0,'adsgdgaf',6,1);
+
+insert into Person (name, surname, person_type, uid, phone_number,person_gender,school,address_id,person_description_id)
+values ('Lenka', 'Milanović',0,77777,34091857,1,'adsgdgaf',7,1);
 
 insert into user_table (email,password,person_id,enabled,last_password_reset_date,activation_code) values ('markovicmarko@gmail.com','$2a$10$weZMibSttAmFfa1aYJ9F.OxWNTH2hwNP8D/E5q4jSLnRcjZ3pg/QW',1,true,'2017-10-01 21:58:58.508-07','agfohiudagfd');
 insert into user_table (email,password,person_id,enabled,last_password_reset_date,activation_code) values ('milan@gmail.com','$2a$10$weZMibSttAmFfa1aYJ9F.OxWNTH2hwNP8D/E5q4jSLnRcjZ3pg/QW',2,true,'2017-10-01 21:58:58.508-07','zcvbkljnzvcbjknl');

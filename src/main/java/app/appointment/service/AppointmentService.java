@@ -15,4 +15,17 @@ public class AppointmentService implements IAppointmentService{
     public List<Appointment> findAll() {
         return appointmentRepository.findAll();
     }
+    public void forbidAppointment(Appointment appointment)
+    {
+        appointment.setStarted(false);
+        appointmentRepository.save(appointment);
+    }
+    public Appointment findOneByAppointmentId(Integer id)
+    {
+        return appointmentRepository.findOneByAppointmentId(id);
+    }
+    public Appointment create(Appointment appointment)
+    {
+        return appointmentRepository.save(appointment);
+    }
 }

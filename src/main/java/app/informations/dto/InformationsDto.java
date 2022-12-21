@@ -1,79 +1,49 @@
-package app.informations.model;
+package app.informations.dto;
 
-import app.informations.dto.InformationsDto;
-import app.person.model.Person;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
-import javax.persistence.*;
-@Entity
-public class Informations {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class InformationsDto {
+
     private Integer informationsId;
-
-    @Column(name="bloodType", nullable=false)
     private String bloodType;
-
-    @Column(name="note", nullable=false)
     private String note;
 
 //    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 //    @JoinColumn(name = "person_id", referencedColumnName = "personId")
 //    private Person personFilled;
 
-    @Column(name="bakar_sulfat", nullable=false)
     private String bakarSulfat;
 
-    @Column(name="hemoglobin", nullable=false)
     private String hemoglobin;
 
-    @Column(name="lungs", nullable=false)
     private String lungs;
 
-    @Column(name="heart", nullable=false)
     private String heart;
 
-    @Column(name="bagType", nullable=false)
     private String bag;
 
-    @Column(name="accepted", nullable=false)
     private boolean accepted;
 
-    @Column(name="reason", nullable=false)
     private String reason;
 
-    @Column(name="start_at", nullable=false)
     private String startAt;
 
-    @Column(name="end_at", nullable=false)
     private String endAt;
 
+    private String appointmentId;
 
 
-    public Informations()
+    public InformationsDto()
     {
 
     }
 
-    public Informations(InformationsDto informationsDto)
-    {
-        this.informationsId = informationsDto.getInformationsId();
-        this.bloodType = informationsDto.getBloodType();
-        this.note = informationsDto.getNote();
-        this.bakarSulfat = informationsDto.getBakarSulfat();
-        this.hemoglobin = informationsDto.getHemoglobin();
-        this.lungs = informationsDto.getLungs();
-        this.heart = informationsDto.getHeart();
-        this.bag = informationsDto.getBag();
-        this.accepted = informationsDto.isAccepted();
-        this.reason = informationsDto.getReason();
-        this.startAt = informationsDto.getStartAt();
-        this.endAt = informationsDto.getEndAt();
-
-    }
-
-    public Informations(Integer informationsId, String bloodType,String note, String bakarSulfat,
+    public InformationsDto(Integer informationsId, String bloodType,String note, String bakarSulfat,
                         String hemoglobin,String lungs, String heart, String bag,boolean accepted,String reason,
-                        String startAt,String endAt)
+                        String startAt,String endAt,String appointmentId)
     {
         this.informationsId = informationsId;
         this.bloodType = bloodType;
@@ -88,10 +58,11 @@ public class Informations {
         this.reason = reason;
         this.startAt = startAt;
         this.endAt = endAt;
+        this.appointmentId = appointmentId;
     }
-    public Informations(String bloodType,String note, String bakarSulfat,
+    public InformationsDto(String bloodType,String note, String bakarSulfat,
                         String hemoglobin,String lungs, String heart, String bag,boolean accepted,String reason,
-                        String startAt,String endAt)
+                        String startAt,String endAt,String appointmentId)
     {   this.bloodType = bloodType;
         this.note = note;
         //this.personFilled = personFilled;
@@ -104,6 +75,7 @@ public class Informations {
         this.reason = reason;
         this.startAt = startAt;
         this.endAt = endAt;
+        this.appointmentId = appointmentId;
     }
 
     public String getEndAt() {
@@ -161,4 +133,6 @@ public class Informations {
     public String getNote() {
         return note;
     }
+
+    public String getAppointmentId() { return appointmentId; }
 }
