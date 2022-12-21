@@ -9,8 +9,8 @@ import javax.persistence.*;
 public class AppointmentDTO {
 
     private Integer appointmentId;
-    private Term term;
-    private Person person;
+    private Integer termId;
+    private Integer personId;
     private boolean started;
 
     public AppointmentDTO()
@@ -18,32 +18,32 @@ public class AppointmentDTO {
 
     }
 
-    public AppointmentDTO(Integer appointmentId,Term term, Person person,boolean started)
+    public AppointmentDTO(Integer appointmentId,Integer termId, Integer personId,boolean started)
     {
         this.appointmentId = appointmentId;
-        this.term = term;
-        this.person = person;
+        this.termId = termId;
+        this.personId = personId;
         this.started = started;
     }
 
     public AppointmentDTO(Appointment appointment)
     {
         this.appointmentId = appointment.getAppointmentId();
-        this.term = appointment.getTerm();
-        this.person = appointment.getPerson();
+        this.termId = appointment.getTerm().getTermId();
+        this.personId = appointment.getPerson().getPersonId();
         this.started = appointment.getStarted();
     }
 
     public Integer getAppointmentId() {
         return appointmentId;
     }
-    public Person getPerson()
+    public Integer getPersonId()
     {
-        return person;
+        return personId;
     }
-    public Term getTerm()
+    public Integer getTermId()
     {
-        return term;
+        return termId;
     }
     public boolean getStarted()
     {
