@@ -13,11 +13,10 @@ public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer patientId;
-
     @OneToOne
     @JoinColumn(name = "personId")
     private Person person;
-
+    
     @OneToMany
     @JoinColumn(name="patient_id")
     private Set<Appointment> appointments = new HashSet<>();

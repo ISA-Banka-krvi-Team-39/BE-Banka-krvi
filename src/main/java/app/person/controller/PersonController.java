@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -43,7 +44,8 @@ public class PersonController {
     private IUserService userService;
     @Autowired
     private ITermService termService;
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Autowired
     private IAppointmentService appointmentService;
     
@@ -71,8 +73,9 @@ public class PersonController {
     @GetMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GetPersonForProfileDTO> getOne(@Parameter(name="id", description = "ID of a person to return", required = true) @PathVariable("id") int id) {
         User user = userService.findOne(id);
+        user.setPassword("");
         Person person = personService.findOne(id);
-        Patient patient = patientService.findOne(user.getPerson().getPersonId());
+        Patient patient = patientService.findOneByPersonId(id);
         List<Appointment> appointments = appointmentService.findAll();
         GetPersonForProfileDTO getPersonForProfileDTO = new GetPersonForProfileDTO(user,patient);
         return new ResponseEntity<GetPersonForProfileDTO>(getPersonForProfileDTO, HttpStatus.OK);
@@ -98,6 +101,7 @@ public class PersonController {
     public HttpStatus updateUserAndPerson(@Parameter(name="id", description = "ID of a person to return", required = true) @PathVariable("id") int id, @RequestBody UpdateUserDTO updateUserDTO ) {
         User user = userService.findOne(id);
         user.updateUser(updateUserDTO);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.update(user);
         personService.update(user.getPerson());
         return HttpStatus.OK;
@@ -112,7 +116,7 @@ public class PersonController {
     @PutMapping(value="/landing/{id}",consumes = "application/json")
     public HttpStatus updateAdminPassword(@Parameter(name="id", description = "ID of a person to return", required = true) @PathVariable("id") int id, @RequestBody UpdateUserDTO updateUserDTO ) {
         User user = userService.findOne(id);
-        user.setPassword(updateUserDTO.getPassword());
+        user.setPassword(passwordEncoder.encode(updateUserDTO.getPassword()));
         userService.update(user);
         personService.update(user.getPerson());
         return HttpStatus.OK;
