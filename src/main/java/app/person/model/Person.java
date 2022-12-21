@@ -39,6 +39,10 @@ public class Person {
     private String phoneNumber;
     @Column(name="school", unique=false, nullable=false)
     private String school;
+
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinColumn(name = "person_description_id", referencedColumnName = "personDescriptionId")
+    private PersonDescription personDescription;
     
     public Person() {
     }
