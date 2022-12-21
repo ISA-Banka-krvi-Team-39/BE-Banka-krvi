@@ -59,29 +59,29 @@ insert into Patient (points,person_id,blood_type)
 values (400,7,2);
 
 
-insert into Center (avg_grade, description, name, address_id)
-values (2.53,'Osrednji centar','Centar1',1);
+insert into Center (avg_grade, description, name, address_id,start_working_hours,end_working_hours)
+values (2.53,'Osrednji centar','Centar1',1,'09:00:00','20:00:00');
 
-insert into Center (avg_grade, description, name, address_id)
-values (3.55,'Dobar centar','Centar2',2);
+insert into Center (avg_grade, description, name, address_id,start_working_hours,end_working_hours)
+values (3.55,'Dobar centar','Centar2',2,'09:00:00','20:00:00');
 
-insert into Center (avg_grade, description, name, address_id)
-values (4.5,'Izuzetan centar','Centar3',3);
+insert into Center (avg_grade, description, name, address_id,start_working_hours,end_working_hours)
+values (4.5,'Izuzetan centar','Centar3',3,'09:00:00','20:00:00');
 
-insert into Center (avg_grade, description, name, address_id)
-values (2.9,'Malo bolji centar','Centar4',4);
+insert into Center (avg_grade, description, name, address_id,start_working_hours,end_working_hours)
+values (2.9,'Malo bolji centar','Centar4',4,'09:00:00','20:00:00');
 
-insert into Center (avg_grade, description, name, address_id)
-values (3.3,'Malo gori malo bolji centar','Centar5',5);
+insert into Center (avg_grade, description, name, address_id,start_working_hours,end_working_hours)
+values (3.3,'Malo gori malo bolji centar','Centar5',5,'09:00:00','20:00:00');
 
-insert into Center (avg_grade, description, name, address_id)
-values (4.2,'Jako dobar centar','Centar6',6);
+insert into Center (avg_grade, description, name, address_id,start_working_hours,end_working_hours)
+values (4.2,'Jako dobar centar','Centar6',6,'09:00:00','20:00:00');
 
-insert into Center (avg_grade, description, name, address_id)
-values (1.3,'Jako los centar','Centar7',7);
+insert into Center (avg_grade, description, name, address_id,start_working_hours,end_working_hours)
+values (1.3,'Jako los centar','Centar7',7,'09:00:00','20:00:00');
 
-insert into Center (avg_grade, description, name, address_id)
-values (5.0,'adsgdgaf','Centar',8);
+insert into Center (avg_grade, description, name, address_id,start_working_hours,end_working_hours)
+values (5.0,'adsgdgaf','Centar',8,'09:00:00','20:00:00');
 
 insert into Medical_Staff (person_id,center_id)
 values (4,1);
