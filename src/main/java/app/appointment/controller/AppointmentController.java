@@ -108,11 +108,20 @@ public class AppointmentController {
                     content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Patient.class))))
     })
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
-    @PostMapping(value="/penal/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Patient> givePenal(@Parameter(name="id", description = "ID of a appointment to return", required = true) @PathVariable("id") int id) {
-        Patient patient = patientService.findOne(id);
-        patient.setPenal(patient.getPenal() + 1);
-        patientService.save(patient);
+    @PostMapping(value="/penal", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Patient> givePenal(@RequestBody AppointmentDTO appointmentDTO) {
+        Patient patient = null;
+        for(Patient pat : patientService.findAll())
+        {
+            if(pat.getPerson().getPersonId() == appointmentDTO.getPersonId())
+            {
+                patient = patientService.findOne(pat.getPatientId());
+                patient.setPenal(patient.getPenal() + 1);
+                patientService.save(patient);
+            }
+
+        }
+
         return new ResponseEntity<Patient>(patient, HttpStatus.OK);
     }
 

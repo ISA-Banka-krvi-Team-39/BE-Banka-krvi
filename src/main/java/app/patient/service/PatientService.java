@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import javax.validation.constraints.Email;
+import java.util.List;
 
 @Service
 public class PatientService implements IPatientService{
@@ -28,6 +29,10 @@ public class PatientService implements IPatientService{
     @Override
     public Patient create(Patient patient) {
         return patientRepository.save(patient);
+    }
+    @Override
+    public List<Patient> findAll() {
+        return patientRepository.findAll();
     }
     @Override
     public Patient save(Patient patient){ return patientRepository.save(patient);}
