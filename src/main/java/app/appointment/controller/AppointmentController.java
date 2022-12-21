@@ -80,4 +80,5 @@ public class AppointmentController {
     public ResponseEntity<Informations> createInformations(@RequestBody Informations informations) {
         return new ResponseEntity<Informations>(informations, HttpStatus.OK);
     }
+
 }

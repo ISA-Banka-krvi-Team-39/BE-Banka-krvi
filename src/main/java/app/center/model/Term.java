@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -43,7 +42,7 @@ public class Term {
     {
     }
 
-    public Term(TermDTO termDTO,Center center)
+    public Term(TermDTO termDTO, Center center)
     {
         this.dateTime = termDTO.getDateTime();
         this.maximumSpace = 20;
@@ -53,8 +52,7 @@ public class Term {
         this.durationInMinutes = termDTO.getDurationInMinutes();
     }
 
-    public Term(Integer termId, LocalDateTime dateTime, Integer maximumSpace, Set<Person> medicalStaffs, Set<Person> bloodDonors, Center center, Integer durationInMinutes) {
-        this.termId = termId;
+    public Term(LocalDateTime dateTime, Integer maximumSpace, Set<Person> medicalStaffs, Set<Person> bloodDonors, Center center, Integer durationInMinutes) {
         this.dateTime = dateTime;
         this.maximumSpace = maximumSpace;
         this.medicalStaffs = medicalStaffs;

@@ -18,7 +18,7 @@ public class Appointment {
     @JoinColumn(name = "term_id", referencedColumnName = "termId")
     private Term term;
 
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name = "person_id", referencedColumnName = "personId")
     private Person person;
 

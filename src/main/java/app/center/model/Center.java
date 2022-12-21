@@ -5,6 +5,7 @@ import app.medical_staff.model.MedicalStaff;
 import app.shared.model.Address;
 
 import javax.persistence.*;
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -26,6 +27,12 @@ public class Center {
     @Column(name="description", unique=false, nullable=false)
     private String description;
 
+    @Column(name="startWorkingHours", unique=false, nullable=false)
+    private LocalTime startWorkingHours;
+
+    @Column(name="endWorkingHours", unique=false, nullable=false)
+    private LocalTime endWorkingHours;
+
     @Column(name="avg_grade", unique=false, nullable=false)
     private Float avgGrade;
 
@@ -42,7 +49,7 @@ public class Center {
     {
     }
 
-    public Center(Integer centerId, String name, Address address, String description, Float avg_grade, Set<Term> terms, Set<MedicalStaff> workingMedicalStaff) {
+    public Center(Integer centerId, String name, Address address, String description, Float avg_grade, Set<Term> terms, Set<MedicalStaff> workingMedicalStaff, LocalTime startWorkingHours, LocalTime endWorkingHours) {
         this.centerId = centerId;
         this.name = name;
         this.address = address;
@@ -50,6 +57,7 @@ public class Center {
         this.avgGrade = avg_grade;
         this.terms = terms;
         this.workingMedicalStaff = workingMedicalStaff;
+        this.startWorkingHours = startWorkingHours;
     }
 
     public Center(CreateCenterDTO centerDTO) {
@@ -125,5 +133,29 @@ public class Center {
 
     public Set<MedicalStaff> getWorkingMedicalStaff() {
         return workingMedicalStaff;
+    }
+
+    public LocalTime getStartWorkingHours() {
+        return startWorkingHours;
+    }
+
+    public void setStartWorkingHours(LocalTime startWorkingHours) {
+        this.startWorkingHours = startWorkingHours;
+    }
+
+    public LocalTime getEndWorkingHours() {
+        return endWorkingHours;
+    }
+
+    public void setEndWorkingHours(LocalTime endWorkingHours) {
+        this.endWorkingHours = endWorkingHours;
+    }
+
+    public Set<BloodBag> getBloodBags() {
+        return bloodBags;
+    }
+
+    public void setBloodBags(Set<BloodBag> bloodBags) {
+        this.bloodBags = bloodBags;
     }
 }

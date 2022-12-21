@@ -1,8 +1,12 @@
 package app.patient.model;
 
+import app.appointment.model.Appointment;
 import app.person.model.Person;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 public class Patient {
 
@@ -14,6 +18,9 @@ public class Patient {
     @JoinColumn(name = "personId")
     private Person person;
 
+    @OneToMany
+    @JoinColumn(name="patient_id")
+    private Set<Appointment> appointments = new HashSet<>();
     @Column(name="bloodType", unique=false, nullable=false)
     private BloodType bloodType;
     
