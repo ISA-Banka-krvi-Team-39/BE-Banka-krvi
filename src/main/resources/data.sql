@@ -92,32 +92,18 @@ values (1,1);
 insert into Medical_Staff (person_id,center_id)
 values (5,1);
 
-insert into Term (date_time, duration_in_minutes,maximum_space, center_id)
-values (now(),20,20,1);
+insert into Term (date_time, duration_in_minutes,maximum_space, center_id,person_id)
+values (now(),20,20,1,1);
 
-insert into Term (date_time, duration_in_minutes,maximum_space, center_id)
-values (now(),20,20,1);
+insert into Term (date_time, duration_in_minutes,maximum_space, center_id,person_id)
+values (now(),20,20,1,7);
 
-insert into Term (date_time, duration_in_minutes,maximum_space, center_id)
-values (now(),20,20,1);
+insert into Term (date_time, duration_in_minutes,maximum_space, center_id,person_id)
+values (now(),20,20,1,1);
 
-insert into Term (date_time, duration_in_minutes,maximum_space, center_id)
-values (now(),20,20,1);
+insert into Term (date_time, duration_in_minutes,maximum_space, center_id,person_id)
+values (now(),20,20,1,7);
 
-insert into Donating(term_id,person_id)
-values (2,1);
-
-insert into Donating(term_id,person_id)
-values (5,2);
-
-insert into Donating(term_id,person_id)
-values (4,3);
-
-insert into Donating(term_id,person_id)
-values (6,4);
-
-insert into Oversees (term_id,person_id)
-values (4,1);
 
 insert into Question (question) 
 values ('Have you ever donated blood or blood components voluntarily?');
