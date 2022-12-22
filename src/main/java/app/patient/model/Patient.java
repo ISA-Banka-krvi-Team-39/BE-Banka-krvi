@@ -32,13 +32,13 @@ public class Patient {
     private Integer penal;
 
     public Patient() {
-
     }
 
     public Patient(Person person, Integer points,BloodType bloodType) {
         this.person = person;
         this.points = points;
         this.bloodType = bloodType;
+        this.penal = 0;
     }
     public Patient(Person person, Integer points,BloodType bloodType,Integer penal) {
         this.person = person;
