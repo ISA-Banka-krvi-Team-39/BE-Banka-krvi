@@ -56,7 +56,7 @@ public class TermService implements ITermService {
 
     @Override
     public boolean checkTerm(LocalDateTime date,int duration) {
-        if(date.compareTo(LocalDateTime.now()) < 0) return false;
+        if(date.compareTo(LocalDateTime.now().plusDays(1)) < 0) return false;
         for(Term term : termRepository.getTermsForDate(date.plusDays(-1),date.plusDays(1)))
         {
             if((date.compareTo(term.getDateTime()) > 0 && date.compareTo(term.getDateTime().plusMinutes(term.getDurationInMinutes())) < 0)

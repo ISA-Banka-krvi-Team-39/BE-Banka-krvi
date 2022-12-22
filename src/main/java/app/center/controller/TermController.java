@@ -79,9 +79,9 @@ public class TermController {
     @PostMapping(value="/createTerm",consumes = "application/json")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     public ResponseEntity<String> createTerm(@RequestBody CreateTermDTO createTermDTO) {
-            if (!termService.checkTerm(createTermDTO.getDateTime(),createTermDTO.getDurationInMinutes())) return new ResponseEntity<String>("You cant schadule this term check calendar for free termins!",HttpStatus.FORBIDDEN);
+            if (!termService.checkTerm(createTermDTO.getDateTime(),createTermDTO.getDurationInMinutes())) return new ResponseEntity<String>("404",HttpStatus.OK);
             termService.create(createTermDTO.MapToModel(medicalStaffService.findOneByPersonId(createTermDTO.getManagerId()).getWorkingCenter(),personService.findOne(createTermDTO.getMedicalStaffId())));
-            return new ResponseEntity<String>("Success!",HttpStatus.OK);
+            return new ResponseEntity<String>("200",HttpStatus.OK);
     }
 
     @Operation(summary = "Get term by id", description = "Get term by id", method="GET")
