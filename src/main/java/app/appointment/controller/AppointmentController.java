@@ -189,18 +189,16 @@ public class AppointmentController {
     @PreAuthorize("hasRole('ADMIN')")
     @CrossOrigin(origins = "*", maxAge = 3600)
     @PostMapping(value="/cancel", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Appointment> forbidAppointment(@RequestBody AppointmentDTO appointmentDTO) {
+    public ResponseEntity<Boolean> forbidAppointment(@RequestBody AppointmentDTO appointmentDTO) {
 
         System.out.println(appointmentDTO.getAppointmentId() + " " + appointmentDTO.getPersonId() + " " + appointmentDTO.getTermId());
         Appointment appointment = null;
-        if(appointmentDTO != null)
-            appointment = appointmentService.findOneByAppointmentId(appointmentDTO.getAppointmentId());
+        appointment = appointmentService.findOneByAppointmentId(appointmentDTO.getAppointmentId());
         if(appointment == null) {
             appointment = new Appointment(appointmentDTO.getAppointmentId(), termService.findOne(appointmentDTO.getTermId()), personService.findOne(appointmentDTO.getPersonId()), true);
-            appointmentService.forbidAppointment(appointment);
-
+        appointmentService.forbidAppointment(appointment);
         }
-        return new ResponseEntity<>(appointment, HttpStatus.OK);
+        return new ResponseEntity<>(true, HttpStatus.OK);
     }
     @Operation(summary = "Create appointment", description = "Create appointment", method="POST")
     @ApiResponses(value = {
