@@ -6,8 +6,13 @@ import app.appointment.model.Appointment;
 import app.appointment.service.IAppointmentService;
 import app.center.dto.CenterDTO;
 import app.center.dto.CreateCenterDTO;
+import app.center.model.BloodBag;
+import app.center.model.Equipment;
 import app.center.model.State;
 import app.center.model.Term;
+import app.center.service.EquipmentService;
+import app.center.service.IBloodBagService;
+import app.center.service.IEquipmentService;
 import app.center.service.ITermService;
 import app.informations.dto.InformationsDto;
 import app.informations.model.Informations;
@@ -60,6 +65,12 @@ public class AppointmentController {
     @Autowired
     private IPersonDescriptionService personDescriptionService;
 
+    @Autowired
+    private IBloodBagService bloodBagService;
+
+    @Autowired
+    private IEquipmentService equipmentService;
+
     @Operation(summary = "Get one appointment", description = "Get one appointment", method="GET")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation",
@@ -95,15 +106,36 @@ public class AppointmentController {
     public ResponseEntity<InformationsDto> createInformations(@RequestBody InformationsDto informationsDto) {
         Informations informations = new Informations(informationsDto);
         informationService.create(informations);
-        System.out.println(informationsDto.getAppointmentId() + " eo app id");
+        Appointment appo = null;
+        String appid = informationsDto.getAppointmentId();
+
         for(Appointment appointment : appointmentService.findAll())
         {
             if(appointment.getAppointmentId().toString().equals(informationsDto.getAppointmentId()))
             {
+                appo = appointment;
                 appointment.setInformations(informations);
                 appointmentService.save(appointment);
             }
         }
+
+        if(appo != null) {
+            appo = appointmentService.findOneByAppointmentId(Integer.parseInt(informationsDto.getAppointmentId()));
+            int patid = patientService.findOneByPersonId(appo.getPerson().getPersonId()).getPatientId();
+            List<BloodBag> bloodBags = bloodBagService.getAll();
+            for (BloodBag b : bloodBags) {
+                if (b.getBloodType().toString().equals(informations.getBloodType().toString())) {
+                    b.setAmount(b.getAmount() + 1);
+                    bloodBagService.save(b);
+                }
+            }
+        }
+        for(Equipment e : equipmentService.getAll())
+        {
+            e.setAmount(e.getAmount() - 1);
+            equipmentService.save(e);
+        }
+
         return new ResponseEntity<InformationsDto>(informationsDto, HttpStatus.OK);
     }
     @Operation(summary = "Give penal", description = "Give penal", method="POST")
@@ -159,15 +191,18 @@ public class AppointmentController {
     @CrossOrigin(origins = "*", maxAge = 3600)
     @PostMapping(value="/create", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AppointmentDTO> createAppointment(@RequestBody AppointmentDTO appointmentDTO) {
-
+        int patid = -1;
         Appointment appointment = null;
         Appointment appointmentWithId = null;
-        if(appointmentDTO != null)
+        if(appointmentDTO != null) {
             appointment = appointmentService.findOneByAppointmentId(appointmentDTO.getAppointmentId());
+        }
         if(appointment == null) {
             appointment = new Appointment(appointmentDTO.getAppointmentId(), termService.findOne(appointmentDTO.getTermId()), personService.findOne(appointmentDTO.getPersonId()), true);
+            patid = patientService.findOneByPersonId(appointment.getPerson().getPersonId()).getPatientId();
             appointmentWithId = appointmentService.create(appointment);
         }
+
         Term term = appointment.getTerm();
         term.setState(State.DONE);
         Informations info = new Informations("","","","","","","",false,"","","");
