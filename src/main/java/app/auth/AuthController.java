@@ -142,11 +142,11 @@ public class AuthController {
         try {
             Person person = new Person(userDTO);
             Person createdPerson = personService.create(person);
-            Role role = roleService.findByName("ROLE_USER").get(0);
+            Role role = roleService.findByName("ROLE_ADMIN").get(0);
             User user = new User(userDTO, createdPerson,role);
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             SystemAdmin admin = new SystemAdmin(createdPerson, false);
-
+            userService.create(user);
             systemAdminService.create(admin);
             EmailDetails emailDetails = new EmailDetails();
             emailDetails.setRecipient(userDTO.getEmail());
