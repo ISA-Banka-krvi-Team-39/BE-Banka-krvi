@@ -143,14 +143,18 @@ public class AuthController {
             Person createdPerson = personService.create(person);
             Role role = roleService.findByName("ROLE_ADMIN").get(0);
             User user = new User(userDTO, createdPerson,role);
-            user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+
+            String password = user.getPassword();
+            user.setPassword(passwordEncoder.encode(password));
+
             SystemAdmin admin = new SystemAdmin(createdPerson, false);
             userService.create(user);
             systemAdminService.create(admin);
             EmailDetails emailDetails = new EmailDetails();
             emailDetails.setRecipient(userDTO.getEmail());
             emailDetails.setMsgBody("Welcome to our blood bank!<br/>" +
-                    "You can <a href=\"http://localhost:3000/auth/activation/"+ user.getActivationCode() +"\">Activate your account here!<a/></h2> <br/>");
+                    "You can <a href=\"http://localhost:3000/auth/activation/"+ user.getActivationCode() +"\">Activate your account here!<a/></h2> <br/>"+
+                    "This is your password: "+password+". Change it after your first login!<a/></h2> <br/>");
             emailDetails.setSubject("Welcome email from blood bank team 39");
             emailService.sendWelcomeMail(emailDetails);
         }catch (Exception e){
