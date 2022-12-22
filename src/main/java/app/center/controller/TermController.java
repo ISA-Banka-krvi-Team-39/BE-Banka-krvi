@@ -1,13 +1,18 @@
 package app.center.controller;
 
 import app.center.dto.CenterWithoutPersonsDTO;
+import app.center.dto.CreateCenterDTO;
 import app.center.dto.TermDTO;
 import app.center.model.Center;
+import app.center.model.State;
 import app.center.model.Term;
 import app.center.service.CenterService;
+import app.center.service.ICenterService;
+import app.center.service.ITermService;
 import app.center.service.TermService;
 import app.person.dto.PersonDTO;
 import app.person.model.Person;
+import app.person.service.IPersonService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -35,13 +40,12 @@ import java.util.List;
 @RequestMapping(value = "/api/term")
 public class TermController {
     @Autowired
-    private TermService termService;
-
+    private ITermService termService;
     @Autowired
-    private CenterService centerService;
-
-
-
+    private ICenterService centerService;
+    @Autowired
+    private IPersonService personService;
+    
     @Operation(summary = "Put Term", description = "Put Term", method="POST")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation",
@@ -82,15 +86,45 @@ public class TermController {
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
     @GetMapping(value = "/all",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<TermDTO>> getAll() {
-
         List<Term> terms = termService.getAll();
         List<TermDTO> termsDTO = new ArrayList<>();
         for(Term term : terms){
-
             termsDTO.add(new TermDTO(term));
         }
-
         return new ResponseEntity<>(termsDTO, HttpStatus.OK);
     }
-
+    @Operation(summary = "Get all terms", description = "Get all terms", method="GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation",
+                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Term.class))))
+    })
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+    @GetMapping(value = "/all/free",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<TermDTO>> getAllFree() {
+        List<Term> terms = termService.getAllFree();
+        List<TermDTO> termsDTO = new ArrayList<>();
+        for(Term term : terms) {
+            termsDTO.add(new TermDTO(term));
+        }
+        return new ResponseEntity<>(termsDTO, HttpStatus.OK);
+    }
+    @Operation(summary = "Schedule term", description = "Get all terms", method="GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation",
+                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Term.class))))
+    })
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+    @PutMapping(value = "/schedule/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> scheduleTerm(@RequestBody TermDTO termDTO, @PathVariable("id") int personId) throws Exception {
+        if(!termService.canPatientDonate(personId))
+            throw new Exception("This patient cant donate");
+        Term term = termService.findOne(termDTO.getTermId());
+        Person person = personService.findOne(personId);
+        term.setState(State.PENDING);
+        term.setBloodDonors(person);
+        termService.save(term);
+        return new ResponseEntity<>(true, HttpStatus.OK);
+    }
 }

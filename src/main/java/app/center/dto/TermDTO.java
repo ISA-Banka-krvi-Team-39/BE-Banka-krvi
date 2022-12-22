@@ -37,6 +37,10 @@ public class TermDTO {
     {
         this.termId = term.getTermId();
         this.dateTime = term.getDateTime();
+        if (term.getBloodDonor() == null)
+        {
+            term.setBloodDonors(new Person());
+        }
         this.bloodDonor = new PersonDTO(term.getBloodDonor());
         this.durationInMinutes = term.getDurationInMinutes();
         this.center = new CenterDTO(term.getCenter());

@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class QuestionnaireDTO {
-    @NotNull(message = "PatientId is mandatory")
-    private Integer patientId;
+    @NotNull(message = "PersonId is mandatory")
+    private Integer personId;
     @NotNull(message = "Answers are mandatory")
     private List<AnswerDTO> answers;
 
@@ -15,27 +15,27 @@ public class QuestionnaireDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         QuestionnaireDTO that = (QuestionnaireDTO) o;
-        return Objects.equals(patientId, that.patientId) && Objects.equals(answers, that.answers);
+        return Objects.equals(personId, that.personId) && Objects.equals(answers, that.answers);
     }
 
     public QuestionnaireDTO() {
     }
 
-    public QuestionnaireDTO(Integer patientId, List<AnswerDTO> answers) {
-        this.patientId = patientId;
+    public QuestionnaireDTO(Integer personId, List<AnswerDTO> answers) {
+        this.personId = personId;
         this.answers = answers;
     }
 
-    public void setPatientId(Integer patientId) {
-        this.patientId = patientId;
+    public void setPersonId(Integer personId) {
+        this.personId = personId;
     }
 
     public void setAnswers(List<AnswerDTO> answers) {
         this.answers = answers;
     }
 
-    public Integer getPatientId() {
-        return patientId;
+    public Integer getPersonId() {
+        return personId;
     }
 
     public List<AnswerDTO> getAnswers() {

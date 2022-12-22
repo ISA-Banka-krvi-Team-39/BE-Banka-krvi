@@ -24,10 +24,12 @@ public class Term {
     
     @Column(name = "maximumSpace" )
     private Integer maximumSpace;
-
+    
+    @Column(name = "state" )
+    private State state;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "person_id")
+    @JoinColumn(name = "person_id",nullable = true)
     private Person bloodDonor;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -44,7 +46,7 @@ public class Term {
     public Term(TermDTO termDTO, Center center)
     {
         this.dateTime = termDTO.getDateTime();
-        this.maximumSpace = 20;
+        this.maximumSpace = 1;
 
         this.bloodDonor = bloodDonor;
         this.center = center;
@@ -68,6 +70,10 @@ public class Term {
         return Objects.equals(termId, term.termId) && Objects.equals(dateTime, term.dateTime) && Objects.equals(maximumSpace, term.maximumSpace)  && Objects.equals(bloodDonor, term.bloodDonor) && Objects.equals(center, term.center) && Objects.equals(durationInMinutes, term.durationInMinutes);
     }
 
+    public State getState() { return state; }
+
+    public void setState(State state) { this.state = state; }
+
     public void setTermId(Integer termId) {
         this.termId = termId;
     }
@@ -79,9 +85,7 @@ public class Term {
     public void setMaximumSpace(Integer maximumSpace) {
         this.maximumSpace = maximumSpace;
     }
-
-
-
+    
     public void setBloodDonors(Person bloodDonor) {
         this.bloodDonor = bloodDonor;
     }
@@ -105,12 +109,10 @@ public class Term {
     public Integer getMaximumSpace() {
         return maximumSpace;
     }
-
-
+    
     public Person getBloodDonor() {
         return bloodDonor;
     }
-
     public Center getCenter() {
         return center;
     }

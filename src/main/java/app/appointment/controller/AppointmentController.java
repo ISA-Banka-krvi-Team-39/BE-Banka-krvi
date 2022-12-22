@@ -6,6 +6,7 @@ import app.appointment.model.Appointment;
 import app.appointment.service.IAppointmentService;
 import app.center.dto.CenterDTO;
 import app.center.dto.CreateCenterDTO;
+import app.center.model.State;
 import app.center.model.Term;
 import app.center.service.ITermService;
 import app.informations.dto.InformationsDto;
@@ -123,7 +124,6 @@ public class AppointmentController {
                 patient.setPenal(patient.getPenal() + 1);
                 patientService.save(patient);
             }
-
         }
 
         return new ResponseEntity<Patient>(patient, HttpStatus.OK);
@@ -168,7 +168,8 @@ public class AppointmentController {
             appointment = new Appointment(appointmentDTO.getAppointmentId(), termService.findOne(appointmentDTO.getTermId()), personService.findOne(appointmentDTO.getPersonId()), true);
             appointmentWithId = appointmentService.create(appointment);
         }
-        System.out.println(appointmentWithId.getAppointmentId() + " eo id app");
+        Term term = appointment.getTerm();
+        term.setState(State.DONE);
         Informations info = new Informations("","","","","","","",false,"","","");
         informationService.create(info);
         AppointmentDTO apDto = new AppointmentDTO(appointmentWithId.getAppointmentId(),appointmentWithId.getTerm().getTermId(),appointmentWithId.getPerson().getPersonId(),appointmentWithId.getStarted());

@@ -9,7 +9,10 @@ import app.patient.service.IPatientService;
 import app.person.model.Person;
 import app.person.service.IPersonService;
 import app.user.dto.CreateUserDTO;
+import app.user.model.Role;
 import app.user.model.User;
+import app.user.service.IRoleService;
+import app.user.service.RoleService;
 import app.user.service.UserService;
 import app.util.TokenUtils;
 import io.swagger.v3.oas.annotations.Operation;
@@ -54,6 +57,8 @@ public class AuthController {
     private IEmailService emailService;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private IRoleService roleService;
 
     @Operation(summary = "Login user", description = "Login user", method = "POST")
     @ApiResponses(value = {
@@ -91,8 +96,8 @@ public class AuthController {
         try {
             Person person = new Person(userDTO);
             Person createdPerson = personService.create(person);
-
-            User user = new User(userDTO, createdPerson);
+            Role role = roleService.findByName("ROLE_USER").get(0);
+            User user = new User(userDTO, createdPerson,role);
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             Patient patient = new Patient(createdPerson, 0,userDTO.getBloodType());
 

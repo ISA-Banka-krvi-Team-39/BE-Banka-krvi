@@ -1,6 +1,7 @@
 package app.center.service;
 
 import app.center.model.Term;
+import app.patient.model.Patient;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
@@ -8,7 +9,8 @@ import java.util.List;
 public interface ITermService {
     public Term create(Term term);
     public Term findOne(Integer id);
-
     public List<Term> getAll();
-
+    public List<Term> getAllFree();
+    public Boolean canPatientDonate(int personId);
+    public Term save(Term term);
 }
