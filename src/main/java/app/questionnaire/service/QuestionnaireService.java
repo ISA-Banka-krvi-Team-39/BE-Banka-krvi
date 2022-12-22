@@ -30,7 +30,10 @@ public class QuestionnaireService implements IQuestionnaireService {
     public Question findOneQuestion(Integer questionId) {
         return questionRepository.findOneByQuestionId(questionId);
     }
-
+    @Override
+    public Questionnaire findOneByPersonId(Integer personId) {
+        return questionnaireRepository.findOneByPersonId(personId);
+    }
     @Override
     public Questionnaire save(Questionnaire questionnaire) {
         return questionnaireRepository.save(questionnaire);

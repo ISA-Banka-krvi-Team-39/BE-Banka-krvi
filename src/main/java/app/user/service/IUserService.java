@@ -9,5 +9,6 @@ public interface IUserService {
     User findOne(int id);
     User findOneByActivationCode(String code);
     boolean checkEmailUniqueness(String email);
+    User findOneByPersonId(int PersonId);
     User update(User user);
 }

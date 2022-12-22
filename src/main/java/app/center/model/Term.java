@@ -56,7 +56,6 @@ public class Term {
     public Term(LocalDateTime dateTime, Integer maximumSpace, Set<Person> medicalStaffs, Person bloodDonor, Center center, Integer durationInMinutes) {
         this.dateTime = dateTime;
         this.maximumSpace = maximumSpace;
-
         this.bloodDonor = bloodDonor;
         this.center = center;
         this.durationInMinutes = durationInMinutes;
@@ -69,54 +68,41 @@ public class Term {
         Term term = (Term) o;
         return Objects.equals(termId, term.termId) && Objects.equals(dateTime, term.dateTime) && Objects.equals(maximumSpace, term.maximumSpace)  && Objects.equals(bloodDonor, term.bloodDonor) && Objects.equals(center, term.center) && Objects.equals(durationInMinutes, term.durationInMinutes);
     }
-
     public State getState() { return state; }
-
     public void setState(State state) { this.state = state; }
-
     public void setTermId(Integer termId) {
         this.termId = termId;
     }
-
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
-
     public void setMaximumSpace(Integer maximumSpace) {
         this.maximumSpace = maximumSpace;
     }
-    
     public void setBloodDonors(Person bloodDonor) {
         this.bloodDonor = bloodDonor;
     }
-
     public void setCenter(Center center) {
         this.center = center;
     }
-
     public void setDurationInMinutes(Integer durationInMinutes) {
         this.durationInMinutes = durationInMinutes;
     }
-
     public Integer getTermId() {
         return termId;
     }
-
     public LocalDateTime getDateTime() {
         return dateTime;
     }
-
     public Integer getMaximumSpace() {
         return maximumSpace;
     }
-    
     public Person getBloodDonor() {
         return bloodDonor;
     }
     public Center getCenter() {
         return center;
     }
-
     public Integer getDurationInMinutes() {
         return durationInMinutes;
     }

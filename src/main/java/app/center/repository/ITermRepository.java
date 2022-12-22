@@ -21,4 +21,7 @@ public interface ITermRepository extends JpaRepository<Term, Integer> {
             ,@Param("startDate")LocalDateTime startDate
             ,@Param("endDate")LocalDateTime endDate);
 
+    @Query("select t from Term t where t.bloodDonor.personId = :personId")
+    public List<Term> getAllPatientsTerms(@Param("personId")int personId);
+
 }

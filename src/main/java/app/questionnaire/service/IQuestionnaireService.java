@@ -9,6 +9,7 @@ import java.util.List;
 public interface IQuestionnaireService {
     public List<Question> findAllQuestions();
     public Question findOneQuestion(Integer questionId);
+    public Questionnaire findOneByPersonId(Integer personId);
     public Questionnaire save(Questionnaire questionnaire);
     public Answer save(Answer answer);
 }
