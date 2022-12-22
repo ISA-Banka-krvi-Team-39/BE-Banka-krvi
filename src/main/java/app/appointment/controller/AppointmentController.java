@@ -1,5 +1,6 @@
 package app.appointment.controller;
 
+import app.appointment.dto.AppDto;
 import app.appointment.dto.AppointmentDTO;
 import app.appointment.dto.AppointmentPatientInfoDTO;
 import app.appointment.model.Appointment;
@@ -40,6 +41,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Tag(name = "Appointments controller", description = "The appointment API")
@@ -93,6 +95,24 @@ public class AppointmentController {
         Patient patient = patientService.findOne(workingAppointment.getPerson().getPersonId());
         AppointmentPatientInfoDTO appointmentPatientInfoDTO = new AppointmentPatientInfoDTO(workingAppointment,patient.getBloodType().toString());
         return new ResponseEntity<AppointmentPatientInfoDTO>(appointmentPatientInfoDTO, HttpStatus.OK);
+    }
+    @Operation(summary = "Get one appointment", description = "Get one appointment", method="GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation",
+                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Person.class))))
+    })
+    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+    @GetMapping(value="/patient/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<AppDto>> getAllPatientAppointments(@Parameter(name="id", description = "ID of a appointment to return", required = true) @PathVariable("id") int id) {
+        List<AppDto> apps = new ArrayList<AppDto>();
+        for(Appointment appointment : appointmentService.findAll())
+        {
+            if(appointment.getPerson().getPersonId() == id)
+            {
+                apps.add(new AppDto(appointment.getAppointmentId(),appointment.getPerson().getName(),appointment.getPerson().getSurname(),appointment.getTerm().getDateTime().toString()));
+            }
+        }
+        return new ResponseEntity<List<AppDto>>(apps, HttpStatus.OK);
     }
 
     @Operation(summary = "Create informations", description = "Create informations", method="POST")
