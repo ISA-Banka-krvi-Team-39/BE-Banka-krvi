@@ -142,6 +142,13 @@ insert into blood_bag (amount,blood_type,center_id)
 values(5,0,1);
 insert into blood_bag (amount,blood_type,center_id)
 values(5,1,1);
+insert into blood_bag (amount,blood_type,center_id)
+values(5,2,1);
+
+insert into equipment (amount,subject)
+values(5,'Needle');
+insert into equipment (amount,subject)
+values(5,'Bag');
 
 insert into role (name)
 values('ROLE_ADMIN');

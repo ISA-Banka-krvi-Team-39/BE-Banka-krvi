@@ -45,4 +45,9 @@ public class BloodBag {
     public Integer getAmount(){return amount;}
     public Center getCenter(){return center;}
 
+    public void setAmount(Integer amount)
+    {
+        this.amount = amount;
+    }
+
 }
