@@ -11,6 +11,7 @@ public interface ITermService {
     public Term findOne(Integer id);
     public List<Term> getAll();
     public List<Term> getAllFree();
+    public List<Term> getAllPatientsTerms(int id);
     public Boolean canPatientDonate(int personId);
     public Term save(Term term);
 }

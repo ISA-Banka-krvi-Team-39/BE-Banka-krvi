@@ -3,6 +3,7 @@ package app.center.controller;
 import app.center.dto.CenterWithoutPersonsDTO;
 import app.center.dto.CreateCenterDTO;
 import app.center.dto.TermDTO;
+import app.center.dto.TermForPatientDTO;
 import app.center.model.Center;
 import app.center.model.State;
 import app.center.model.Term;
@@ -109,22 +110,20 @@ public class TermController {
         }
         return new ResponseEntity<>(termsDTO, HttpStatus.OK);
     }
-    @Operation(summary = "Schedule term", description = "Get all terms", method="GET")
+    @Operation(summary = "Get all terms by patient", description = "Get all terms by patient", method="GET")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation",
                     content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Term.class))))
     })
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
-    @PutMapping(value = "/schedule/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Boolean> scheduleTerm(@RequestBody TermDTO termDTO, @PathVariable("id") int personId) throws Exception {
-        if(!termService.canPatientDonate(personId))
-            throw new Exception("This patient cant donate");
-        Term term = termService.findOne(termDTO.getTermId());
-        Person person = personService.findOne(personId);
-        term.setState(State.PENDING);
-        term.setBloodDonors(person);
-        termService.save(term);
-        return new ResponseEntity<>(true, HttpStatus.OK);
+    @GetMapping(value = "/all/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<TermForPatientDTO>> getAllPatientsTerms(@PathVariable Integer id) {
+        List<Term> terms = termService.getAllPatientsTerms(id);
+        List<TermForPatientDTO> termsDTO = new ArrayList<>();
+        for(Term term : terms){
+            termsDTO.add(new TermForPatientDTO(term));
+        }
+        return new ResponseEntity<>(termsDTO, HttpStatus.OK);
     }
 }
