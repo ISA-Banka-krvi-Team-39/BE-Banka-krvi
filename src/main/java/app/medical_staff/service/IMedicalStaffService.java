@@ -1,4 +1,4 @@
-package app.medical_staff.model.service;
+package app.medical_staff.service;
 
 import app.center.model.Center;
 import app.medical_staff.model.MedicalStaff;

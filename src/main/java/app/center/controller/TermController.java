@@ -2,12 +2,14 @@ package app.center.controller;
 
 import app.center.dto.CenterWithoutPersonsDTO;
 import app.center.dto.CreateCenterDTO;
+import app.center.dto.CreateTermDTO;
 import app.center.dto.TermDTO;
 import app.center.dto.TermForPatientDTO;
 import app.center.model.Center;
+import app.center.dto.CreateTermDTO;
+import app.center.dto.TermDTO;
 import app.center.model.State;
 import app.center.model.Term;
-import app.center.service.CenterService;
 import app.center.service.ICenterService;
 import app.center.service.ITermService;
 import app.center.service.TermService;
@@ -21,6 +23,10 @@ import app.person.service.IPersonService;
 import app.questionnaire.service.IQuestionnaireService;
 import app.user.model.User;
 import app.user.service.IUserService;
+import app.person.service.PersonService;
+import app.medical_staff.service.IMedicalStaffService;
+import app.person.model.Person;
+import app.person.service.IPersonService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -29,9 +35,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -62,23 +65,23 @@ public class TermController {
     private IEmailService emailService;
     @Autowired
     private IUserService userService;
-    
-    @Operation(summary = "Put Term", description = "Put Term", method="POST")
+
+    @Autowired
+    private IMedicalStaffService medicalStaffService;
+
+    @Operation(summary = "Post Term", description = "Post Term", method="POST")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation",
-                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Term.class))))
+                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = CreateTermDTO.class))))
     })
     @PreAuthorize("hasRole('ADMIN')")
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
-    @PostMapping(value="",consumes = "application/json")
+    @PostMapping(value="/createTerm",consumes = "application/json")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    public ResponseEntity<String> createTerm(@RequestBody TermDTO termDTO) throws ConstraintViolationException {
-        try {
-            Term retTerm = termService.create(new Term(termDTO,centerService.findOne(1)));
-        }catch (Exception e){
-            return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<String>(HttpStatus.OK);
+    public ResponseEntity<String> createTerm(@RequestBody CreateTermDTO createTermDTO) {
+            if (!termService.checkTerm(createTermDTO.getDateTime(),createTermDTO.getDurationInMinutes())) return new ResponseEntity<String>("404",HttpStatus.OK);
+            termService.create(createTermDTO.MapToModel(medicalStaffService.findOneByPersonId(createTermDTO.getManagerId()).getWorkingCenter(),personService.findOne(createTermDTO.getMedicalStaffId())));
+            return new ResponseEntity<String>("200",HttpStatus.OK);
     }
 
     @Operation(summary = "Get term by id", description = "Get term by id", method="GET")
