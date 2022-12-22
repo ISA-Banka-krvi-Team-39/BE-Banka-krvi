@@ -141,7 +141,7 @@ public class TermController {
     public ResponseEntity<Boolean> scheduleTerm(@RequestBody TermDTO termDTO, @PathVariable("id") int personId) throws Exception {
         if(!termService.canPatientDonate(personId))
             throw new Exception("This patient cant donate");
-        if(questionnaireService.findOneByPersonId(personId) == null)
+        if(questionnaireService.findAllByPersonId(personId).size() == 0)
             throw new Exception("This patient cant donate because there is no questionnaire");
         Term term = termService.findOne(termDTO.getTermId());
         Person person = personService.findOne(personId);

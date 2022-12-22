@@ -47,7 +47,7 @@ insert into user_table (email,password,person_id,enabled,last_password_reset_dat
 insert into user_table (email,password,person_id,enabled,last_password_reset_date,activation_code) values ('ivan@gmail.com','$2a$10$weZMibSttAmFfa1aYJ9F.OxWNTH2hwNP8D/E5q4jSLnRcjZ3pg/QW',4,true,'2017-10-01 21:58:58.508-07','m0qv75m0q75vtm0q');
 insert into user_table (email,password,person_id,enabled,last_password_reset_date,activation_code) values ('milana@gmail.com','$2a$10$weZMibSttAmFfa1aYJ9F.OxWNTH2hwNP8D/E5q4jSLnRcjZ3pg/QW',5,true,'2017-10-01 21:58:58.508-07','a079gvra5gv70ja05jgv7k');
 insert into user_table (email,password,person_id,enabled,last_password_reset_date,activation_code) values ('zorka@gmail.com','$2a$10$weZMibSttAmFfa1aYJ9F.OxWNTH2hwNP8D/E5q4jSLnRcjZ3pg/QW',6,true,'2017-10-01 21:58:58.508-07','07j447j0vq0qv7j4f07j');
-insert into user_table (email,password,person_id,enabled,last_password_reset_date,activation_code) values ('dusanjanosevic007@gmail.com','$2a$10$weZMibSttAmFfa1aYJ9F.OxWNTH2hwNP8D/E5q4jSLnRcjZ3pg/QW',7,true,'2017-10-01 21:58:58.508-07','615glzxk16z5g9l1569l');
+insert into user_table (email,password,person_id,enabled,last_password_reset_date,activation_code) values ('lenka@gmail.com','$2a$10$weZMibSttAmFfa1aYJ9F.OxWNTH2hwNP8D/E5q4jSLnRcjZ3pg/QW',7,true,'2017-10-01 21:58:58.508-07','615glzxk16z5g9l1569l');
 
 insert into Patient (points,person_id,blood_type,penal)
 values (200,2,0,0);

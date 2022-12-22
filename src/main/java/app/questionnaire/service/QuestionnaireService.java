@@ -31,8 +31,8 @@ public class QuestionnaireService implements IQuestionnaireService {
         return questionRepository.findOneByQuestionId(questionId);
     }
     @Override
-    public Questionnaire findOneByPersonId(Integer personId) {
-        return questionnaireRepository.findOneByPersonId(personId);
+    public List<Questionnaire> findAllByPersonId(Integer personId) {
+        return questionnaireRepository.findAllByPersonId(personId);
     }
     @Override
     public Questionnaire save(Questionnaire questionnaire) {

@@ -108,9 +108,8 @@ public class AuthController {
             Person createdPerson = personService.create(person);
             Role role = roleService.findByName("ROLE_USER").get(0);
             User user = new User(userDTO, createdPerson,role);
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
             Patient patient = new Patient(createdPerson, 0,userDTO.getBloodType());
-
             userService.create(user);
             patientService.create(patient);
             EmailDetails emailDetails = new EmailDetails();
@@ -144,7 +143,7 @@ public class AuthController {
             Person createdPerson = personService.create(person);
             Role role = roleService.findByName("ROLE_ADMIN").get(0);
             User user = new User(userDTO, createdPerson,role);
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
             SystemAdmin admin = new SystemAdmin(createdPerson, false);
             userService.create(user);
             systemAdminService.create(admin);
