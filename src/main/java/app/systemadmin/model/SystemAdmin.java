@@ -40,5 +40,9 @@ public class SystemAdmin {
         this.wasLoggedIn = wasLoggedIn;
     }
 
+    public Integer getAdminId() {
+        return adminId;
+    }
+
 
 }

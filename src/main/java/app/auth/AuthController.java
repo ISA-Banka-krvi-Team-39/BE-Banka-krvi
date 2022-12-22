@@ -15,7 +15,9 @@ import app.user.dto.CreateUserDTO;
 import app.user.model.Role;
 import app.user.model.User;
 import app.user.service.IRoleService;
+
 import app.user.service.RoleService;
+
 import app.user.service.UserService;
 import app.util.TokenUtils;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -40,6 +43,7 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import java.io.Console;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 @Tag(name = "Auth controller", description = "The Auth API")
 @RestController
@@ -64,6 +68,7 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private IRoleService roleService;
+
 
     @Operation(summary = "Login user", description = "Login user", method = "POST")
     @ApiResponses(value = {
@@ -130,18 +135,18 @@ public class AuthController {
             @ApiResponse(responseCode = "400", description = "Not possible to create new user data bad request",
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = CreateAdminUserDTO.class)) })
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
     @PostMapping(value="/createSystemAdmin",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createSystemAdmin(@Valid @RequestBody CreateAdminUserDTO userDTO) throws ConstraintViolationException {
         try {
             Person person = new Person(userDTO);
             Person createdPerson = personService.create(person);
-
-            User user = new User(userDTO, createdPerson);
+            Role role = roleService.findByName("ROLE_USER").get(0);
+            User user = new User(userDTO, createdPerson,role);
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             SystemAdmin admin = new SystemAdmin(createdPerson, false);
 
-            userService.create(user);
             systemAdminService.create(admin);
             EmailDetails emailDetails = new EmailDetails();
             emailDetails.setRecipient(userDTO.getEmail());

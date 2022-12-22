@@ -15,4 +15,14 @@ public class SystemAdminService implements ISystemAdminService {
     public SystemAdmin create(SystemAdmin admin) {
         return systemAdminRepository.save(admin);
     }
+
+    @Override
+    public SystemAdmin findOneByPersonId(int personId) {
+        return systemAdminRepository.findOneByPerson(personId);
+    }
+
+    @Override
+    public SystemAdmin update(SystemAdmin admin) {
+        return systemAdminRepository.save(admin);
+    }
 }
