@@ -160,6 +160,8 @@ insert into role (name)
 values('ROLE_USER');
 insert into role (name)
 values('ROLE_MANAGER');
+insert into role (name)
+values('ROLE_NURSE');
 
 insert into user_role(user_id,role_id)
 values(1,1);
@@ -169,5 +171,7 @@ insert into user_role(user_id,role_id)
 values(3,3);
 insert into user_role(user_id,role_id)
 values(7,2);
+insert into user_role(user_id,role_id)
+values(5,4);
 
 

@@ -12,7 +12,7 @@ import java.util.Set;
 public class CreateTermDTO {
 
     private LocalDateTime dateTime;
-    private Integer medicalStaffsId;
+    private Integer medicalStaffId;
     private Integer durationInMinutes;
     private Integer managerId;
 
@@ -21,7 +21,7 @@ public class CreateTermDTO {
 
     public CreateTermDTO( LocalDateTime dateTime, int medicalStaffsId, int durationInMinutes, int managerId) {
         this.dateTime = dateTime;
-        this.medicalStaffsId = medicalStaffsId;
+        this.medicalStaffId = medicalStaffId;
         this.durationInMinutes = durationInMinutes;
         this.managerId = managerId;
     }
@@ -37,12 +37,12 @@ public class CreateTermDTO {
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
-    public int getMedicalStaffsId() {
-        return medicalStaffsId;
+    public int getMedicalStaffId() {
+        return medicalStaffId;
     }
 
-    public void setMedicalStaffsId(int medicalStaffsId) {
-        this.medicalStaffsId = medicalStaffsId;
+    public void setMedicalStaffId(int medicalStaffsId) {
+        this.medicalStaffId = medicalStaffsId;
     }
 
     public int getDurationInMinutes() {
@@ -52,11 +52,9 @@ public class CreateTermDTO {
     public void setDurationInMinutes(int durationInMinutes) {
         this.durationInMinutes = durationInMinutes;
     }
-    public int getCenterId() {
-        return managerId;
-    }
+    public int getManagerId() { return managerId; }
 
-    public void setCenterId(int centerId) {
+    public void setManagerId(int centerId) {
         this.managerId = centerId;
     }
 }

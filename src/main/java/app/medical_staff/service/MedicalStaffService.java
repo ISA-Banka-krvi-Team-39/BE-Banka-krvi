@@ -1,17 +1,13 @@
-package app.medical_staff.model.service;
+package app.medical_staff.service;
 
 import app.center.model.Center;
-import app.center.repository.ICenterRepository;
 import app.medical_staff.model.MedicalStaff;
-import app.medical_staff.model.repository.IMedicalStaffRepository;
-import app.patient.model.Patient;
-import app.person.model.Person;
+import app.medical_staff.repository.IMedicalStaffRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class MedicalStaffService implements IMedicalStaffService {

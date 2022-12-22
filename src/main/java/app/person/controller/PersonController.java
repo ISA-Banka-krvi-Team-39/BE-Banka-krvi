@@ -5,10 +5,13 @@ import app.appointment.service.IAppointmentService;
 import app.center.model.Term;
 import app.center.service.ITermService;
 import app.email.service.IEmailService;
+import app.medical_staff.model.MedicalStaff;
+import app.medical_staff.service.IMedicalStaffService;
 import app.patient.model.Patient;
 import app.patient.service.IPatientService;
 import app.person.dto.PersonDTO;
 import app.person.dto.GetPersonForProfileDTO;
+import app.person.dto.PersonForTermDTO;
 import app.person.model.Person;
 import app.person.service.IPersonService;
 import app.user.dto.UpdateUserDTO;
@@ -49,6 +52,9 @@ public class PersonController {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private IAppointmentService appointmentService;
+
+    @Autowired
+    private IMedicalStaffService medicalStaffService;
     
     @Operation(summary = "Get all Persons", description = "Get all Persons", method="GET")
     @ApiResponses(value = {
@@ -158,5 +164,21 @@ public class PersonController {
             personsDTO.add(new PersonDTO(person));
         }
         return new ResponseEntity<List<PersonDTO>>(personsDTO, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Get medicalStaff", description = "Get medicalStaff", method="GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation",
+                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = PersonForTermDTO.class))))
+    })
+    //@PreAuthorize("hasRole('ADMIN')")
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping(value="/medicalStaff", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<PersonForTermDTO>> findMedicalStaff(@RequestParam(value= "adminId", required =true)int adminId) {
+        List<PersonForTermDTO> personForTermDTO = new ArrayList<>();
+        for(MedicalStaff medStaff : medicalStaffService.findAllMedicalStaff(medicalStaffService.findOneByPersonId(adminId).getWorkingCenter().getCenterId())){
+            personForTermDTO.add(new PersonForTermDTO(medStaff.getPerson()));
+        }
+        return new ResponseEntity<List<PersonForTermDTO>>(personForTermDTO, HttpStatus.OK);
     }
 }

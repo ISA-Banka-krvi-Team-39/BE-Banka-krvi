@@ -73,6 +73,7 @@ public class Term {
         this.center = center;
         this.durationInMinutes = durationInMinutes;
         this.medicalStaff = medicalStaff;
+        this.state = State.FREE;
     }
 
     @Override
