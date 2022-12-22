@@ -240,9 +240,9 @@ public class AppointmentController {
     })
     @PreAuthorize("hasRole('ADMIN')")
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
-    @GetMapping(value="/description", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PersonDescription> getDescription() {
-        PersonDescription pdesc = personDescriptionService.findOne(1);
+    @GetMapping(value="/description/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PersonDescription> getDescription(@Parameter(name="id", description = "ID of a appointment to return", required = true) @PathVariable("id") int id) {
+        PersonDescription pdesc = personDescriptionService.findOne(personService.findOne(id).getPersonDescription().getPersonDescriptionId());
         return new ResponseEntity<PersonDescription>(pdesc, HttpStatus.OK);
     }
 
