@@ -169,4 +169,11 @@ public class Person {
         return school;
     }
 
+    public PersonDescription getPersonDescription() {
+        return personDescription;
+    }
+
+    public void setPersonDescription(PersonDescription personDescription) {
+        this.personDescription = personDescription;
+    }
 }
