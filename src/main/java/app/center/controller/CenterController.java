@@ -7,8 +7,7 @@ import app.center.model.Center;
 import app.center.service.ICenterService;
 import app.medical_staff.model.MedicalStaff;
 import app.medical_staff.model.service.IMedicalStaffService;
-
-
+import app.shared.service.AddressService;
 import app.shared.service.IAddressService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -50,9 +49,6 @@ public class CenterController {
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
     @GetMapping(value = "/list/", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<CenterWithoutPersonsDTO>> getAll(Pageable pageable,@Param("name") String name,@Param("city") String city,@Param("gradeFilterFrom") String gradeFilterFrom,@Param("gradeFilterTo") String gradeFilterTo) {
-        System.out.println(gradeFilterFrom);
-        System.out.println(gradeFilterTo);
-        System.out.println("____________________________________________________________________________________________________________________________________");
         Page<Center> centers = centerService.getAll(pageable, name.toLowerCase(),city.toLowerCase(),Integer.parseInt(gradeFilterFrom),Integer.parseInt(gradeFilterTo));
         Page<CenterWithoutPersonsDTO> pages = centers.map(this::mapCenterToDTO);
         return new ResponseEntity<>(pages, HttpStatus.OK);

@@ -36,6 +36,10 @@ public class Term {
     @JoinColumn(name = "center_id")
     private Center center;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "medicalStaff")
+    private Person medicalStaff;
+
     @Column(name = "duration_in_minutes")
     private Integer durationInMinutes;
 
@@ -47,11 +51,12 @@ public class Term {
     {
         this.dateTime = termDTO.getDateTime();
         this.maximumSpace = 1;
-
         this.bloodDonor = bloodDonor;
         this.center = center;
         this.durationInMinutes = termDTO.getDurationInMinutes();
     }
+
+
 
     public Term(LocalDateTime dateTime, Integer maximumSpace, Set<Person> medicalStaffs, Person bloodDonor, Center center, Integer durationInMinutes) {
         this.dateTime = dateTime;
@@ -59,6 +64,15 @@ public class Term {
         this.bloodDonor = bloodDonor;
         this.center = center;
         this.durationInMinutes = durationInMinutes;
+    }
+
+    public Term(LocalDateTime dateTime, Integer maximumSpace, Person medicalStaff, Person bloodDonor, Center center, Integer durationInMinutes) {
+        this.dateTime = dateTime;
+        this.maximumSpace = maximumSpace;
+        this.bloodDonor = bloodDonor;
+        this.center = center;
+        this.durationInMinutes = durationInMinutes;
+        this.medicalStaff = medicalStaff;
     }
 
     @Override
