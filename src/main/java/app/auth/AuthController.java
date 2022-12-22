@@ -8,11 +8,16 @@ import app.patient.model.Patient;
 import app.patient.service.IPatientService;
 import app.person.model.Person;
 import app.person.service.IPersonService;
+import app.systemadmin.model.SystemAdmin;
+import app.systemadmin.service.ISystemAdminService;
+import app.user.dto.CreateAdminUserDTO;
 import app.user.dto.CreateUserDTO;
 import app.user.model.Role;
 import app.user.model.User;
 import app.user.service.IRoleService;
+
 import app.user.service.RoleService;
+
 import app.user.service.UserService;
 import app.util.TokenUtils;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -37,6 +43,7 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import java.io.Console;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 @Tag(name = "Auth controller", description = "The Auth API")
 @RestController
@@ -54,11 +61,14 @@ public class AuthController {
     @Autowired
     private IPatientService patientService;
     @Autowired
+    private ISystemAdminService systemAdminService;
+    @Autowired
     private IEmailService emailService;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
     private IRoleService roleService;
+
 
     @Operation(summary = "Login user", description = "Login user", method = "POST")
     @ApiResponses(value = {
@@ -103,6 +113,41 @@ public class AuthController {
 
             userService.create(user);
             patientService.create(patient);
+            EmailDetails emailDetails = new EmailDetails();
+            emailDetails.setRecipient(userDTO.getEmail());
+            emailDetails.setMsgBody("Welcome to our blood bank!<br/>" +
+                    "You can <a href=\"http://localhost:3000/auth/activation/"+ user.getActivationCode() +"\">Activate your account here!<a/></h2> <br/>");
+            emailDetails.setSubject("Welcome email from blood bank team 39");
+            emailService.sendWelcomeMail(emailDetails);
+        }catch (Exception e){
+            return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<String>(HttpStatus.OK);
+    }
+
+
+    @Operation(summary = "Create new system admin", description = "Create new system admin", method = "POST")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Created",
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = CreateAdminUserDTO.class)) }),
+            @ApiResponse(responseCode = "409", description = "Not possible to create new user when given id is not null",
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = CreateAdminUserDTO.class)) }),
+            @ApiResponse(responseCode = "400", description = "Not possible to create new user data bad request",
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = CreateAdminUserDTO.class)) })
+    })
+    @PreAuthorize("hasRole('ADMIN')")
+    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+    @PostMapping(value="/createSystemAdmin",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> createSystemAdmin(@Valid @RequestBody CreateAdminUserDTO userDTO) throws ConstraintViolationException {
+        try {
+            Person person = new Person(userDTO);
+            Person createdPerson = personService.create(person);
+            Role role = roleService.findByName("ROLE_ADMIN").get(0);
+            User user = new User(userDTO, createdPerson,role);
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            SystemAdmin admin = new SystemAdmin(createdPerson, false);
+            userService.create(user);
+            systemAdminService.create(admin);
             EmailDetails emailDetails = new EmailDetails();
             emailDetails.setRecipient(userDTO.getEmail());
             emailDetails.setMsgBody("Welcome to our blood bank!<br/>" +

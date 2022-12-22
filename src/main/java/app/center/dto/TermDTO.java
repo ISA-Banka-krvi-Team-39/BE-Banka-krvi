@@ -1,6 +1,7 @@
 package app.center.dto;
 
 import app.center.model.Center;
+import app.center.model.State;
 import app.center.model.Term;
 import app.person.model.Person;
 import app.person.dto.PersonDTO;
@@ -19,6 +20,9 @@ public class TermDTO {
     private Integer durationInMinutes;
 
     private CenterDTO center;
+
+
+    private State state;
 
     public TermDTO()
     {
@@ -44,6 +48,7 @@ public class TermDTO {
         this.bloodDonor = new PersonDTO(term.getBloodDonor());
         this.durationInMinutes = term.getDurationInMinutes();
         this.center = new CenterDTO(term.getCenter());
+        this.state = term.getState();
     }
 
     public TermDTO(LocalDateTime dateTime, Set<Person> medicalStaffs, Integer durationInMinutes, Center center)
@@ -66,4 +71,7 @@ public class TermDTO {
     public void setDurationInMinutes(Integer durationInMinutes){this.durationInMinutes = durationInMinutes;}
     public CenterDTO getCenter(){return center;}
     public void setCenter(CenterDTO center){this.center = center;}
+    public State getState() {
+        return state;
+    }
 }

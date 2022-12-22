@@ -32,6 +32,7 @@ public class User implements UserDetails {
     private Person person;
     @Column(name = "enabled")
     private boolean enabled;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "userId", referencedColumnName = "userId"),
@@ -145,6 +146,10 @@ public class User implements UserDetails {
     }
     public Timestamp getLastPasswordResetDate() {
         return lastPasswordResetDate;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 
     public void setLastPasswordResetDate(Timestamp lastPasswordResetDate) {

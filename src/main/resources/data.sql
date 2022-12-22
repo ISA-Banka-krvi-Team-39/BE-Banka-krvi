@@ -58,6 +58,8 @@ values (300,6,1,0);
 insert into Patient (points,person_id,blood_type,penal)
 values (400,7,2,0);
 
+insert into system_admin(person_id,was_logged_in)
+values(1,true);
 
 insert into Center (avg_grade, description, name, address_id,start_working_hours,end_working_hours)
 values (2.53,'Osrednji centar','Centar1',1,'09:00:00','20:00:00');
