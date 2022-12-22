@@ -17,8 +17,6 @@ values ('Srbija', 'Novi Sad', ' Kristijana', 34);
 insert into address (country, city, street_name, street_number)
 values ('Srbija', 'Beograd', ' Marka',42);
 
-
-
 insert into person_description(antibiotics,infections,kilograms,month_period,pressure,sick,tatoo,tooth)
 values(false,false,70,false,false,false,false,false);
 
@@ -49,7 +47,7 @@ insert into user_table (email,password,person_id,enabled,last_password_reset_dat
 insert into user_table (email,password,person_id,enabled,last_password_reset_date,activation_code) values ('ivan@gmail.com','$2a$10$weZMibSttAmFfa1aYJ9F.OxWNTH2hwNP8D/E5q4jSLnRcjZ3pg/QW',4,true,'2017-10-01 21:58:58.508-07','m0qv75m0q75vtm0q');
 insert into user_table (email,password,person_id,enabled,last_password_reset_date,activation_code) values ('milana@gmail.com','$2a$10$weZMibSttAmFfa1aYJ9F.OxWNTH2hwNP8D/E5q4jSLnRcjZ3pg/QW',5,true,'2017-10-01 21:58:58.508-07','a079gvra5gv70ja05jgv7k');
 insert into user_table (email,password,person_id,enabled,last_password_reset_date,activation_code) values ('zorka@gmail.com','$2a$10$weZMibSttAmFfa1aYJ9F.OxWNTH2hwNP8D/E5q4jSLnRcjZ3pg/QW',6,true,'2017-10-01 21:58:58.508-07','07j447j0vq0qv7j4f07j');
-insert into user_table (email,password,person_id,enabled,last_password_reset_date,activation_code) values ('lenka@gmail.com','$2a$10$weZMibSttAmFfa1aYJ9F.OxWNTH2hwNP8D/E5q4jSLnRcjZ3pg/QW',7,true,'2017-10-01 21:58:58.508-07','615glzxk16z5g9l1569l');
+insert into user_table (email,password,person_id,enabled,last_password_reset_date,activation_code) values ('dusanjanosevic007@gmail.com','$2a$10$weZMibSttAmFfa1aYJ9F.OxWNTH2hwNP8D/E5q4jSLnRcjZ3pg/QW',7,true,'2017-10-01 21:58:58.508-07','615glzxk16z5g9l1569l');
 
 insert into Patient (points,person_id,blood_type,penal)
 values (200,2,0,0);
@@ -85,13 +83,13 @@ values (1.3,'Jako los centar','Centar7',7,'09:00:00','20:00:00');
 insert into Center (avg_grade, description, name, address_id,start_working_hours,end_working_hours)
 values (5.0,'adsgdgaf','Centar',8,'09:00:00','20:00:00');
 
-insert into Medical_Staff (person_id,center_id)
+insert into Medical_Staff(person_id,center_id)
 values (4,1);
 
-insert into Medical_Staff (person_id,center_id)
+insert into Medical_Staff(person_id,center_id)
 values (1,1);
 
-insert into Medical_Staff (person_id,center_id)
+insert into Medical_Staff(person_id,center_id)
 values (5,1);
 
 insert into Term (date_time, duration_in_minutes, maximum_space, center_id,person_id, state)
@@ -104,7 +102,7 @@ insert into Term (date_time, duration_in_minutes, maximum_space, center_id,perso
 values ('2023-01-01 21:00:00',20,1,1,6,1);
 
 insert into Term (date_time, duration_in_minutes, maximum_space, center_id,person_id, state)
-values ('2022-1-23 13:00:00',20,1,1,7,1);
+values ('2022-1-23 13:00:00',20,1,1,7,2);
 
 insert into Term (date_time, duration_in_minutes, maximum_space, center_id, state)
 values ('2022-12-23 13:00:00',20,1,1,0);
@@ -114,6 +112,10 @@ insert into Term (date_time, duration_in_minutes, maximum_space, center_id, stat
 values ('2023-2-23 13:00:00',20,1,1,0);
 insert into Term (date_time, duration_in_minutes, maximum_space, center_id, state)
 values ('2023-5-1 13:00:00',20,1,1,0);
+insert into Term (date_time, duration_in_minutes, maximum_space, center_id, state)
+values ('2023-5-15 9:00:00',20,1,1,0);
+insert into Term (date_time, duration_in_minutes, maximum_space, center_id, state)
+values ('2023-5-20 15:00:00',20,1,1,0);
 
 insert into Question (question) 
 values ('Have you ever donated blood or blood components voluntarily?');

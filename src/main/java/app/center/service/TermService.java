@@ -32,7 +32,7 @@ public class TermService implements ITermService {
     @Override
     public List<Term> getAllPatientsTerms(int id) {
         return termRepository.getAllPatientsTerms(id);
-    }
+}
 
     @Override
     public Boolean canPatientDonate(int personId) {
@@ -41,6 +41,14 @@ public class TermService implements ITermService {
         LocalDateTime end = now.plusMonths(6);
         System.out.println(termRepository.getTermsByPatientInPlusMinus6Months(personId,start,end).size());
         return termRepository.getTermsByPatientInPlusMinus6Months(personId,start,end).size() == 0;
+    }
+
+    @Override
+    public Boolean canTermBeCanceled(int termId) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime tomorrow = now.plusDays(1);
+        Term term = findOne(termId);
+        return term.getDateTime().isBefore(tomorrow) || term.getDateTime().isEqual(tomorrow);
     }
 
     @Override

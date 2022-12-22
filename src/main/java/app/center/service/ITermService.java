@@ -13,5 +13,6 @@ public interface ITermService {
     public List<Term> getAllFree();
     public List<Term> getAllPatientsTerms(int id);
     public Boolean canPatientDonate(int personId);
+    public Boolean canTermBeCanceled(int termId);
     public Term save(Term term);
 }
