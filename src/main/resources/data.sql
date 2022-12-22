@@ -92,18 +92,26 @@ values (1,1);
 insert into Medical_Staff (person_id,center_id)
 values (5,1);
 
-insert into Term (date_time, duration_in_minutes,maximum_space, center_id,person_id)
-values (now(),20,20,1,1);
+insert into Term (date_time, duration_in_minutes, maximum_space, center_id,person_id, state)
+values ('2023-01-01 21:00:00',20,1,1,2,1);
 
-insert into Term (date_time, duration_in_minutes,maximum_space, center_id,person_id)
-values (now(),20,20,1,7);
+insert into Term (date_time, duration_in_minutes, maximum_space, center_id,person_id, state)
+values ('2023-07-01 21:00:00',20,1,1,7,1);
 
-insert into Term (date_time, duration_in_minutes,maximum_space, center_id,person_id)
-values (now(),20,20,1,1);
+insert into Term (date_time, duration_in_minutes, maximum_space, center_id,person_id, state)
+values ('2023-01-01 21:00:00',20,1,1,6,1);
 
-insert into Term (date_time, duration_in_minutes,maximum_space, center_id,person_id)
-values (now(),20,20,1,7);
+insert into Term (date_time, duration_in_minutes, maximum_space, center_id,person_id, state)
+values ('2022-1-23 13:00:00',20,1,1,7,1);
 
+insert into Term (date_time, duration_in_minutes, maximum_space, center_id, state)
+values ('2022-12-23 13:00:00',20,1,1,0);
+insert into Term (date_time, duration_in_minutes, maximum_space, center_id, state)
+values ('2022-12-20 15:00:00',20,1,1,0);
+insert into Term (date_time, duration_in_minutes, maximum_space, center_id, state)
+values ('2023-2-23 13:00:00',20,1,1,0);
+insert into Term (date_time, duration_in_minutes, maximum_space, center_id, state)
+values ('2023-5-1 13:00:00',20,1,1,0);
 
 insert into Question (question) 
 values ('Have you ever donated blood or blood components voluntarily?');
@@ -148,5 +156,7 @@ insert into user_role(user_id,role_id)
 values(2,2);
 insert into user_role(user_id,role_id)
 values(3,3);
+insert into user_role(user_id,role_id)
+values(7,2);
 
 

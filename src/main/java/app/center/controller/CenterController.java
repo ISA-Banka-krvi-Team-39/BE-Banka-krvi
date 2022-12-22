@@ -4,16 +4,13 @@ import app.center.dto.CenterDTO;
 import app.center.dto.CenterWithoutPersonsDTO;
 import app.center.dto.CreateCenterDTO;
 import app.center.model.Center;
-import app.center.service.CenterService;
 import app.center.service.ICenterService;
 import app.medical_staff.model.MedicalStaff;
 import app.medical_staff.model.service.IMedicalStaffService;
 
-import app.patient.model.Patient;
-import app.shared.service.AddressService;
 
+import app.shared.service.IAddressService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -29,8 +26,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.sound.midi.SysexMessage;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -44,7 +39,7 @@ public class CenterController {
     @Autowired
     private IMedicalStaffService medicalStaffService;
 
-    private AddressService addressService;
+    private IAddressService addressService;
 
 
     @Operation(summary = "Get all centers", description = "Get all centers or search", method="GET")

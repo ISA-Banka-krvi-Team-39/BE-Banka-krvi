@@ -52,9 +52,9 @@ public class QuestionnaireController {
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
     @PostMapping(value = "/save",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> createPatient( @RequestBody QuestionnaireDTO questionnaireDTO) throws ConstraintViolationException {
+    public ResponseEntity<String> createQuestionnaire( @RequestBody QuestionnaireDTO questionnaireDTO) throws ConstraintViolationException {
         try {
-            Patient patient = patientService.findOne(questionnaireDTO.getPatientId());
+            Patient patient = patientService.findOneByPersonId(questionnaireDTO.getPersonId());
             Questionnaire createdQuestionnaire = questionnaireService.save(new Questionnaire(patient));
             for(AnswerDTO answerDTO: questionnaireDTO.getAnswers()){
                 questionnaireService.save(new Answer(createdQuestionnaire,answerDTO,questionnaireService.findOneQuestion(answerDTO.getQuestionId())));

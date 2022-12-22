@@ -9,7 +9,9 @@ import app.person.service.IPersonService;
 import app.user.dto.CreateAdminUserDTO;
 import app.user.dto.CreateUserDTO;
 import app.user.dto.UpdateUserDTO;
+import app.user.model.Role;
 import app.user.model.User;
+import app.user.service.IRoleService;
 import app.user.service.IUserService;
 import app.util.TokenUtils;
 import io.swagger.v3.oas.annotations.Operation;
@@ -42,6 +44,8 @@ public class UserController {
     private IUserService userService;
     @Autowired
     private IPersonService personService;
+    @Autowired
+    private IRoleService roleService;
     
     @Operation(summary = "Check is Email unique", description = "Check is Email unique", method="GET")
     @ApiResponses(value = {
@@ -69,8 +73,8 @@ public class UserController {
         try {
             Person person = new Person(userDTO);
             Person createdPerson = personService.create(person);
-
-            User user = new User(userDTO, createdPerson);
+            Role role = roleService.findByName("ROLE_ADMIN").get(0);
+            User user = new User(userDTO, createdPerson,role);
 
             userService.create(user);
 

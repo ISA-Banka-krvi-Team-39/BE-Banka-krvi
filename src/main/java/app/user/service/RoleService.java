@@ -3,9 +3,11 @@ package app.user.service;
 import app.user.model.Role;
 import app.user.repository.IRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class RoleService implements IRoleService {
     @Autowired
     private IRoleRepository roleRepository;

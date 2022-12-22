@@ -42,23 +42,27 @@ public class User implements UserDetails {
 
     public User() {
     }
-    public User(CreateUserDTO userDTO,Person person) {
+    public User(CreateUserDTO userDTO,Person person,Role role) {
         this.activationCode = RandomStringUtils.randomAlphanumeric(32);
         this.person = new Person();
         this.userId = 0;
         this.email = userDTO.getEmail();
         this.password = userDTO.getPassword();
         this.person = person;
+        this.roles = new ArrayList<Role>();
+        this.roles.add(role);
         this.enabled = false;
         this.lastPasswordResetDate = new Timestamp(new Date().getTime());
     }
 
-    public User(CreateAdminUserDTO userDTO, Person person) {
+    public User(CreateAdminUserDTO userDTO, Person person,Role role) {
         this.activationCode = RandomStringUtils.randomAlphanumeric(32);
         this.person = new Person();
         this.userId = 0;
         this.email = userDTO.getEmail();
         this.password = userDTO.getPassword();
+        this.roles = new ArrayList<Role>();
+        this.roles.add(role);
         this.person = person;
         this.enabled = false;
         this.lastPasswordResetDate = new Timestamp(new Date().getTime());
