@@ -47,7 +47,6 @@ public class CenterController {
             @ApiResponse(responseCode = "200", description = "successful operation",
                     content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Pageable.class))))
     })
-    @PreAuthorize("hasRole('ADMIN')")
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
     @GetMapping(value = "/list/", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<CenterWithoutPersonsDTO>> getAll(Pageable pageable,@Param("name") String name,@Param("city") String city,@Param("gradeFilterFrom") String gradeFilterFrom,@Param("gradeFilterTo") String gradeFilterTo) {

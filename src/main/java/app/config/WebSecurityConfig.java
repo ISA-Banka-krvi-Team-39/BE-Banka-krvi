@@ -74,7 +74,6 @@ public class WebSecurityConfig {
                 .antMatchers(HttpMethod.GET, "/api/user/check-email/*")
                 .antMatchers(HttpMethod.PUT, "/api/user/activate/*")
                 .antMatchers(HttpMethod.POST, "/api/auth")
-
                 .antMatchers(HttpMethod.GET, "/api/center/list/*");
     }
 }
