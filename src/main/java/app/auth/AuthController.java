@@ -8,6 +8,9 @@ import app.patient.model.Patient;
 import app.patient.service.IPatientService;
 import app.person.model.Person;
 import app.person.service.IPersonService;
+import app.systemadmin.model.SystemAdmin;
+import app.systemadmin.service.ISystemAdminService;
+import app.user.dto.CreateAdminUserDTO;
 import app.user.dto.CreateUserDTO;
 import app.user.model.Role;
 import app.user.model.User;
@@ -53,6 +56,8 @@ public class AuthController {
     private IPersonService personService;
     @Autowired
     private IPatientService patientService;
+    @Autowired
+    private ISystemAdminService systemAdminService;
     @Autowired
     private IEmailService emailService;
     @Autowired
@@ -103,6 +108,41 @@ public class AuthController {
 
             userService.create(user);
             patientService.create(patient);
+            EmailDetails emailDetails = new EmailDetails();
+            emailDetails.setRecipient(userDTO.getEmail());
+            emailDetails.setMsgBody("Welcome to our blood bank!<br/>" +
+                    "You can <a href=\"http://localhost:3000/auth/activation/"+ user.getActivationCode() +"\">Activate your account here!<a/></h2> <br/>");
+            emailDetails.setSubject("Welcome email from blood bank team 39");
+            emailService.sendWelcomeMail(emailDetails);
+        }catch (Exception e){
+            return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<String>(HttpStatus.OK);
+    }
+
+
+    @Operation(summary = "Create new system admin", description = "Create new system admin", method = "POST")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Created",
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = CreateAdminUserDTO.class)) }),
+            @ApiResponse(responseCode = "409", description = "Not possible to create new user when given id is not null",
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = CreateAdminUserDTO.class)) }),
+            @ApiResponse(responseCode = "400", description = "Not possible to create new user data bad request",
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = CreateAdminUserDTO.class)) })
+    })
+    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+    @PostMapping(value="/createSystemAdmin",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> createSystemAdmin(@Valid @RequestBody CreateAdminUserDTO userDTO) throws ConstraintViolationException {
+        try {
+            Person person = new Person(userDTO);
+            Person createdPerson = personService.create(person);
+
+            User user = new User(userDTO, createdPerson);
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            SystemAdmin admin = new SystemAdmin(createdPerson, false);
+
+            userService.create(user);
+            systemAdminService.create(admin);
             EmailDetails emailDetails = new EmailDetails();
             emailDetails.setRecipient(userDTO.getEmail());
             emailDetails.setMsgBody("Welcome to our blood bank!<br/>" +
