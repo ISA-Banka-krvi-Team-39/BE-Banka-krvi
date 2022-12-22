@@ -33,13 +33,6 @@ public class Appointment {
     {
 
     }
-//    public Appointment(AppointmentDTO appointmentDTO)
-//    {
-//        this.appointmentId = appointmentDTO.getAppointmentId();
-//        this.term = appointmentDTO.getTerm();
-//        this.person = appointmentDTO.getPerson();
-//        this.started = appointmentDTO.getStarted();
-//    }
     public Appointment(Integer appointmentId,Term term, Person person,boolean started)
     {
         this.appointmentId = appointmentId;
