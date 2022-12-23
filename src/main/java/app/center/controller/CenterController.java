@@ -1,10 +1,10 @@
 package app.center.controller;
 
-import app.center.dto.CenterDTO;
-import app.center.dto.CenterWithoutPersonsDTO;
-import app.center.dto.CreateCenterDTO;
+import app.center.dto.*;
 import app.center.model.Center;
+import app.center.model.Term;
 import app.center.service.ICenterService;
+import app.center.service.ITermService;
 import app.medical_staff.model.MedicalStaff;
 import app.medical_staff.service.IMedicalStaffService;
 import app.shared.service.IAddressService;
@@ -18,12 +18,15 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.data.repository.query.Param;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -36,8 +39,10 @@ public class CenterController {
     private ICenterService centerService;
     @Autowired
     private IMedicalStaffService medicalStaffService;
-
+    @Autowired
     private IAddressService addressService;
+    @Autowired
+    private ITermService termService;
 
 
     @Operation(summary = "Get all centers", description = "Get all centers or search", method="GET")
@@ -144,5 +149,21 @@ public class CenterController {
             e.printStackTrace();
                 return new ResponseEntity<String>(HttpStatus.CONFLICT);
         }
+    }
+    @Operation(summary = "Get centers that has free term", description = "Get centers that has free term", method="GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation",
+                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = CenterByDateTimeDTO.class))))
+    })
+    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+    @GetMapping(value = "/listDateTime/", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<CenterByDateTimeDTO>> getAllByDateTime(@RequestParam(value= "localDateTime", required =true)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)LocalDateTime localDateTime) {
+        List<Term> terms = termService.getTermsByDateTime(localDateTime);
+        List<CenterByDateTimeDTO> centerByDateTimeDTOS = new ArrayList<>();
+        System.out.println(terms.size() + "__________________________________");
+        for(Term term : terms){
+            centerByDateTimeDTOS.add(new CenterByDateTimeDTO(term));
+        }
+        return new ResponseEntity<>(centerByDateTimeDTOS, HttpStatus.OK);
     }
 }
