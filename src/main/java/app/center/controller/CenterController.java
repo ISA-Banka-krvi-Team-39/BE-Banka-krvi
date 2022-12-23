@@ -160,7 +160,6 @@ public class CenterController {
     public ResponseEntity<List<CenterByDateTimeDTO>> getAllByDateTime(@RequestParam(value= "localDateTime", required =true)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)LocalDateTime localDateTime) {
         List<Term> terms = termService.getTermsByDateTime(localDateTime);
         List<CenterByDateTimeDTO> centerByDateTimeDTOS = new ArrayList<>();
-        System.out.println(terms.size() + "__________________________________");
         for(Term term : terms){
             centerByDateTimeDTOS.add(new CenterByDateTimeDTO(term));
         }

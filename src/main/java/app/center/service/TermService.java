@@ -68,8 +68,6 @@ public class TermService implements ITermService {
 
     @Override
     public List<Term> getTermsByDateTime(LocalDateTime localDateTime) {
-        System.out.println(localDateTime.plusHours(-1));
-        System.out.println(localDateTime.plusHours(1));
         return termRepository.getTermsByDateTime(localDateTime.plusHours(-1),localDateTime.plusHours(1));
     }
 }
