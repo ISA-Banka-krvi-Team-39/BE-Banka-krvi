@@ -18,4 +18,5 @@ public interface ITermService {
     public Boolean canTermBeCanceled(int termId);
     public Term save(Term term);
     public boolean checkTerm(LocalDateTime date,int duration);
+    public List<Term> getTermsByDateTime(LocalDateTime localDateTime);
 }

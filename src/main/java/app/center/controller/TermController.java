@@ -157,6 +157,34 @@ public class TermController {
         emailService.sendWelcomeMail(emailDetails);
         return new ResponseEntity<>(true, HttpStatus.OK);
     }
+
+    @Operation(summary = "Schedule term", description = "Get all terms", method="GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation",
+                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = String.class))))
+    })
+    //@PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+    @PutMapping(value = "/scheduleByDate/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> scheduleTermByDate(@RequestParam("termId") int termId, @PathVariable("id") int personId) throws Exception {
+        if(!termService.canPatientDonate(personId))
+            throw new Exception("This patient cant donate");
+        if(questionnaireService.findAllByPersonId(personId).size() == 0)
+            throw new Exception("This patient cant donate because there is no questionnaire");
+        Term term = termService.findOne(termId);
+        Person person = personService.findOne(personId);
+        term.setState(State.PENDING);
+        term.setBloodDonors(person);
+        termService.save(term);
+        User user = userService.findOneByPersonId(personId);
+        EmailDetails emailDetails = new EmailDetails();
+        emailDetails.setRecipient(user.getEmail());
+        emailDetails.setMsgBody("Your blood bank!<br/>" +
+                "Your term is scheduled <br/>");
+        emailDetails.setSubject("Welcome email from blood bank team 39");
+        emailService.sendWelcomeMail(emailDetails);
+        return new ResponseEntity<>(true, HttpStatus.OK);
+    }
     
     @Operation(summary = "Get all terms by patient", description = "Get all terms by patient", method="GET")
     @ApiResponses(value = {

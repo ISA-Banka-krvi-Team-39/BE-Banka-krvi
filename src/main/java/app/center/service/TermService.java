@@ -65,4 +65,9 @@ public class TermService implements ITermService {
         }
         return true;
     }
+
+    @Override
+    public List<Term> getTermsByDateTime(LocalDateTime localDateTime) {
+        return termRepository.getTermsByDateTime(localDateTime.plusHours(-1),localDateTime.plusHours(1));
+    }
 }
