@@ -1,5 +1,7 @@
 package app.center.controller;
 
+import app.canceled_term.model.CanceledTerm;
+import app.canceled_term.service.ICanceledTermService;
 import app.center.dto.CenterWithoutPersonsDTO;
 import app.center.dto.CreateCenterDTO;
 import app.center.dto.CreateTermDTO;
@@ -65,7 +67,8 @@ public class TermController {
     private IEmailService emailService;
     @Autowired
     private IUserService userService;
-
+    @Autowired
+    private ICanceledTermService canceledTermService;
     @Autowired
     private IMedicalStaffService medicalStaffService;
 
@@ -193,13 +196,14 @@ public class TermController {
     })
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
-    @PutMapping(value = "/cancel/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Boolean> cancelTerm(@PathVariable Integer id) throws Exception {
+    @PutMapping(value = "/cancel/{id}/{patientId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> cancelTerm(@PathVariable Integer id,@PathVariable Integer patientId) throws Exception {
         if(termService.canTermBeCanceled(id))
             throw new Exception("This term cant be canceled");
         Term term = termService.findOne(id);
         term.setBloodDonors(null);
         term.setState(State.FREE);
+        canceledTermService.create(new CanceledTerm(patientId,id));
         termService.save(term);
         return new ResponseEntity<>(true, HttpStatus.OK);
     }
