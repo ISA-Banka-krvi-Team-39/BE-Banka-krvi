@@ -117,7 +117,7 @@ values ('2023-5-15 9:00:00',20,1,1,0,1);
 insert into Term (date_time, duration_in_minutes, maximum_space, center_id, state, medical_staff)
 values ('2023-8-20 15:00:00',20,1,1,0,1);
 insert into Term (date_time, duration_in_minutes, maximum_space, center_id, state, medical_staff)
-values ('2023-8 -20 16:00:00',20,1,3,0,1);
+values ('2023-8-20 16:00:00',20,1,3,0,1);
 insert into Term (date_time, duration_in_minutes, maximum_space, center_id, state, medical_staff)
 values ('2023-5-20 15:09:00',20,1,5,0,1);
 
