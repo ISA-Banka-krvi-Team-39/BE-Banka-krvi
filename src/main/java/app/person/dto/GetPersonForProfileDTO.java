@@ -45,7 +45,9 @@ public class GetPersonForProfileDTO {
         this.uid = user.getPerson().getUid();
         this.phoneNumber = user.getPerson().getPhoneNumber();
         this.school = user.getPerson().getSchool();
+        if(patient != null)
         this.points = patient.getPoints();
+        else this.points = 0;
     }
 
     public String getEmail() {
