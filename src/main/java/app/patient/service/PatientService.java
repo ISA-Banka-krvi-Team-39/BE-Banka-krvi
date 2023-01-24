@@ -5,6 +5,7 @@ import app.email.service.IEmailService;
 import app.patient.model.Patient;
 import app.patient.repository.IPatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -28,9 +29,22 @@ public class PatientService implements IPatientService{
     public Patient create(Patient patient) {
         return patientRepository.save(patient);
     }
+
+    @Override
+    public Integer getPatientPenals(int id) {
+        return findOne(id).getPenal();
+    }
     @Override
     public List<Patient> findAll() {
         return patientRepository.findAll();
+    }
+    @Scheduled(cron = "${greeting.cron}")
+    protected void resetPenals(){
+        List<Patient> patients = findAll();
+        for(Patient patient : patients){
+            patient.setPenal(0);
+            save(patient);
+        }
     }
     @Override
     public Patient save(Patient patient){ return patientRepository.save(patient);}

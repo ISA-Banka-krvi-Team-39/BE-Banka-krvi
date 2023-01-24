@@ -50,11 +50,11 @@ insert into user_table (email,password,person_id,enabled,last_password_reset_dat
 insert into user_table (email,password,person_id,enabled,last_password_reset_date,activation_code) values ('lenka@gmail.com','$2a$10$weZMibSttAmFfa1aYJ9F.OxWNTH2hwNP8D/E5q4jSLnRcjZ3pg/QW',7,true,'2017-10-01 21:58:58.508-07','615glzxk16z5g9l1569l');
 
 insert into Patient (points,person_id,blood_type,penal)
-values (200,2,0,0);
+values (200,2,0,3);
 insert into Patient (points,person_id,blood_type,penal)
-values (300,6,1,0);
+values (300,6,1,1);
 insert into Patient (points,person_id,blood_type,penal)
-values (400,7,2,0);
+values (400,7,2,2);
 
 insert into system_admin(person_id,was_logged_in)
 values(1,true);

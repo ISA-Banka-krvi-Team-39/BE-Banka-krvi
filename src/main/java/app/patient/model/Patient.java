@@ -17,17 +17,13 @@ public class Patient {
     @OneToOne
     @JoinColumn(name = "personId")
     private Person person;
-    
     @OneToMany
     @JoinColumn(name="patient_id")
     private Set<Appointment> appointments = new HashSet<>();
     @Column(name="bloodType", unique=false, nullable=false)
     private BloodType bloodType;
-
-
     @Column(name="points", unique=false, nullable=false)
     private Integer points;
-
     @Column(name="penal", unique=false, nullable=false)
     private Integer penal;
 
