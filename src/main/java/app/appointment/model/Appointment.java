@@ -40,9 +40,7 @@ public class Appointment {
         this.person = person;
         this.started = started;
     }
-
-
-
+    
     public Integer getAppointmentId() {
         return appointmentId;
     }
