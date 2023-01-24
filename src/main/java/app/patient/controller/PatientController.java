@@ -43,6 +43,7 @@ public class PatientController {
     })
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
     @GetMapping(value="/terms", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<List<PatientDto>> getOne() {
         List<PatientDto> patients = new ArrayList<PatientDto>();
         List<PatientDto> patientss = new ArrayList<PatientDto>();
@@ -63,5 +64,19 @@ public class PatientController {
 
         System.out.println(patients.size() + " ");
         return new ResponseEntity<List<PatientDto>>(patients, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Get patients penals", description = "Get all patients with terms", method="GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation",
+                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Person.class))))
+    })
+    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+    @GetMapping(value="/{id}/penals", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAnyRole('USER')")
+    public ResponseEntity<Integer> getPatientsPenals(@PathVariable Integer id) {
+        Patient patient = patientService.findOneByPersonId(id);
+        Integer patientPenals = patientService.getPatientPenals(patient.getPatientId());
+        return new ResponseEntity<Integer>(patientPenals, HttpStatus.OK);
     }
 }
