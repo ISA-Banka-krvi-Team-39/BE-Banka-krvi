@@ -1,5 +1,6 @@
 package app.user.service;
 
+import app.user.model.Role;
 import app.user.model.User;
 import app.user.repository.IUserRepository;
 import net.bytebuddy.asm.Advice;
@@ -10,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 public class UserService implements IUserService, UserDetailsService {
@@ -21,6 +23,7 @@ public class UserService implements IUserService, UserDetailsService {
         return userRepository.save(user);
     }
     public User findOne(int id) { return userRepository.findOneByUserId(id);}
+
     @Override
     public User findOneByActivationCode(String code) {
         return userRepository.findOneByActivationCode(code);

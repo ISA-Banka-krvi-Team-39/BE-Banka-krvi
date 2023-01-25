@@ -14,9 +14,11 @@ public interface ITermService {
     public List<Term> getAll();
     public List<Term> getAllFree();
     public List<Term> getAllPatientsTerms(int id);
+    public List<Term> getAllAdminTerms(int id);
     public Boolean canPatientDonate(int personId);
     public Boolean canTermBeCanceled(int termId);
     public Term save(Term term);
     public boolean checkTerm(LocalDateTime date,int duration);
     public List<Term> getTermsByDateTime(LocalDateTime localDateTime);
+    public void cancelTermById(int termId);
 }

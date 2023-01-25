@@ -223,4 +223,33 @@ public class TermController {
         }
         return new ResponseEntity<>(termsDTO, HttpStatus.OK);
     }
+    @Operation(summary = "Get all terms by admin", description = "Get all terms admin", method="GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation",
+                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Term.class))))
+    })
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+    @GetMapping(value = "/admin",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<TermForPatientDTO>> getAllAdminTerms() {
+        List<Term> terms = termService.getAllAdminTerms(1);
+        List<TermForPatientDTO> termsDTO = new ArrayList<>();
+        for(Term term : terms) {
+            termsDTO.add(new TermForPatientDTO(term));
+        }
+        System.out.println("velicina" + termsDTO.size());
+        return new ResponseEntity<>(termsDTO, HttpStatus.OK);
+    }
+    @Operation(summary = "Get all terms by admin", description = "Get all terms admin", method="GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation",
+                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Term.class))))
+    })
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+    @GetMapping(value = "/cancel/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<TermForPatientDTO>> cancelTerm(@PathVariable int id) {
+        termService.cancelTermById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

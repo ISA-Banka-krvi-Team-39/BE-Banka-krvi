@@ -24,8 +24,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.fasterxml.jackson.databind.type.LogicalType.DateTime;
 
 @Tag(name = "Patient controller", description = "The Patient API")
 @RestController
@@ -43,7 +46,7 @@ public class PatientController {
     })
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
     @GetMapping(value="/terms", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole('USER')")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public ResponseEntity<List<PatientDto>> getOne() {
         List<PatientDto> patients = new ArrayList<PatientDto>();
         List<PatientDto> patientss = new ArrayList<PatientDto>();
@@ -54,9 +57,10 @@ public class PatientController {
             for(Patient p : patientList)
             {
                 if(t.getBloodDonor() != null) {
-                    System.out.println(patientService.findOneByPersonId(t.getBloodDonor().getPersonId()).getPatientId() + " " + p.getPatientId());
-                    if (patientService.findOneByPersonId(t.getBloodDonor().getPersonId()).getPatientId() == p.getPatientId()) {
-                        patients.add(new PatientDto(p.getPatientId(),p.getPerson().getPersonId(),t.getTermId(),p.getPerson().getName(),p.getPerson().getSurname()));
+                    if(t.getDateTime().isAfter(LocalDateTime.now())) {
+                        if (patientService.findOneByPersonId(t.getBloodDonor().getPersonId()).getPatientId() == p.getPatientId()) {
+                            patients.add(new PatientDto(p.getPatientId(), p.getPerson().getPersonId(), t.getTermId(), p.getPerson().getName(), p.getPerson().getSurname()));
+                        }
                     }
                 }
             }
@@ -73,10 +77,14 @@ public class PatientController {
     })
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
     @GetMapping(value="/{id}/penals", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole('USER')")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public ResponseEntity<Integer> getPatientsPenals(@PathVariable Integer id) {
         Patient patient = patientService.findOneByPersonId(id);
-        Integer patientPenals = patientService.getPatientPenals(patient.getPatientId());
+        Integer patientPenals = 0;
+        if(patient != null)
+            patientPenals = patientService.getPatientPenals(patient.getPatientId());
+        else
+            patientPenals = 0;
         return new ResponseEntity<Integer>(patientPenals, HttpStatus.OK);
     }
 }
