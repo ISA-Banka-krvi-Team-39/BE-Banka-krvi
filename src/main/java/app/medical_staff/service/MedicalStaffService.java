@@ -31,6 +31,8 @@ public class MedicalStaffService implements IMedicalStaffService {
         return medicalStaffRepository.findOneByPerson(personId);
     }
     @Override
+    public MedicalStaff findCenterIdByPersonId(int id){return medicalStaffRepository.findOneByPerson(id);}
+    @Override
     public List<MedicalStaff> findAllMedicalStaff(int centerId){return medicalStaffRepository.findAllMedicalStaff(centerId);}
 
 }

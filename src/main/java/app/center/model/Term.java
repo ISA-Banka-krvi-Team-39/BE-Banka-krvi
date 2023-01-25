@@ -122,11 +122,13 @@ public class Term {
     public Integer getDurationInMinutes() {
         return durationInMinutes;
     }
-
     public Integer getVersion() {
         return version;
     }
     public void setVersion(Integer version) {
         this.version = version;
+    }
+    public void setBloodDonor(Person bloodDonor) {
+        this.bloodDonor = bloodDonor;
     }
 }

@@ -20,10 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,20 +33,21 @@ public class BloodBagController {
     private BloodBagService bloodBagService;
 
 
-    @Operation(summary = "Get all blood bags", description = "Get all blood bags", method="GET")
+    @Operation(summary = "Get all blood bags", description = "Get all blood bags", method="PUT")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation",
                     content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = BloodBag.class))))
     })
     @PreAuthorize("hasRole('ADMIN')")
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
-    @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<BloodBagDTO>> getAll() {
+    @PutMapping(value = "/list/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<BloodBagDTO>> getAll(@PathVariable int id) {
         List<BloodBag> bloodBags = bloodBagService.getAll();
         List<BloodBagDTO> bloodBagsDtos = new ArrayList<BloodBagDTO>();
         for(BloodBag bloodbag : bloodBags)
         {
-            bloodBagsDtos.add(new BloodBagDTO(bloodbag.getBloodType(),bloodbag.getAmount(),bloodbag.getCenter()));
+            if(bloodbag.getCenter().getCenterId() == id)
+                bloodBagsDtos.add(new BloodBagDTO(bloodbag.getBloodType(),bloodbag.getAmount(),bloodbag.getCenter()));
 
         }
         return new ResponseEntity<>(bloodBagsDtos, HttpStatus.OK);
