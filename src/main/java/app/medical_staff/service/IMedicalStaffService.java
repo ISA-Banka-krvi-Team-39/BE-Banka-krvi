@@ -17,4 +17,5 @@ public interface IMedicalStaffService {
     public void delete(MedicalStaff medicalStaff);
     public MedicalStaff findOneByPersonId(int personId);
     public List<MedicalStaff> findAllMedicalStaff(int centerId);
+    public MedicalStaff findCenterIdByPersonId(int id);
 }

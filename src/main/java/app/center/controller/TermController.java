@@ -2,11 +2,7 @@ package app.center.controller;
 
 import app.canceled_term.model.CanceledTerm;
 import app.canceled_term.service.ICanceledTermService;
-import app.center.dto.CenterWithoutPersonsDTO;
-import app.center.dto.CreateCenterDTO;
-import app.center.dto.CreateTermDTO;
-import app.center.dto.TermDTO;
-import app.center.dto.TermForPatientDTO;
+import app.center.dto.*;
 import app.center.model.Center;
 import app.center.dto.CreateTermDTO;
 import app.center.dto.TermDTO;
@@ -46,6 +42,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.Id;
 import javax.validation.ConstraintViolationException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,6 +85,24 @@ public class TermController {
             return new ResponseEntity<String>("200",HttpStatus.OK);
     }
 
+    @Operation(summary = "Post Term", description = "Post Term", method="PUT")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation",
+                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = CreateTermDTO.class))))
+    })
+    @PreAuthorize("hasRole('ADMIN')")
+    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+    @PutMapping(value="/scheduleTerm",consumes = "application/json")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    public ResponseEntity<CreateTermForPatientDTO> updateScheduleTerm(@RequestBody CreateTermForPatientDTO createTermDTO) {
+        System.out.println("usao");
+        System.out.println("Term id je:" + createTermDTO.getTermId());
+        Term term = termService.findOne(createTermDTO.getTermId());
+        term.setBloodDonor(personService.findOne(createTermDTO.getPatientId()));
+        termService.save(term);
+       return new ResponseEntity<CreateTermForPatientDTO>(createTermDTO,HttpStatus.OK);
+    }
+
     @Operation(summary = "Get term by id", description = "Get term by id", method="GET")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation",
@@ -98,6 +114,18 @@ public class TermController {
     public ResponseEntity<TermDTO> findById(@PathVariable Integer id) {
         Term term = termService.findOne(id);
         return new ResponseEntity<>(new TermDTO(term,term.getCenter()), HttpStatus.OK);
+    }
+    @Operation(summary = "Get term by id", description = "Get term by id", method="GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation",
+                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Term.class))))
+    })
+    @PreAuthorize("hasRole('ADMIN')")
+    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+    @GetMapping(value = "/date/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> findDateById(@PathVariable Integer id) {
+        Term term = termService.findOne(id);
+        return new ResponseEntity<String>(term.getDateTime().toString().split("T")[0], HttpStatus.OK);
     }
 
     @Operation(summary = "Get all terms", description = "Get all terms", method="GET")
@@ -128,6 +156,23 @@ public class TermController {
         List<Term> terms = termService.getAllFree();
         List<TermDTO> termsDTO = new ArrayList<>();
         for(Term term : terms) {
+            termsDTO.add(new TermDTO(term));
+        }
+        return new ResponseEntity<>(termsDTO, HttpStatus.OK);
+    }
+    @Operation(summary = "Get all terms", description = "Get all terms", method="GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation",
+                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Term.class))))
+    })
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+    @GetMapping(value = "/free",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<TermDTO>> getFree() {
+        List<Term> terms = termService.getAllFree();
+        List<TermDTO> termsDTO = new ArrayList<>();
+        for(Term term : terms) {
+            if(term.getBloodDonor() == null)
             termsDTO.add(new TermDTO(term));
         }
         return new ResponseEntity<>(termsDTO, HttpStatus.OK);
@@ -247,5 +292,44 @@ public class TermController {
     public ResponseEntity<List<TermForPatientDTO>> cancelTerm(@PathVariable int id) {
         termService.cancelTermById(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @Operation(summary = "Get last patient term", description = "Get last patient term", method="PUT")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation",
+                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = TermDTO.class))))
+    })
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+    @PutMapping(value = "/findLast/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getLastPatientTerm(@PathVariable int id) {
+        List<Term> terms = termService.getAll();
+        List<Term> termss = new ArrayList<>();
+        Term lastTerm = null;
+        for(Term term : terms)
+        {
+            if(term.getBloodDonor() != null) {
+                if (term.getBloodDonor().getPersonId() == id) {
+                    System.out.println("usao da dodeli Last Term");
+                    lastTerm = term;
+                    termss.add(term);
+                }
+            }
+        }
+        for(Term term : termss)
+        {
+            System.out.println("DA vidimo: " + term.getDateTime().isAfter(lastTerm.getDateTime()) + " i ovako " + term.getDateTime().compareTo(lastTerm.getDateTime()));
+            if(term.getDateTime().isAfter(lastTerm.getDateTime()))
+            {
+
+                System.out.println("usao da dodeli Last Term max");
+                lastTerm = term;
+            }
+        }
+        if(lastTerm == null) {
+            lastTerm = new Term();
+            lastTerm.setDateTime(LocalDateTime.now());
+        }
+        System.out.println(lastTerm.getDateTime().toString().split("T")[0] + " LastTerm");
+        return new ResponseEntity<String>(lastTerm.getDateTime().toString().split("T")[0], HttpStatus.OK);
     }
 }

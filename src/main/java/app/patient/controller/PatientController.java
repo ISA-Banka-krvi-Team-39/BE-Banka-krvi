@@ -2,6 +2,7 @@ package app.patient.controller;
 
 import app.appointment.dto.AppointmentPatientInfoDTO;
 import app.appointment.model.Appointment;
+import app.center.dto.TermDTO;
 import app.center.model.Term;
 import app.center.service.ITermService;
 import app.patient.dto.PatientDto;
@@ -68,6 +69,22 @@ public class PatientController {
 
         System.out.println(patients.size() + " ");
         return new ResponseEntity<List<PatientDto>>(patients, HttpStatus.OK);
+    }
+    @Operation(summary = "Get all patients", description = "Get all patients", method="GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation",
+                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Term.class))))
+    })
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+    @GetMapping(value = "/all",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<PatientDto>> getAll() {
+        List<Patient> patients = patientService.findAll();
+        List<PatientDto> patDTO = new ArrayList<>();
+        for(Patient patient : patients){
+            patDTO.add(new PatientDto(patient.getPatientId(),patient.getPerson().getPersonId(),patient.getPerson().getName(),patient.getPerson().getSurname()));
+        }
+        return new ResponseEntity<>(patDTO, HttpStatus.OK);
     }
 
     @Operation(summary = "Get patients penals", description = "Get all patients with terms", method="GET")

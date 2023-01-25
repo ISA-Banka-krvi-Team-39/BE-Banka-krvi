@@ -74,6 +74,17 @@ public class CenterController {
         List<MedicalStaff> medicalStaffList = medicalStaffService.findAllByWorkingCenter(center);
         return new ResponseEntity<>(new CenterDTO(center,medicalStaffList), HttpStatus.OK);
     }
+    @Operation(summary = "Find center", description = "Find center", method="PUT")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation",
+                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Center.class))))
+    })
+    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+    @PutMapping(value = "/find/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Integer> findCenterByPerson(@PathVariable Integer id) {
+        MedicalStaff medicalStaff = medicalStaffService.findCenterIdByPersonId(id);
+        return new ResponseEntity<>(medicalStaff.getPerson().getPersonId(), HttpStatus.OK);
+    }
     @Operation(summary = "Update center", description = "Update center", method="PUT")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation",
