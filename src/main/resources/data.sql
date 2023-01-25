@@ -92,34 +92,34 @@ values (1,1);
 insert into Medical_Staff(person_id,center_id)
 values (5,1);
 
-insert into Term (date_time, duration_in_minutes, maximum_space, center_id,person_id, state, medical_staff)
-values ('2023-01-01 21:00:00',20,1,1,2,1,1);
+insert into Term (date_time, duration_in_minutes, maximum_space, center_id,person_id, state, medical_staff,version)
+values ('2023-01-01 21:00:00',20,1,1,2,1,1,0);
 
-insert into Term (date_time, duration_in_minutes, maximum_space, center_id,person_id, state, medical_staff)
-values ('2023-07-01 21:00:00',20,1,1,7,1,1);
+insert into Term (date_time, duration_in_minutes, maximum_space, center_id,person_id, state, medical_staff,version)
+values ('2023-07-01 21:00:00',20,1,1,7,1,1,0);
 
-insert into Term (date_time, duration_in_minutes, maximum_space, center_id,person_id, state, medical_staff)
-values ('2023-01-01 21:00:00',20,1,1,6,1,1);
+insert into Term (date_time, duration_in_minutes, maximum_space, center_id,person_id, state, medical_staff,version)
+values ('2022-01-01 21:00:00',20,1,1,6,1,1,0);
 
-insert into Term (date_time, duration_in_minutes, maximum_space, center_id,person_id, state, medical_staff)
-values ('2022-1-23 13:00:00',20,1,1,7,2,1);
+insert into Term (date_time, duration_in_minutes, maximum_space, center_id,person_id, state, medical_staff,version)
+values ('2022-1-23 13:00:00',20,1,1,7,2,1,0);
 
-insert into Term (date_time, duration_in_minutes, maximum_space, center_id, state, medical_staff, person_id)
-values ('2022-12-23 13:00:00',30,1,1,2,1,7);
-insert into Term (date_time, duration_in_minutes, maximum_space, center_id, state, medical_staff, person_id)
-values ('2022-12-20 15:00:00',45,1,1,2,1,7);
-insert into Term (date_time, duration_in_minutes, maximum_space, center_id, state, medical_staff)
-values ('2023-2-23 13:00:00',40,1,1,0,1);
-insert into Term (date_time, duration_in_minutes, maximum_space, center_id, state, medical_staff)
-values ('2023-5-1 13:00:00',20,1,1,0,1);
-insert into Term (date_time, duration_in_minutes, maximum_space, center_id, state, medical_staff)
-values ('2023-5-15 9:00:00',35,1,1,0,1);
-insert into Term (date_time, duration_in_minutes, maximum_space, center_id, state, medical_staff, person_id)
-values ('2023-8-20 15:00:00',35,1,1,1,1,7);
-insert into Term (date_time, duration_in_minutes, maximum_space, center_id, state, medical_staff)
-values ('2023-8-20 16:00:00',30,1,3,0,1);
-insert into Term (date_time, duration_in_minutes, maximum_space, center_id, state, medical_staff)
-values ('2023-5-20 15:09:00',60,1,5,0,1);
+insert into Term (date_time, duration_in_minutes, maximum_space, center_id, state, medical_staff, person_id,version)
+values ('2022-6-23 13:00:00',30,1,1,2,1,7,0);
+insert into Term (date_time, duration_in_minutes, maximum_space, center_id, state, medical_staff, person_id,version)
+values ('2022-2-20 15:00:00',45,1,1,2,1,7,0);
+insert into Term (date_time, duration_in_minutes, maximum_space, center_id, state, medical_staff,version)
+values ('2023-2-23 13:00:00',40,1,1,0,1,0);
+insert into Term (date_time, duration_in_minutes, maximum_space, center_id, state, medical_staff,version)
+values ('2023-5-1 13:00:00',20,1,1,0,1,0);
+insert into Term (date_time, duration_in_minutes, maximum_space, center_id, state, medical_staff,version)
+values ('2023-5-15 9:00:00',35,1,1,0,1,0);
+insert into Term (date_time, duration_in_minutes, maximum_space, center_id, state, medical_staff, person_id,version)
+values ('2023-8-20 15:00:00',35,1,1,1,1,7,0);
+insert into Term (date_time, duration_in_minutes, maximum_space, center_id, state, medical_staff,version)
+values ('2023-8-20 16:00:00',30,1,3,0,1,0);
+insert into Term (date_time, duration_in_minutes, maximum_space, center_id, state, medical_staff,version)
+values ('2023-5-20 15:09:00',60,1,5,0,1,0);
 
 insert into Question (question) 
 values ('Have you ever donated blood or blood components voluntarily?');
@@ -175,6 +175,8 @@ insert into user_role(user_id,role_id)
 values(3,3);
 insert into user_role(user_id,role_id)
 values(7,2);
+insert into user_role(user_id,role_id)
+values(6,2);
 insert into user_role(user_id,role_id)
 values(5,4);
 
