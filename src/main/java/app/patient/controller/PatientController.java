@@ -24,8 +24,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.fasterxml.jackson.databind.type.LogicalType.DateTime;
 
 @Tag(name = "Patient controller", description = "The Patient API")
 @RestController
@@ -54,9 +57,10 @@ public class PatientController {
             for(Patient p : patientList)
             {
                 if(t.getBloodDonor() != null) {
-                    System.out.println(patientService.findOneByPersonId(t.getBloodDonor().getPersonId()).getPatientId() + " " + p.getPatientId());
-                    if (patientService.findOneByPersonId(t.getBloodDonor().getPersonId()).getPatientId() == p.getPatientId()) {
-                        patients.add(new PatientDto(p.getPatientId(),p.getPerson().getPersonId(),t.getTermId(),p.getPerson().getName(),p.getPerson().getSurname()));
+                    if(t.getDateTime().isAfter(LocalDateTime.now())) {
+                        if (patientService.findOneByPersonId(t.getBloodDonor().getPersonId()).getPatientId() == p.getPatientId()) {
+                            patients.add(new PatientDto(p.getPatientId(), p.getPerson().getPersonId(), t.getTermId(), p.getPerson().getName(), p.getPerson().getSurname()));
+                        }
                     }
                 }
             }
