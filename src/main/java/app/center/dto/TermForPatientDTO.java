@@ -20,6 +20,7 @@ public class TermForPatientDTO {
     public TermForPatientDTO(Term term) {
         termId = term.getTermId();
         dateTime = term.getDateTime();
+        if(term.getBloodDonor() != null)
         this.bloodDonor = new PersonDTO(term.getBloodDonor());
         this.durationInMinutes = term.getDurationInMinutes();
         this.center = new CenterDTO(term.getCenter());

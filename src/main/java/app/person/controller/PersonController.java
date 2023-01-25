@@ -143,6 +143,7 @@ public class PersonController {
     @GetMapping(value="/admins", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<PersonDTO>> findAdmins() {
         List<Person> admins = personService.findAvailableAdmins();
+        System.out.println("KolkoAvailable " + admins.size());
         List<PersonDTO> personsDTO = new ArrayList<>();
         for(Person person : admins){
             personsDTO.add(new PersonDTO(person));

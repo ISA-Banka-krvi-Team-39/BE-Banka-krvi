@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,9 +32,28 @@ public class TermService implements ITermService {
     }
 
     @Override
+    public void cancelTermById(int termId) {
+        termRepository.cancelTermById(termId);
+    }
+
+
+    @Override
     public List<Term> getAllPatientsTerms(int id) {
         return termRepository.getAllPatientsTerms(id);
-}
+    }
+
+    @Override
+    public List<Term> getAllAdminTerms(int id) {
+        List<Term> termList = termRepository.findAll();
+        List<Term> retTermList = new ArrayList<>();
+        for(Term term : termList)
+        {
+            if(term.getCenter().getCenterId() == id)
+                retTermList.add(term);
+        }
+
+        return retTermList;
+    }
 
     @Override
     public Boolean canPatientDonate(int personId) {
