@@ -143,14 +143,17 @@ public class TermController {
     @PutMapping(value = "/schedule/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> scheduleTerm(@RequestBody TermDTO termDTO, @PathVariable("id") int personId) throws Exception {
         if(!termService.canPatientDonate(personId))
-            throw new Exception("This patient cant donate");
+            throw new Exception("Seems like you had blood donation in last 6 months or will donate in next 6 months so you can't donate now!");
         if(questionnaireService.findAllByPersonId(personId).size() == 0)
-            throw new Exception("This patient cant donate because there is no questionnaire");
+            throw new Exception("You didn't fill questionnaire, you cant schedule now!");
         Term term = termService.findOne(termDTO.getTermId());
-        Person person = personService.findOne(personId);
-        term.setState(State.PENDING);
-        term.setBloodDonors(person);
-        termService.save(term);
+        if(term.getState()!= State.FREE)
+            throw new Exception("Someone scheduled this appointment refresh page!");
+        termService.schedule(term,personId);
+        return sendScheduledEmail(personId);
+    }
+
+    private ResponseEntity<Boolean> sendScheduledEmail(@PathVariable("id") int personId) {
         User user = userService.findOneByPersonId(personId);
         EmailDetails emailDetails = new EmailDetails();
         emailDetails.setRecipient(user.getEmail());
@@ -179,14 +182,7 @@ public class TermController {
         term.setState(State.PENDING);
         term.setBloodDonors(person);
         termService.save(term);
-        User user = userService.findOneByPersonId(personId);
-        EmailDetails emailDetails = new EmailDetails();
-        emailDetails.setRecipient(user.getEmail());
-        emailDetails.setMsgBody("Your blood bank!<br/>" +
-                "Your term is scheduled <br/>");
-        emailDetails.setSubject("Welcome email from blood bank team 39");
-        emailService.sendWelcomeMail(emailDetails);
-        return new ResponseEntity<>(true, HttpStatus.OK);
+        return sendScheduledEmail(personId);
     }
     
     @Operation(summary = "Get all terms by patient", description = "Get all terms by patient", method="GET")

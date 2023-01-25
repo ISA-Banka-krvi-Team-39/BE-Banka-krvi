@@ -1,12 +1,13 @@
 package app.center.service;
 
-import app.center.dto.CreateTermDTO;
+import app.center.model.State;
 import app.center.model.Term;
 import app.center.repository.ITermRepository;
-import app.patient.model.Patient;
-import net.bytebuddy.asm.Advice;
+import app.person.model.Person;
+import app.person.service.IPersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,8 +17,11 @@ import java.util.List;
 public class TermService implements ITermService {
     @Autowired
     private ITermRepository termRepository;
+    @Autowired
+    private IPersonService personService;
 
     @Override
+    @Transactional(readOnly = false)
     public Term create(Term term) {return termRepository.save(term); }
 
     public Term findOne(Integer id) {
@@ -72,7 +76,17 @@ public class TermService implements ITermService {
     }
 
     @Override
+    @Transactional(readOnly = false)
     public Term save(Term term){ return termRepository.save(term);}
+
+    @Override
+    @Transactional(readOnly = false)
+    public void schedule(Term term, Integer personId) {
+        Person person = personService.findOne(personId);
+        term.setState(State.PENDING);
+        term.setBloodDonors(person);
+        save(term);
+    }
 
     @Override
     public boolean checkTerm(LocalDateTime date,int duration) {

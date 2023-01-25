@@ -16,18 +16,13 @@ public class TermDTO {
     private Integer termId;
     private LocalDateTime dateTime;
     private Set<Person> medicalStaffs = new HashSet<>();
-
     private PersonDTO bloodDonor;
     private Integer durationInMinutes;
-
     private CenterDTO center;
-
-
     private State state;
 
     public TermDTO()
     {
-
     }
 
     public TermDTO(Term term,Center center)

@@ -1,13 +1,11 @@
 package app.center.model;
 
 import app.center.dto.TermDTO;
-import app.patient.model.Patient;
 import app.person.model.Person;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -42,6 +40,9 @@ public class Term {
 
     @Column(name = "duration_in_minutes")
     private Integer durationInMinutes;
+
+    @Version
+    private Integer version;
 
     public Term()
     {
@@ -120,5 +121,12 @@ public class Term {
     }
     public Integer getDurationInMinutes() {
         return durationInMinutes;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 }

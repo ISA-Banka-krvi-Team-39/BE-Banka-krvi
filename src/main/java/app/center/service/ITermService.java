@@ -1,10 +1,7 @@
 package app.center.service;
 
-import app.center.dto.CreateTermDTO;
+import app.center.dto.TermDTO;
 import app.center.model.Term;
-import app.patient.model.Patient;
-import org.springframework.data.jpa.repository.Query;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,6 +15,7 @@ public interface ITermService {
     public Boolean canPatientDonate(int personId);
     public Boolean canTermBeCanceled(int termId);
     public Term save(Term term);
+    public void schedule(Term term, Integer personId);
     public boolean checkTerm(LocalDateTime date,int duration);
     public List<Term> getTermsByDateTime(LocalDateTime localDateTime);
     public void cancelTermById(int termId);
