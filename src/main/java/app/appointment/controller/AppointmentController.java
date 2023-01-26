@@ -239,15 +239,18 @@ public class AppointmentController {
         if(appointment == null) {
             appointment = new Appointment(appointmentDTO.getAppointmentId(), termService.findOne(appointmentDTO.getTermId()), personService.findOne(appointmentDTO.getPersonId()), true);
             patid = patientService.findOneByPersonId(appointment.getPerson().getPersonId()).getPatientId();
+            appointment.setPatient(patientService.findOne(patientService.findPatientByPersonId(appointment.getPerson().getPersonId())));
             appointmentWithId = appointmentService.create(appointment);
         }
 
         Term term = appointment.getTerm();
         term.setState(State.DONE);
-        Informations info = new Informations("","","","","","","",false,"","","");
-        informationService.create(info);
+        //Informations info = new Informations("","","","","","","",false,"","","");
+        //informationService.create(info);
         AppointmentDTO apDto = new AppointmentDTO(appointmentWithId.getAppointmentId(),appointmentWithId.getTerm().getTermId(),appointmentWithId.getPerson().getPersonId(),appointmentWithId.getStarted());
-
+        Term termDone = termService.findOne(apDto.getTermId());
+        termDone.setState(State.DONE);
+        termService.save(termDone);
 
         return new ResponseEntity<>(apDto, HttpStatus.OK);
     }

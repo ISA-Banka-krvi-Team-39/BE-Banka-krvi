@@ -3,6 +3,7 @@ package app.appointment.model;
 import app.appointment.dto.AppointmentDTO;
 import app.center.model.Term;
 import app.informations.model.Informations;
+import app.patient.model.Patient;
 import app.person.model.Person;
 
 import javax.persistence.*;
@@ -25,6 +26,10 @@ public class Appointment {
     @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name = "informations_id", referencedColumnName = "informationsId",nullable = true)
     private Informations informations;
+
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinColumn(name = "patient_id", referencedColumnName = "patientId")
+    private Patient patient;
 
     @Column(name="started", nullable=false)
     private boolean started;
@@ -71,5 +76,13 @@ public class Appointment {
     public void setInformations(Informations informations)
     {
         this.informations = informations;
+    }
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 }
