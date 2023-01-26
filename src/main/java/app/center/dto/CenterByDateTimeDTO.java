@@ -11,26 +11,23 @@ public class CenterByDateTimeDTO {
     private String name;
     private String city;
     private Float avgGrade;
-    private Integer termId;
-    private LocalDateTime termDateTime;
+    private Integer id;
 
     public CenterByDateTimeDTO() {
     }
 
-    public CenterByDateTimeDTO(String name, String city, Float avgGrade, Integer termId, LocalDateTime termDateTime) {
+    public CenterByDateTimeDTO(String name, String city, Float avgGrade, Integer id) {
         this.name = name;
         this.city = city;
         this.avgGrade = avgGrade;
-        this.termId = termId;
-        this.termDateTime = termDateTime;
+        this.id = id;
     }
 
-    public CenterByDateTimeDTO(Term term) {
-        this.name = term.getCenter().getName();
-        this.city = term.getCenter().getAddress().getCity();
-        this.avgGrade = term.getCenter().getAvgGrade();
-        this.termId = term.getTermId();
-        this.termDateTime = term.getDateTime();
+    public CenterByDateTimeDTO(Center center) {
+        this.name = center.getName();
+        this.city = center.getAddress().getCity();
+        this.avgGrade = center.getAvgGrade();
+        this.id = center.getCenterId();
     }
 
     public String getName() {
@@ -57,19 +54,12 @@ public class CenterByDateTimeDTO {
         this.avgGrade = avgGrade;
     }
 
-    public Integer getTermId() {
-        return termId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setTermId(Integer termId) {
-        this.termId = termId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public LocalDateTime getTermDateTime() {
-        return termDateTime;
-    }
-
-    public void setTermDateTime(LocalDateTime termDateTime) {
-        this.termDateTime = termDateTime;
-    }
 }

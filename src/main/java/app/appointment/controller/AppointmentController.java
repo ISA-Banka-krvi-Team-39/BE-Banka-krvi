@@ -15,6 +15,8 @@ import app.center.service.EquipmentService;
 import app.center.service.IBloodBagService;
 import app.center.service.IEquipmentService;
 import app.center.service.ITermService;
+import app.donated_bags.model.DonatedBags;
+import app.donated_bags.service.IDonatedBagsService;
 import app.informations.dto.InformationsDto;
 import app.informations.model.Informations;
 import app.informations.service.IInformationService;
@@ -26,6 +28,8 @@ import app.person.model.PersonDescription;
 import app.person.service.IPersonDescriptionService;
 import app.person.service.IPersonService;
 import app.user.model.User;
+import app.wated_material.model.WastedMaterial;
+import app.wated_material.service.IWastedMaterialService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -41,6 +45,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,6 +77,12 @@ public class AppointmentController {
 
     @Autowired
     private IEquipmentService equipmentService;
+
+    @Autowired
+    private IWastedMaterialService wastedMaterialService;
+
+    @Autowired
+    private IDonatedBagsService donatedBagsService;
 
     @Operation(summary = "Get one appointment", description = "Get one appointment", method="GET")
     @ApiResponses(value = {
@@ -150,6 +161,9 @@ public class AppointmentController {
                 }
             }
         }
+
+        donatedBagsService.create(new DonatedBags(usedBags,appo.getTerm().getDateTime()));
+
         return new ResponseEntity<InformationsDto>(informationsDto, HttpStatus.OK);
     }
     @Operation(summary = "Create informations", description = "Create informations", method="POST")
@@ -159,8 +173,11 @@ public class AppointmentController {
     })
     @PreAuthorize("hasRole('ADMIN')")
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
-    @PostMapping(value="/{bag}/{needle}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<HttpStatus> updateEquipment(@PathVariable("bag") int bag,@PathVariable("needle") int needle) {
+    @PostMapping(value="/{bag}/{needle}/{appointmentId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<HttpStatus> updateEquipment(@PathVariable("bag") int bag, @PathVariable("needle") int needle, @PathVariable("appointmentId") int appointmentId) {
+
+        Term term = appointmentService.findOneByAppointmentId(appointmentId).getTerm();
+        wastedMaterialService.create(new WastedMaterial(needle,bag,term.getDateTime()));
         for(Equipment e : equipmentService.getAll())
         {
             if(e.getEquipmentId() == 1)

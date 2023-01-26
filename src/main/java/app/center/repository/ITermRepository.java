@@ -38,7 +38,12 @@ public interface ITermRepository extends JpaRepository<Term, Integer> {
     @Query("select t from Term t where t.dateTime between :startDate and :endDate")
     public List<Term> getTermsForDate(@Param("startDate")LocalDateTime startDate
             ,@Param("endDate")LocalDateTime endDate);
-    @Query("select t from Term t where t.dateTime between :startDate and :endDate and t.state = 0")
-    public List<Term> getTermsByDateTime(@Param("startDate")LocalDateTime startDate
+
+    @Query("select t from Term t where t.center.centerId = :centerId and t.dateTime between :startDate and :endDate")
+    public List<Term> checkIfCenterFree(@Param("startDate")LocalDateTime startDate
+            ,@Param("endDate")LocalDateTime endDate,@Param("centerId")Integer centerId);
+
+    @Query("select t from Term t where t.state = 2 and t.dateTime between :startDate and :endDate")
+    public List<Term> getTermsBetweenDates(@Param("startDate")LocalDateTime startDate
             ,@Param("endDate")LocalDateTime endDate);
 }

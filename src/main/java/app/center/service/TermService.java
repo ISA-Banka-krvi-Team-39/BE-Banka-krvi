@@ -48,6 +48,21 @@ public class TermService implements ITermService {
         termRepository.cancelTermById(termId);
     }
 
+    @Override
+    public int getTermsMonthly(LocalDateTime localDateTime) {
+        return termRepository.getTermsBetweenDates(localDateTime.minusMonths(1),localDateTime).size() ;
+    }
+
+    @Override
+    public int getTerms3Months(LocalDateTime localDateTime) {
+        return termRepository.getTermsBetweenDates(localDateTime.minusMonths(3),localDateTime).size();
+    }
+
+    @Override
+    public int getTermsYearly(LocalDateTime localDateTime) {
+        return termRepository.getTermsBetweenDates(localDateTime.minusYears(1),localDateTime).size();
+    }
+
 
     @Override
     public List<Term> getAllPatientsTerms(int id) {
@@ -101,15 +116,13 @@ public class TermService implements ITermService {
         if(date.compareTo(LocalDateTime.now().plusDays(1)) < 0) return false;
         for(Term term : termRepository.getTermsForDate(date.plusDays(-1),date.plusDays(1)))
         {
-            if((date.compareTo(term.getDateTime()) > 0 && date.compareTo(term.getDateTime().plusMinutes(term.getDurationInMinutes())) < 0)
-                || (date.plusMinutes(duration).compareTo(term.getDateTime()) > 0 && date.plusMinutes(duration).compareTo(term.getDateTime().plusMinutes(term.getDurationInMinutes())) < 0))
+            if((date.compareTo(term.getDateTime()) >= 0 && date.compareTo(term.getDateTime().plusMinutes(term.getDurationInMinutes())) <= 0)
+                || (date.plusMinutes(duration).compareTo(term.getDateTime()) >= 0 && date.plusMinutes(duration).compareTo(term.getDateTime().plusMinutes(term.getDurationInMinutes())) <= 0)
+             || (date.compareTo(term.getDateTime()) <= 0 && date.plusMinutes(duration).compareTo(term.getDateTime().plusMinutes(term.getDurationInMinutes())) >= 0))
             return false;
         }
         return true;
     }
 
-    @Override
-    public List<Term> getTermsByDateTime(LocalDateTime localDateTime) {
-        return termRepository.getTermsByDateTime(localDateTime.plusHours(-1),localDateTime.plusHours(1));
-    }
+
 }
