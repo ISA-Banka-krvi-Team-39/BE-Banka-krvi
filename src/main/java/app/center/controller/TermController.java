@@ -332,4 +332,21 @@ public class TermController {
         System.out.println(lastTerm.getDateTime().toString().split("T")[0] + " LastTerm");
         return new ResponseEntity<String>(lastTerm.getDateTime().toString().split("T")[0], HttpStatus.OK);
     }
+    @Operation(summary = "Get all terms by patient", description = "Get all terms patient", method="GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation",
+                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Term.class))))
+    })
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+    @GetMapping(value = "/all/done",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<TermForPatientDTO>> getAllDone() {
+        List<Term> terms = termService.getAll();
+        List<TermForPatientDTO> termsDTO = new ArrayList<>();
+        for(Term term : terms) {
+            if(term.getState() == State.DONE)
+                termsDTO.add(new TermForPatientDTO(term));
+        }
+        return new ResponseEntity<>(termsDTO, HttpStatus.OK);
+    }
 }
