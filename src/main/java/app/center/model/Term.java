@@ -44,6 +44,9 @@ public class Term {
     @Version
     private Integer version;
 
+    @Column(name = "triger")
+    private Integer triger;
+
     public Term()
     {
     }
@@ -60,6 +63,13 @@ public class Term {
 
 
     public Term(LocalDateTime dateTime, Integer maximumSpace, Set<Person> medicalStaffs, Person bloodDonor, Center center, Integer durationInMinutes) {
+        this.dateTime = dateTime;
+        this.maximumSpace = maximumSpace;
+        this.bloodDonor = bloodDonor;
+        this.center = center;
+        this.durationInMinutes = durationInMinutes;
+    }
+    public Term(LocalDateTime dateTime, Integer maximumSpace, Person bloodDonor, Center center, Integer durationInMinutes) {
         this.dateTime = dateTime;
         this.maximumSpace = maximumSpace;
         this.bloodDonor = bloodDonor;
