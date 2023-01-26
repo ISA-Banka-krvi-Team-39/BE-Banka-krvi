@@ -192,6 +192,9 @@ public class AppointmentController {
                 patientService.save(patient);
             }
         }
+        Term term = termService.findOne(appointmentDTO.getTermId());
+        term.setState(State.DONE);
+        termService.save(term);
 
         return new ResponseEntity<Patient>(patient, HttpStatus.OK);
     }
@@ -212,6 +215,9 @@ public class AppointmentController {
         if(appointment == null) {
             appointment = new Appointment(appointmentDTO.getAppointmentId(), termService.findOne(appointmentDTO.getTermId()), personService.findOne(appointmentDTO.getPersonId()), true);
         appointmentService.forbidAppointment(appointment);
+        Term term = termService.findOne(appointmentDTO.getTermId());
+        term.setState(State.DONE);
+        termService.save(term);
         }
         return new ResponseEntity<>(true, HttpStatus.OK);
     }
