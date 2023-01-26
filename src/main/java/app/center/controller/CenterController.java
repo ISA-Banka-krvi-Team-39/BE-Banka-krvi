@@ -169,12 +169,14 @@ public class CenterController {
     })
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
     @GetMapping(value = "/listDateTime/", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<CenterByDateTimeDTO>> getAllByDateTime(@RequestParam(value= "localDateTime", required =true)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)LocalDateTime localDateTime) {
-        List<Term> terms = termService.getTermsByDateTime(localDateTime);
+    public ResponseEntity<List<CenterByDateTimeDTO>> getAllByDateTime(@RequestParam(value= "localDateTime", required =true)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)LocalDateTime localDateTime,@RequestParam(value= "duration", required =true)Integer duration) {
+        List<Center> centers = centerService.getTermsByDateTime(localDateTime,duration);
         List<CenterByDateTimeDTO> centerByDateTimeDTOS = new ArrayList<>();
-        for(Term term : terms){
-            centerByDateTimeDTOS.add(new CenterByDateTimeDTO(term));
+        for(Center center : centers){
+            centerByDateTimeDTOS.add(new CenterByDateTimeDTO(center));
         }
         return new ResponseEntity<>(centerByDateTimeDTOS, HttpStatus.OK);
     }
+
+
 }
