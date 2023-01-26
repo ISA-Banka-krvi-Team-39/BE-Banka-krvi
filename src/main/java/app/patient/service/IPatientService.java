@@ -12,4 +12,5 @@ public interface IPatientService {
     public Integer getPatientPenals(int id);
     public Patient save(Patient patient);
     public List<Patient> findAll();
+    public int findPatientByPersonId(int personId);
 }

@@ -1,5 +1,6 @@
 package app.patient.service;
 
+import app.appointment.model.Appointment;
 import app.email.model.EmailDetails;
 import app.email.service.IEmailService;
 import app.patient.model.Patient;
@@ -48,4 +49,19 @@ public class PatientService implements IPatientService{
     }
     @Override
     public Patient save(Patient patient){ return patientRepository.save(patient);}
+    @Override
+    public int findPatientByPersonId(int personId)
+    {
+        int patientId = -1;
+        List<Patient> patientList = patientRepository.findAll();
+        for(Patient patient : patientList)
+        {
+            if(patient.getPerson().getPersonId() == personId)
+            {
+                patientId = patient.getPatientId();
+                break;
+            }
+        }
+        return patientId;
+    }
 }
