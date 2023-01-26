@@ -182,7 +182,7 @@ public class TermController {
             @ApiResponse(responseCode = "200", description = "successful operation",
                     content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Term.class))))
     })
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
     @PutMapping(value = "/schedule/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> scheduleTerm(@RequestBody TermDTO termDTO, @PathVariable("id") int personId) throws Exception {
@@ -363,5 +363,18 @@ public class TermController {
         if (!termService.checkTerm(createTermWithPatientDTO.getDateTime(),createTermWithPatientDTO.getDurationInMinutes())) return new ResponseEntity<String>("404",HttpStatus.OK);
         termService.create(createTermWithPatientDTO.MapToModel(centerService.findOne(createTermWithPatientDTO.getCenterId()),null,personService.findOne(createTermWithPatientDTO.getPatientId())));
         return new ResponseEntity<String>("200",HttpStatus.OK);
+    }
+
+    @Operation(summary = "Term Statistics", description = "Term statistics", method="GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation",
+                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = TermsStatisticsDTO.class))))
+    })
+    @PreAuthorize("hasRole('ADMIN')")
+    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+    @GetMapping(value="/termsStats/",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<TermsStatisticsDTO> termsStatistics(@RequestParam(value= "localDateTime", required =true)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)LocalDateTime localDateTime) {
+        TermsStatisticsDTO termsStatisticsDTO = new TermsStatisticsDTO(termService.getTermsMonthly(localDateTime),termService.getTerms3Months(localDateTime),termService.getTermsYearly(localDateTime));
+        return new ResponseEntity<TermsStatisticsDTO>(termsStatisticsDTO,HttpStatus.OK);
     }
 }

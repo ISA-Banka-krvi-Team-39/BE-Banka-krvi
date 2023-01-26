@@ -108,8 +108,8 @@ insert into Term (date_time, duration_in_minutes, maximum_space, center_id, stat
 values ('2022-6-23 13:00:00',30,1,1,2,1,7,0);
 insert into Term (date_time, duration_in_minutes, maximum_space, center_id, state, medical_staff, person_id,version)
 values ('2022-2-20 15:00:00',45,1,1,2,1,7,0);
-insert into Term (date_time, duration_in_minutes, maximum_space, center_id, state, medical_staff,version)
-values ('2023-2-23 13:00:00',40,1,1,0,1,0);
+insert into Term (date_time, duration_in_minutes, maximum_space, center_id, state, medical_staff,person_id,version)
+values ('2023-1-23 13:00:00',40,1,2,2,1,7,0);
 insert into Term (date_time, duration_in_minutes, maximum_space, center_id, state, medical_staff,version)
 values ('2023-5-1 13:00:00',20,1,1,0,1,0);
 insert into Term (date_time, duration_in_minutes, maximum_space, center_id, state, medical_staff,version)
@@ -183,5 +183,21 @@ insert into user_role(user_id,role_id)
 values(4,1);
 insert into user_role(user_id,role_id)
 values(6,2);
+
+insert into wasted_material(needles,bags,date)
+values (1,2,'2023-01-15 9:00:00');
+insert into wasted_material(needles,bags,date)
+values (5,1,'2023-11-15 9:00:00');
+insert into wasted_material(needles,bags,date)
+values (3,2,'2022-05-15 9:00:00');
+
+insert into donated_bags(bags,date)
+values (2,'2022-11-11 9:00:00');
+insert into donated_bags(bags,date)
+values (3,'2022-04-01 9:00:00');
+insert into donated_bags(bags,date)
+values (3,'2023-01-01 9:00:00');
+insert into donated_bags(bags,date)
+values (3,'2023-01-25 9:00:00');
 
 

@@ -171,8 +171,8 @@ public class PersonController {
             @ApiResponse(responseCode = "200", description = "successful operation",
                     content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = PersonForTermDTO.class))))
     })
-    //@PreAuthorize("hasRole('ADMIN')")
-    @CrossOrigin(origins = "http://localhost:3000")
+    @PreAuthorize("hasRole('ADMIN')")
+    @CrossOrigin(origins = "http://localhost:3000",maxAge = 3600)
     @GetMapping(value="/medicalStaff", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<PersonForTermDTO>> findMedicalStaff(@RequestParam(value= "adminId", required =true)int adminId) {
         List<PersonForTermDTO> personForTermDTO = new ArrayList<>();

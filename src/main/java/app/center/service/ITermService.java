@@ -26,4 +26,10 @@ public interface ITermService {
     public void schedule(Term term, Integer personId);
     public boolean checkTerm(LocalDateTime date,int duration);
     public void cancelTermById(int termId);
+
+    int getTermsMonthly(LocalDateTime localDateTime);
+
+    int getTerms3Months(LocalDateTime localDateTime);
+
+    int getTermsYearly(LocalDateTime localDateTime);
 }

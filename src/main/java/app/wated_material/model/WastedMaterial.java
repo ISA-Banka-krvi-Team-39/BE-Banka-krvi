@@ -7,7 +7,7 @@ public class WastedMaterial {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer appointmentId;
+    private Integer wastedMaterialId;
     @Column(name="needles", nullable=false)
     private int needles;
     @Column(name="bags", nullable=false)

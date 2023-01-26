@@ -48,6 +48,21 @@ public class TermService implements ITermService {
         termRepository.cancelTermById(termId);
     }
 
+    @Override
+    public int getTermsMonthly(LocalDateTime localDateTime) {
+        return termRepository.getTermsBetweenDates(localDateTime.minusMonths(1),localDateTime).size() ;
+    }
+
+    @Override
+    public int getTerms3Months(LocalDateTime localDateTime) {
+        return termRepository.getTermsBetweenDates(localDateTime.minusMonths(3),localDateTime).size();
+    }
+
+    @Override
+    public int getTermsYearly(LocalDateTime localDateTime) {
+        return termRepository.getTermsBetweenDates(localDateTime.minusYears(1),localDateTime).size();
+    }
+
 
     @Override
     public List<Term> getAllPatientsTerms(int id) {

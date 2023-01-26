@@ -178,5 +178,17 @@ public class CenterController {
         return new ResponseEntity<>(centerByDateTimeDTOS, HttpStatus.OK);
     }
 
+    @Operation(summary = "Center Average Grade", description = "AVG Grade of Center", method="GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation",
+                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Float.class))))
+    })
+    @PreAuthorize("hasRole('ADMIN')")
+    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+    @GetMapping(value = "/avgGrade",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Float> centersAverageGrade(@RequestParam(value= "adminId", required =true)int adminId) {
+        return new ResponseEntity<Float>(medicalStaffService.findOneByPersonId(adminId).getWorkingCenter().getAvgGrade(), HttpStatus.OK);
+    }
+
 
 }
