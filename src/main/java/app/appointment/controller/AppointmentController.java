@@ -122,8 +122,8 @@ public class AppointmentController {
     })
     @PreAuthorize("hasRole('ADMIN')")
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
-    @PostMapping(value="/info", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<InformationsDto> createInformations(@RequestBody InformationsDto informationsDto) {
+    @PostMapping(value="/info/{usedBags}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<InformationsDto> createInformations(@RequestBody InformationsDto informationsDto,@PathVariable("usedBags") int usedBags) {
         Informations informations = new Informations(informationsDto);
         informationService.create(informations);
         Appointment appo = null;
@@ -145,18 +145,33 @@ public class AppointmentController {
             List<BloodBag> bloodBags = bloodBagService.getAll();
             for (BloodBag b : bloodBags) {
                 if (b.getBloodType().toString().equals(informations.getBloodType().toString())) {
-                    b.setAmount(b.getAmount() + 1);
+                    b.setAmount(b.getAmount() + usedBags);
                     bloodBagService.save(b);
                 }
             }
         }
+        return new ResponseEntity<InformationsDto>(informationsDto, HttpStatus.OK);
+    }
+    @Operation(summary = "Create informations", description = "Create informations", method="POST")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation",
+                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Informations.class))))
+    })
+    @PreAuthorize("hasRole('ADMIN')")
+    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+    @PostMapping(value="/{bag}/{needle}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<HttpStatus> updateEquipment(@PathVariable("bag") int bag,@PathVariable("needle") int needle) {
         for(Equipment e : equipmentService.getAll())
         {
-            e.setAmount(e.getAmount() - 1);
+            if(e.getEquipmentId() == 1)
+                e.setAmount(e.getAmount() - needle);
+            if(e.getEquipmentId() == 2)
+                e.setAmount(e.getAmount() - bag);
+
             equipmentService.save(e);
         }
 
-        return new ResponseEntity<InformationsDto>(informationsDto, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
     @Operation(summary = "Give penal", description = "Give penal", method="POST")
     @ApiResponses(value = {
