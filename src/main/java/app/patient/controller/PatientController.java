@@ -3,6 +3,7 @@ package app.patient.controller;
 import app.appointment.dto.AppointmentPatientInfoDTO;
 import app.appointment.model.Appointment;
 import app.center.dto.TermDTO;
+import app.center.model.State;
 import app.center.model.Term;
 import app.center.service.ITermService;
 import app.patient.dto.PatientDto;
@@ -60,6 +61,7 @@ public class PatientController {
                 if(t.getCenter().getCenterId() == id) {
                     if (t.getBloodDonor() != null) {
                         if (t.getDateTime().isAfter(LocalDateTime.now())) {
+                            if(t.getState() == State.PENDING)
                             if (patientService.findOneByPersonId(t.getBloodDonor().getPersonId()).getPatientId() == p.getPatientId()) {
                                 patients.add(new PatientDto(p.getPatientId(), p.getPerson().getPersonId(), t.getTermId(), p.getPerson().getName(), p.getPerson().getSurname()));
                             }
