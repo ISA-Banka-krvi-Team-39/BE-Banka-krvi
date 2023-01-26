@@ -95,8 +95,6 @@ public class TermController {
     @PutMapping(value="/scheduleTerm",consumes = "application/json")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     public ResponseEntity<CreateTermForPatientDTO> updateScheduleTerm(@RequestBody CreateTermForPatientDTO createTermDTO) {
-        System.out.println("usao");
-        System.out.println("Term id je:" + createTermDTO.getTermId());
         Term term = termService.findOne(createTermDTO.getTermId());
         term.setBloodDonor(personService.findOne(createTermDTO.getPatientId()));
         termService.save(term);
@@ -167,11 +165,12 @@ public class TermController {
     })
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
-    @GetMapping(value = "/free",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<TermDTO>> getFree() {
+    @GetMapping(value = "/free/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<TermDTO>> getFree(@PathVariable("id") int id) {
         List<Term> terms = termService.getAllFree();
         List<TermDTO> termsDTO = new ArrayList<>();
         for(Term term : terms) {
+            if(term.getCenter().getCenterId() == id)
             if(term.getBloodDonor() == null)
             termsDTO.add(new TermDTO(term));
         }
@@ -271,9 +270,9 @@ public class TermController {
     })
     @PreAuthorize("hasAnyRole('ADMIN')")
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
-    @GetMapping(value = "/admin",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<TermForPatientDTO>> getAllAdminTerms() {
-        List<Term> terms = termService.getAllAdminTerms(1);
+    @GetMapping(value = "/admin/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<TermForPatientDTO>> getAllAdminTerms(@PathVariable("id") int id) {
+        List<Term> terms = termService.getAllAdminTerms(id);
         List<TermForPatientDTO> termsDTO = new ArrayList<>();
         for(Term term : terms) {
             termsDTO.add(new TermForPatientDTO(term));
@@ -339,13 +338,14 @@ public class TermController {
     })
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
-    @GetMapping(value = "/all/done",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<TermForPatientDTO>> getAllDone() {
+    @GetMapping(value = "/all/done/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<TermForPatientDTO>> getAllDone(@PathVariable("id") int id) {
         List<Term> terms = termService.getAll();
         List<TermForPatientDTO> termsDTO = new ArrayList<>();
         for(Term term : terms) {
-            if(term.getState() == State.DONE)
-                termsDTO.add(new TermForPatientDTO(term));
+            if(term.getCenter().getCenterId() == id)
+                if(term.getState() == State.DONE)
+                    termsDTO.add(new TermForPatientDTO(term));
         }
         return new ResponseEntity<>(termsDTO, HttpStatus.OK);
     }

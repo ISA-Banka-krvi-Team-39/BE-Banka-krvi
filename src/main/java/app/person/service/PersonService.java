@@ -47,7 +47,7 @@ public class PersonService implements IPersonService {
     @Override
     public Person update(Person person) { return personRepository.save(person); }
     @Override
-    public List<Person> findAvailableAdmins(){
+    public List<Person> findAvailableAdmins(int id){
         List<Person> personList = personRepository.findAll();
         List<Role> roleList = roleRepository.findAll();
         List<User> userList = new ArrayList<>();
@@ -99,7 +99,7 @@ public class PersonService implements IPersonService {
         {
             System.out.println(p.getName() + " " + p.getSurname());
         }
-        List<Person> ret3List = findScheduledAdmins();
+        List<Person> ret3List = findScheduledAdmins(id);
         List<Person> ret4List = new ArrayList<>();
         for(Person p : ret2List)
         {
@@ -116,7 +116,7 @@ public class PersonService implements IPersonService {
     public List<Person> findAdmins(){return personRepository.findAdmins();}
 
     @Override
-    public List<Person> findScheduledAdmins() {
+    public List<Person> findScheduledAdmins(int id) {
         List<Person> personList = personRepository.findAll();
         List<Role> roleList = roleRepository.findAll();
         List<User> userList = new ArrayList<>();
@@ -142,6 +142,7 @@ public class PersonService implements IPersonService {
         int n = medicalStaffs.size();
         for (Person p : retList) {
             for (MedicalStaff medicalStaff : medicalStaffs) {
+                if(medicalStaff.getWorkingCenter().getCenterId() == id)
                 if (p.getPersonId() == medicalStaff.getPerson().getPersonId()) {
                     ret2List.add(p);
                     break;

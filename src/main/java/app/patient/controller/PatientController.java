@@ -46,9 +46,9 @@ public class PatientController {
                     content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Person.class))))
     })
     @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
-    @GetMapping(value="/terms", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value="/terms/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
-    public ResponseEntity<List<PatientDto>> getOne() {
+    public ResponseEntity<List<PatientDto>> getOne(@PathVariable("id") int id) {
         List<PatientDto> patients = new ArrayList<PatientDto>();
         List<PatientDto> patientss = new ArrayList<PatientDto>();
         List<Patient> patientList = patientService.findAll();
@@ -57,10 +57,12 @@ public class PatientController {
         {
             for(Patient p : patientList)
             {
-                if(t.getBloodDonor() != null) {
-                    if(t.getDateTime().isAfter(LocalDateTime.now())) {
-                        if (patientService.findOneByPersonId(t.getBloodDonor().getPersonId()).getPatientId() == p.getPatientId()) {
-                            patients.add(new PatientDto(p.getPatientId(), p.getPerson().getPersonId(), t.getTermId(), p.getPerson().getName(), p.getPerson().getSurname()));
+                if(t.getCenter().getCenterId() == id) {
+                    if (t.getBloodDonor() != null) {
+                        if (t.getDateTime().isAfter(LocalDateTime.now())) {
+                            if (patientService.findOneByPersonId(t.getBloodDonor().getPersonId()).getPatientId() == p.getPatientId()) {
+                                patients.add(new PatientDto(p.getPatientId(), p.getPerson().getPersonId(), t.getTermId(), p.getPerson().getName(), p.getPerson().getSurname()));
+                            }
                         }
                     }
                 }

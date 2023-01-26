@@ -140,10 +140,9 @@ public class PersonController {
     })
     @PreAuthorize("hasRole('ADMIN')")
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping(value="/admins", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<PersonDTO>> findAdmins() {
-        List<Person> admins = personService.findAvailableAdmins();
-        System.out.println("KolkoAvailable " + admins.size());
+    @GetMapping(value="/admins/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<PersonDTO>> findAdmins(@PathVariable("id") int id) {
+        List<Person> admins = personService.findAvailableAdmins(id);
         List<PersonDTO> personsDTO = new ArrayList<>();
         for(Person person : admins){
             personsDTO.add(new PersonDTO(person));
@@ -157,9 +156,9 @@ public class PersonController {
     })
     @PreAuthorize("hasRole('ADMIN')")
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping(value="/scheduledAdmins", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<PersonDTO>> findScheduledAdmins() {
-        List<Person> admins = personService.findScheduledAdmins();
+    @GetMapping(value="/scheduledAdmins/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<PersonDTO>> findScheduledAdmins(@PathVariable("id") int id) {
+        List<Person> admins = personService.findScheduledAdmins(id);
         List<PersonDTO> personsDTO = new ArrayList<>();
         for(Person person : admins){
             personsDTO.add(new PersonDTO(person));

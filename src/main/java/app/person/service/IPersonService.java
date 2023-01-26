@@ -13,8 +13,8 @@ public interface IPersonService {
     Person update(Person person);
     Person findOne(int id);
     boolean checkUidUniqueness(String uid);
-    List<Person> findAvailableAdmins();
+    List<Person> findAvailableAdmins(int id);
 
-    public List<Person> findScheduledAdmins();
+    public List<Person> findScheduledAdmins(int id);
 
 }
