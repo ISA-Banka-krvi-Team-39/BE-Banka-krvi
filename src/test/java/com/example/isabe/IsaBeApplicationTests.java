@@ -99,7 +99,7 @@ public class IsaBeApplicationTests {
 				try{Thread.sleep(150);}catch(InterruptedException e){}
 				System.out.println("[Thread 2]Kreiram termin");
 				Term term = termService.create(new Term(LocalDateTime.of(2023,
-						Month.JANUARY, 26, 14, 19, 10), 20, personService.findOne(1), centerService.findOne(1), 20));
+						Month.JANUARY, 26, 14, 19, 10), 20, personService.findOne(4), centerService.findOne(1), 20));
 				System.out.println("[Thread 2]Zavrsavam transakciju");
 			}
 		});
@@ -116,5 +116,49 @@ public class IsaBeApplicationTests {
 
 		executor.shutdown();
 	};
+
+	@Test()
+	public void Same_medicalStaff_At_two_terms() throws Throwable {
+
+		ExecutorService executor = Executors.newFixedThreadPool(2);
+		List<Term> terms = termService.getAll();
+
+		Future<?> future1 = executor.submit(new Runnable() {
+			public void run() {
+				System.out.println("[Thread 1]Prvi tred poceo");
+				//try{Thread.sleep(3000);}catch(InterruptedException e){}
+				System.out.println("[Thread 1]Kreiranje termin");
+				Term term = termService.create(new Term(LocalDateTime.of(2023,
+						Month.FEBRUARY, 15, 15, 35, 00), 20, personService.findOne(1), centerService.findOne(1), 30));
+				System.out.println("[Thread 1]Zavrsavam transakciju");
+			}
+		});
+		executor.submit(new Runnable() {
+			@Override
+			public void run() {
+
+				try{Thread.sleep(150);}catch(InterruptedException e){}
+				System.out.println("[Thread 2]Kreiram termin");
+				Term term = termService.create(new Term(LocalDateTime.of(2023,
+						Month.FEBRUARY, 15, 15, 35, 00), 20, personService.findOne(1), centerService.findOne(1), 50));
+				System.out.println("[Thread 2]Zavrsavam transakciju");
+			}
+		});
+		try {
+			future1.get();
+		} catch (ExecutionException e) {
+			System.out.println("Exception from thread " + e.getCause().getClass());
+			throw e.getCause();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		List<Term> termList = termService.getAll();
+		assertEquals("Not equal",terms.size() + 1,termList.size());
+
+		executor.shutdown();
+	};
+
+
+	//termService.create(createTermDTO.MapToModel(medicalStaffService.findOneByPersonId(createTermDTO.getManagerId()).getWorkingCenter(),personService.findOne(createTermDTO.getMedicalStaffId())));
 
 }
