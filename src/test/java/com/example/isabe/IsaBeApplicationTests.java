@@ -2,8 +2,10 @@ package com.example.isabe;
 
 import app.IsaBeApplication;
 import app.center.model.Term;
+import app.center.service.ICenterService;
 import app.center.service.ITermService;
 import app.center.service.TermService;
+import app.person.service.IPersonService;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,10 +15,16 @@ import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.LockModeType;
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.util.List;
+import java.util.concurrent.*;
+
+import static org.springframework.test.util.AssertionErrors.assertEquals;
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = TermService.class)
@@ -25,6 +33,11 @@ public class IsaBeApplicationTests {
 
 	@Autowired
 	ITermService termService;
+	@Autowired
+	IPersonService personService;
+
+	@Autowired
+	ICenterService centerService;
 
 	@BeforeClass
 	public static void setUp() {
@@ -63,5 +76,45 @@ public class IsaBeApplicationTests {
 		executor.shutdown();
 
 	}
+	@Test()
+	public void generateTerm() throws Throwable {
+
+		ExecutorService executor = Executors.newFixedThreadPool(2);
+		List<Term> terms = termService.getAll();
+
+		Future<?> future1 = executor.submit(new Runnable() {
+			public void run() {
+				System.out.println("[Thread 1]Startovan");
+				//try{Thread.sleep(3000);}catch(InterruptedException e){}
+				System.out.println("[Thread 1]Kreiram termin");
+				Term term = termService.create(new Term(LocalDateTime.of(2023,
+						Month.JANUARY, 26, 14, 19, 10), 20, personService.findOne(1), centerService.findOne(1), 20));
+				System.out.println("[Thread 1]Zavrsavam transakciju");
+			}
+		});
+		executor.submit(new Runnable() {
+			@Override
+			public void run() {
+
+				try{Thread.sleep(150);}catch(InterruptedException e){}
+				System.out.println("[Thread 2]Kreiram termin");
+				Term term = termService.create(new Term(LocalDateTime.of(2023,
+						Month.JANUARY, 26, 14, 19, 10), 20, personService.findOne(1), centerService.findOne(1), 20));
+				System.out.println("[Thread 2]Zavrsavam transakciju");
+			}
+		});
+		try {
+			future1.get();
+		} catch (ExecutionException e) {
+			System.out.println("Exception from thread " + e.getCause().getClass());
+			throw e.getCause();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		List<Term> termList = termService.getAll();
+		assertEquals("Not equal",terms.size() + 1,termList.size());
+
+		executor.shutdown();
+	};
 
 }

@@ -6,9 +6,13 @@ import app.center.repository.ITermRepository;
 import app.person.model.Person;
 import app.person.service.IPersonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.LockModeType;
+import javax.persistence.QueryHint;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +25,12 @@ public class TermService implements ITermService {
     private IPersonService personService;
 
     @Override
-    @Transactional(readOnly = false)
-    public Term create(Term term) {return termRepository.save(term); }
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value ="0")})
+    public Term create(Term term) {
+        //termRepository.update();
+        return termRepository.save(term);
+    }
 
     public Term findOne(Integer id) {
         return termRepository.findOneByTermId(id);

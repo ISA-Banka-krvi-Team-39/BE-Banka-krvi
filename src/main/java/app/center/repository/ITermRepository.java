@@ -17,7 +17,10 @@ public interface ITermRepository extends JpaRepository<Term, Integer> {
     public List<Term> findAll();
     @Query("select t from Term t where t.state = 0 and t.dateTime > CURRENT_DATE")
     public List<Term> findFree();
-
+    @Transactional
+    @Modifying
+    @Query("update Term t set t.triger = 1")
+    public void update();
     @Transactional
     @Modifying
     @Query("delete from Term where termId = :termId")

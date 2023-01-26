@@ -2,10 +2,18 @@ package app.center.service;
 
 import app.center.dto.TermDTO;
 import app.center.model.Term;
+import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.QueryHints;
+
+import javax.persistence.LockModeType;
+import javax.persistence.QueryHint;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ITermService {
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value ="0")})
     public Term create(Term term);
     public Term findOne(Integer id);
     public List<Term> getAll();
